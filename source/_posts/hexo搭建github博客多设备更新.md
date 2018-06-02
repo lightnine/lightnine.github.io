@@ -7,6 +7,7 @@ tags:
 - hexo
 copyright: true
 top:
+comments: true
 ---
 
 
