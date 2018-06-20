@@ -6,4 +6,5 @@ categories:
 tags:
 copyright:
 top:
+type:
 ---

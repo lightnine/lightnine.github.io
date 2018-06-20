@@ -344,8 +344,8 @@ font:
 
 # MathJax Support
 mathjax:
-  enable: false
-  per_page: false
+  enable: true
+  per_page: true
   cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML
 
 # Han Support docs: https://hanzi.pro/
@@ -425,7 +425,7 @@ gitalk:
   ClientSecret: a00948c362a1b1986060ab0c703af2a1c9af1974
   adminUser: lee2seek #指定可初始化评论账户
   distractionFreeMode: true
-  
+
 # Baidu Share
 # Available value:
 #    button | slide
