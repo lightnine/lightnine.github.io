@@ -7,7 +7,6 @@ tags:
 copyright:
 top:
 mathjax: true
-type: picture
 ---
 
 > 这是一篇翻译文章,但是也不全是,主要是读了文章之后,用自己的话将其复述出来
