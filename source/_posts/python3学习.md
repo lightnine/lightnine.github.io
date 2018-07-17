@@ -109,4 +109,32 @@ run_twice(Timer())
 在Java中,如果定义`run_twice`方法,必须定义函数的形参类型,如果指定了只能接受Animal类型,则只能传递Animal类型或其子类.但是在python不是这样,只要传递进的类型中存在`run`方法即可.不过python中不存在限制入参是什么类型.
 > 这就是动态语言的“鸭子类型”，它并不要求严格的继承体系，一个对象只要“看起来像鸭子，走起路来像鸭子”，那它就可以被看做是鸭子。
 
+## `__slots__`
 
+python是动态语言，可以在运行过程中给类实例以及类本身添加属性和方法。如果想要限制动态添加的属性，则可以在类中定义`__slots__`,如下代码
+
+```python
+class Student(object):
+    __slots__ = ('name', 'age') # 运行绑定的属性限制为name和age
+```
+
+## `@property`
+
+`@property`是python内置装饰器,可以在给属性添加getter以及setter方法，从而简化代码。如下使用
+
+```python
+class Student(object):
+    @property
+    def score(self):
+        return self._score
+
+    @score.setter
+    def score(self, value):
+        if not isinstance(value, int):
+            raise ValueError('score must be an integer!')
+        if value < 0 or value > 100:
+            raise ValueError('score must between 0 ~ 100!')
+        self._score = value
+```
+
+第一个score方法被`@property`修改,从而为score属性添加了getter方法,第二个score方法被`@score.setter`修饰,添加了setter方法.如果去掉第二个score,则score属性将没有setter方法.
