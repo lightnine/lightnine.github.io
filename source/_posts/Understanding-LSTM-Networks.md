@@ -8,7 +8,7 @@ top:
 type:
 mathjax: true
 ---
-这是一篇译文,[原文地址](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
+这是一篇译文,[原文地址](https://colah.github.io/posts/2015-08-Understanding-LSTMs/).如果英文可以,建议直接看英文.
 
 # 循环神经网络(Recurrent Neural Networks)
 
@@ -59,3 +59,30 @@ LSTM的第一步就是决定从单元状态中丢弃哪些信息.这个决定是
 >图中的$W_f \cdot [h_{t-1},x_t]$,大家看起来有些不清楚.个人认为比较合适的写法如下
 >$\sigma(W_fx_t + U_r h_{t-1} + b_f)$.大家可以参考下[英文博客](http://blog.echen.me/2017/05/30/exploring-lstms/),[中文博客](https://www.jiqizhixin.com/articles/2017-07-24-2)
 
+接下来这一步就是决定新信息中的哪些部分需要保存在单元状态中.这包括两个部分,第一部分是sigmoid层(input gate layer),决定更新的值.第二部分是一个tanh层,用来创建一个新的候选值.在下一步中,我们将会把这两个结合起来用来给单元状态做更新.在语言模型的例子中,这一步就代表我们将新对象的性别加入单元状态中,用来代替我们需要忘记的老对象性别.
+{% asset_img LSTM3-focus-i.png %}
+现在要把旧的单元状态$C_{t-1}$更新为$C_t$.上一步已经决定了更新的内容.我们把旧的单元状态乘以$f_t$,表示我们需要忘记的内容.然后将结果加上$i_t*\tilde{C_t}$,这表示将候选值进行缩放或者延伸.在语言模型的例子中,这表示我们从旧对象的性别中去除信息,然后加上新的信息.
+{% asset_img LSTM3-focus-C.png %}
+最终,我们需要决定输出的内容.输出内容基于单元状态,但是需要一些处理.首先,我们使用一个sigmoid层来决定单元状态的哪部分需要输出.然后,我们将单元状态经过tanh(将值限定在-1到1之间),在乘以sigmoid gate的输出.所以我们仅仅输出了我们决定的.
+对于语言模型例子,因为网络之前看到了主语,所以接下来它可能想要输出的信息是关于动词的.例如,网络会根据主语的单数或复数来决定接下来动词的形式.
+{% asset_img LSTM3-focus-o.png %}
+
+# 长短期记忆模型的其他形式(Variants on Long Short Term Memory)
+
+上面提到的是LSTM的一般形式.但是还有好多LSTM的一些变形,虽然变化不大.其中一个流行的LSTM变形是由[Gers & Schmidhuber (2000)](ftp://ftp.idsia.ch/pub/juergen/TimeCount-IJCNN2000.pdf)提出.此模型添加了"peephole connections",这意味着让门看到了单元状态.
+{% asset_img LSTM3-var-peepholes.png %}
+从图中可以看到模型对于所有的gate都添加了peepholes,但是有很多文章只添加了一些peepholes,而另一些则没有.
+
+LSTM另一种变形是将input gate和forget gate进行耦合.这种网络不会单独的决定哪些内容需要忘记,哪些新的信息需要添加,而是一起做这些决定.当我们将要输入内容时,我们仅仅忘记;当我们忘记旧的内容时,我们仅仅输入一些新的值.模型的结构如下
+{% asset_img LSTM3-var-tied.png %}
+
+一种引入注意的LSTM变形是GRU(Gated Recurrent Unit),它将forget gate和input gate结合为一个单独的"update gate".它同样融合了单元状态和隐藏状态以及一些其他的改变.GRU模型要比标准的LSTM模型简单,并且越来越流行.
+{% asset_img LSTM3-var-GRU.png %}
+这里仅仅列举了一些LSTM变形,还有很多其他的LSTM变形.比如Depth Gated RNNs by [Yao, et al. (2015)](http://arxiv.org/pdf/1508.03790v2.pdf).同时在解决长期依赖问题上,也有跟LSTM完全不同的方法,比如Clockwork RNNs by [Koutnik, et al. (2014)](http://arxiv.org/pdf/1402.3511v1.pdf).
+[Greff, et al. (2015)](http://arxiv.org/pdf/1503.04069.pdf)对这些变形做了一个对比.[Jozefowicz, et al. (2015)](http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf)测试很多的RNN结构,发现在一些特定的任务上比LSTM模型表现的更好的模型.
+
+# 参考
+
+[colah博客](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
+[echen博客](http://blog.echen.me/2017/05/30/exploring-lstms/)
+> echen博客中公式介绍的较为详细
