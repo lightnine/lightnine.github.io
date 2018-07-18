@@ -3,7 +3,9 @@ title: CS231n Convolutional Neural Networks for Visual Recognition
 date: 2018-06-10 00:42:03
 updated: 2018-06-10 00:42:03
 categories:
+- deep learning
 tags:
+- CNN
 copyright:
 top:
 mathjax: true
