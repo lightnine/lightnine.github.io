@@ -2,12 +2,15 @@
 title: docker常用命令
 date: 2018-07-31 16:53:41
 categories:
+- docker
 tags:
+- docker
 copyright:
 top:
 type:
+comments: true
 ---
-# 111
+# docker基本命令
 
 ## 查看docker版本
 
