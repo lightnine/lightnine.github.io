@@ -10,17 +10,19 @@ top:
 type:
 comments: true
 ---
-# docker基本命令
+# docker命令
 
-## 查看docker版本
+## docker基本命令
+
+### 查看docker版本
 
 `docker version`
 
-## 查看docker信息
+### 查看docker信息
 
 `docker info`
 
-## 启动docker 服务
+### 启动docker 服务
 
 ```bash
 sudo service docker start
@@ -28,44 +30,67 @@ sudo service docker start
 sudo systemctl start docker
 ```
 
-## 列出本机的所有image文件
+## 镜像命令
+
+### 列出本机的所有image文件
 
 `docker image ls`
 
-## 删除image文件
+### 删除image文件
 
 `docker image rm [imageName]`
 
-## 拉取image文件
+### 拉取image文件
 
 `docker image pull library/hello-world`
 library/hello-world是 image 文件在仓库里面的位置，其中library是 image 文件所在的组，hello-world是 image 文件的名字.因为Docker官方提供的镜像都在library中,所以可以省略library,即使用下面的命令
 `docker image pull hello-world`
 
-## 运行image 文件
+### 运行image 文件
 
 `docker container run hello-world`
-run命令每运行一次,就会新建一个容器.docker container run命令具有自动抓取 image 文件的功能。如果发现本地没有指定的 image 文件，就会从仓库自动抓取。因此，前面的docker image pull命令并不是必需的步骤
+run命令每运行一次,就会新建一个容器.docker container run命令具有自动抓取 image 文件的功能。如果发现本地没有指定的 image 文件，就会从仓库自动抓取。因此，前面的docker image pull命令并不是必需的步骤.
+`-v`参数: 用来进行数据卷的挂载,将本机主机的目录挂载到容器的某一目录
 
-## 终止容器
+## 容器命令
+
+### 终止容器
 
 `docker container kill [containID]`
 
 > image 文件生成的容器实例，本身也是一个文件，称为容器文件。也就是说，一旦容器生成，就会同时存在两个文件： image 文件和容器文件。而且关闭容器并不会删除容器文件，只是容器停止运行而已。
 
-## 列出本机正在运行的容器
+### 列出本机正在运行的容器
 
 `docker container ls`
 
-## 列出本机所有容器，包括终止运行的容器
+### 列出本机所有容器，包括终止运行的容器
 
 `docker container ls --all`
 
-## 删除容器文件
+### 删除容器文件
 
-`docker container rm [containerID]`
+`docker container rm [containerID]`或
+`docker rm [containerID]`
+注: 删除正在运行的容器,需要添加`-f`参数;`-v`参数可以删除没有用的数据卷
 
-## 创建image 文件
+### 查看容器信息
+
+`docker ps`
+
+### 重启容器
+
+restart命令会将运行的容器终止,然后在重新启动
+`docker container restart [containerID 或 name]`
+
+### 导出容器
+
+导出容器快照到本地文件
+`docker export [containerID]`
+示例:
+`docker export 7691a814370e > ubuntu.tar`
+
+### 创建image 文件
 
 ```bash
 docker image build -t koa-demo .
@@ -75,7 +100,7 @@ docker image build -t koa-demo:0.0.1 .
 
 **-t** 用来指定image 文件的名字,后面可以用冒号指定标签.如果不指定,默认的标签就是**latest**. 最后的点表示Dockerfile文件所在的路径,一个点表示当前路径
 
-## 从image文件生成容器
+### 从image文件生成容器
 
 ```bash
 docker container run -p 8000:3000 -it koa-demo /bin/bash
@@ -118,5 +143,8 @@ docker container exec命令用于进入一个正在运行的 docker 容器。如
 5\. docker container cp
 docker container cp命令用于从正在运行的 Docker 容器里面，将文件拷贝到本机。下面是拷贝到当前目录的写法。
 `docker container cp [containID]:[/path/to/file] .`
+
+6\. 删除所有不运行的容器
+`docker rm $(docker ps -a -q)`
 
 参考文章:[Docker 入门教程-阮一峰](http://www.ruanyifeng.com/blog/2018/02/docker-tutorial.html)
