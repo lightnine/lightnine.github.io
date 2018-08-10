@@ -127,7 +127,7 @@ scheme: Mist
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
-  GitHub: https://github.com/lee2seek || github
+  GitHub: https://github.com/lightnine || github
   #E-Mail: mailto:yourname@gmail.com || envelope
   #Google: https://plus.google.com/yourname || google
   Twitter: https://twitter.com/nagleli || twitter
@@ -409,7 +409,7 @@ gitment:
   lazy: false # Comments lazy loading with a button
   cleanly: false # Hide 'Powered by ...' on footer, and more
   language: # Force language, or auto switch by theme
-  github_user: lee2seek # MUST HAVE, Your Github ID
+  github_user: lightnine # MUST HAVE, Your Github ID
   github_repo: blogComments # MUST HAVE, The repo you use to store Gitment comments
   client_id: 6f21774178fa991ef205 # MUST HAVE, Github client id for the Gitment
   client_secret: a00948c362a1b1986060ab0c703af2a1c9af1974 # EITHER this or proxy_gateway, Github access secret token for the Gitment
@@ -419,11 +419,11 @@ gitment:
 # Gitalk
 gitalk:
   enable: true
-  githubID: lee2seek
+  githubID: lightnine
   repo: blogComments
   ClientID: 6f21774178fa991ef205
   ClientSecret: a00948c362a1b1986060ab0c703af2a1c9af1974
-  adminUser: lee2seek #指定可初始化评论账户
+  adminUser: lightnine #指定可初始化评论账户
   distractionFreeMode: true
 
 # Baidu Share
