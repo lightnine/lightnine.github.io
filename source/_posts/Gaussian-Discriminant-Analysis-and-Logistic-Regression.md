@@ -80,5 +80,4 @@ $$
 
 ## 参考文章
 
-1. [生成学习算法.高斯判别分析(GDA).GDA与Logistic模型](https://blog.csdn.net/v1_vivian/article/details/52190572)
-2. [Gaussian Discriminant Analysis and Logistic Regression](https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/)
+1. [Gaussian Discriminant Analysis and Logistic Regression](https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/)
