@@ -80,7 +80,7 @@ $$\gamma^{(i)} =y^{(i)}(({\frac w {\left\|w\right\|}})^Tx^{(i)} + {\frac b {\lef
 定义
 $$\hat{\gamma} = \min_{i=1,...,m}{\hat{\gamma}^{(i)}}$$
 
-$${\gamma} = \min_{i=1,...,m}{{\gamma}^{(i)}}$$
+$${\gamma} = \min_{i=1,...,m}{\gamma}^{(i)}$$
 即$\hat{\gamma}$和${\gamma}$分别是函数间隔和几何间隔的最小值.
 
 ## 最优间隔分类器
