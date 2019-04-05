@@ -12,6 +12,8 @@ type:
 
 # 2019计划
 
+激励[左耳朵耗子](http://www.ituring.com.cn/article/9174)
+
 ## 目标
 
 1. 掌握tensorflow的使用
