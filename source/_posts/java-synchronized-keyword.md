@@ -67,8 +67,9 @@ public class MyClass {
 > • If the entry count of the monitor associated with objectref is zero, the thread enters the monitor and sets its entry count to one. The thread is then the owner of the monitor.
 > • If the thread already owns the monitor associated with objectref, it reenters the monitor, incrementing its entry count.
 > • If another thread already owns the monitor associated with objectref, the thread blocks until the monitor's entry count is zero, then tries again to gain ownership.
-引用中的内容来自JVM规范。这段话的大概意思为：
+>
 
+引用中的内容来自JVM规范。这段话的大概意思为：
 每个对象有一个监视器锁（monitor）。当monitor被占用时就会处于锁定状态，线程执行monitorenter指令时尝试获取monitor的所有权，过程如下：
 1. 如果monitor的进入数为0，则该线程进入monitor，然后将进入数设置为1，该线程即为monitor的所有者。
 2. 如果线程已经占有该monitor，只是重新进入，则进入monitor的进入数加1.
