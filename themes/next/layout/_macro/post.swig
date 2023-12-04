@@ -210,7 +210,6 @@
                  <span class="post-meta-item-text">{{__('post.visitors')}}&#58;</span>
                {% endif %}
                  <span class="leancloud-visitors-count"></span>
-				 <span>°C</span>
              </span>
           {% endif %}
 
@@ -270,6 +269,7 @@
     {### POST BODY ###}
     {#################}
     <div class="post-body{% if theme.han %} han-init-context{% endif %}{% if post.direction && post.direction.toLowerCase() === 'rtl' %} rtl{% endif %}" itemprop="articleBody">
+
       {# Gallery support #}
       {% if post.photos and post.photos.length %}
         <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
@@ -348,8 +348,7 @@
 
     {% if theme.post_copyright.enable and not is_index %}
       <div>
-        <!-- {% include 'post-copyright.swig' with { post: post } %} -->
-        {% include 'my-copyright.swig' with { post: post } %}
+        {% include 'post-copyright.swig' with { post: post } %}
       </div>
     {% endif %}
 
@@ -357,7 +356,7 @@
       {% if post.tags and post.tags.length and not is_index %}
         <div class="post-tags">
           {% for tag in post.tags %}
-            <a href="{{ url_for(tag.path) }}" rel="tag"><i class="fa fa-tag"></i> {{ tag.name }}</a>
+            <a href="{{ url_for(tag.path) }}" rel="tag"># {{ tag.name }}</a>
           {% endfor %}
         </div>
       {% endif %}

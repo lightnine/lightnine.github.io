@@ -27,7 +27,6 @@ override: false
 # For example, you put your favicons into `hexo-site/source/images` directory.
 # Then need to rename & redefine they on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.
 favicon:
-  favicon: /images/favicon.ico
   small: /images/favicon-16x16-next.png
   medium: /images/favicon-32x32-next.png
   apple_touch_icon: /images/apple-touch-icon-next.png
@@ -41,12 +40,12 @@ keywords: "Hexo, NexT"
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
 # Set rss to specific value if you have burned your feed already.
-rss: /atom.xml
+rss:
 
 footer:
   # Specify the date when the site was setup.
   # If not defined, current year will be used.
-  since: 2018
+  #since: 2015
 
   # Icon between year and copyright info.
   icon: user
@@ -93,26 +92,27 @@ index_with_subtitle: false
 # Value before `||` delimeter is the target link.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, question icon will be loaded.
 menu:
-  home: / || home
-  archives: /archives || archive
-  categories: /categories || th
-  tags: /tags || tags
-  about: /about || user
+  home: /|| home
+  about: /about/|| user
+  tags: /tags/|| tags
+  categories: /categories/|| th
+  archives: /archives/|| archive
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
-  commonweal: /404/ || heartbeat
+  #commonweal: /404/ || heartbeat
 
 # Enable/Disable menu icons.
 menu_icons:
   enable: true
+
 
 # ---------------------------------------------------------------
 # Scheme Settings
 # ---------------------------------------------------------------
 
 # Schemes
-#scheme: Muse
-scheme: Mist
+scheme: Muse
+#scheme: Mist
 #scheme: Pisces
 #scheme: Gemini
 
@@ -126,11 +126,11 @@ scheme: Mist
 # Key is the link label showing to end users.
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
-social:
-  GitHub: https://github.com/lightnine || github
+#social:
+  #GitHub: https://github.com/yourname || github
   #E-Mail: mailto:yourname@gmail.com || envelope
   #Google: https://plus.google.com/yourname || google
-  Twitter: https://twitter.com/nagleli || twitter
+  #Twitter: https://twitter.com/yourname || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
   #VK Group: https://vk.com/yourname || vk
   #StackOverflow: https://stackoverflow.com/yourname || stack-overflow
@@ -142,8 +142,6 @@ social_icons:
   enable: true
   icons_only: false
   transition: false
-  GitHub: github
-  Twitter: twitter
 
 # Blog rolls
 links_icon: link
@@ -218,22 +216,22 @@ excerpt_description: true
 # Automatically Excerpt. Not recommend.
 # Please use <!-- more --> in the post to control excerpt accurately.
 auto_excerpt:
-  enable: true
+  enable: false
   length: 150
 
 # Post meta display settings
 post_meta:
   item_text: true
   created_at: true
-  updated_at: true
+  updated_at: false
   categories: true
 
 # Post wordcount display settings
 # Dependencies: https://github.com/willin/hexo-wordcount
 post_wordcount:
   item_text: true
-  wordcount: true
-  min2read: true
+  wordcount: false
+  min2read: false
   totalcount: false
   separated_meta: true
 
@@ -251,7 +249,7 @@ post_wordcount:
 
 # Declare license on posts
 post_copyright:
-  enable: true
+  enable: false
   license: CC BY-NC-SA 3.0
   license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/
 
@@ -344,11 +342,9 @@ font:
 
 # MathJax Support
 mathjax:
-  enable: true
-  per_page: true
-  cdn: //cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
-  #cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML
-  #cdn: https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+  enable: false
+  per_page: false
+  cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML
 
 # Han Support docs: https://hanzi.pro/
 han: false
@@ -410,23 +406,13 @@ gitment:
   count: true # Show comments count in post meta area
   lazy: false # Comments lazy loading with a button
   cleanly: false # Hide 'Powered by ...' on footer, and more
-  language: # Force language, or auto switch by theme
-  github_user: lightnine # MUST HAVE, Your Github ID
-  github_repo: blogComments # MUST HAVE, The repo you use to store Gitment comments
-  client_id: 6f21774178fa991ef205 # MUST HAVE, Github client id for the Gitment
-  client_secret: a00948c362a1b1986060ab0c703af2a1c9af1974 # EITHER this or proxy_gateway, Github access secret token for the Gitment
+  language: zh-Hans # Force language, or auto switch by theme
+  github_user: # MUST HAVE, Your Github ID
+  github_repo: # MUST HAVE, The repo you use to store Gitment comments
+  client_id: # MUST HAVE, Github client id for the Gitment
+  client_secret: # EITHER this or proxy_gateway, Github access secret token for the Gitment
   proxy_gateway: # Address of api proxy, See: https://github.com/aimingoo/intersect
   redirect_protocol: # Protocol of redirect_uri with force_redirect_protocol when mint enabled
-
-# Gitalk
-gitalk:
-  enable: true
-  githubID: lightnine
-  repo: blogComments
-  ClientID: 6f21774178fa991ef205
-  ClientSecret: a00948c362a1b1986060ab0c703af2a1c9af1974
-  adminUser: lightnine #指定可初始化评论账户
-  distractionFreeMode: true
 
 # Baidu Share
 # Available value:
@@ -439,7 +425,7 @@ gitalk:
 # This plugin is more useful in China, make sure you known how to use it.
 # And you can find the use guide at official webiste: http://www.jiathis.com/.
 # Warning: JiaThis does not support https.
-jiathis: false
+#jiathis:
   ##uid: Get this uid from http://www.jiathis.com/
 #add_this_id:
 
@@ -618,7 +604,7 @@ algolia_search:
 # Local search
 # Dependencies: https://github.com/flashlab/hexo-generator-search
 local_search:
-  enable: true
+  enable: false
   # if auto, trigger search by changing input
   # if manual, trigger search by pressing enter key or search button
   trigger: auto
@@ -689,7 +675,7 @@ motion:
 fancybox: true
 
 # Progress bar in the top during page loading.
-pace: true
+pace: false
 # Themes list:
 #pace-theme-big-counter
 #pace-theme-bounce
