@@ -1,37 +1,778 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="RNN," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="这是一篇译文,原文地址.如果英文可以,建议直接看英文. 循环神经网络(Recurrent Neural Networks)在我们思考时,我们不会从头开始,肯定会在思考时加入之前的知识.就如同当你在阅读当前的博客时,你读的每个单词都是基于前面的单词.你不会扔掉所有的东西,然后在从头开始.你的想法有持久性.传统的神经网络不能使用之前信息.假设你使用传统神经网络来将一部电影中的正在发生的事件分类,怎么使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Understanding LSTM Networks">
+<meta property="og:url" content="https://lightnine/github.io/Understanding-LSTM-Networks.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="这是一篇译文,原文地址.如果英文可以,建议直接看英文. 循环神经网络(Recurrent Neural Networks)在我们思考时,我们不会从头开始,肯定会在思考时加入之前的知识.就如同当你在阅读当前的博客时,你读的每个单词都是基于前面的单词.你不会扔掉所有的东西,然后在从头开始.你的想法有持久性.传统的神经网络不能使用之前信息.假设你使用传统神经网络来将一部电影中的正在发生的事件分类,怎么使">
+<meta property="og:locale">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/RNN-rolled.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/RNN-unrolled.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/RNN-shorttermdepdencies.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/RNN-longtermdependencies.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-SimpleRNN.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-chain.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM2-notation.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-C-line.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-gate.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-focus-f.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-focus-i.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-focus-C.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-focus-o.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-var-peepholes.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-var-tied.png">
+<meta property="og:image" content="https://lightnine/Understanding-LSTM-Networks/LSTM3-var-GRU.png">
+<meta property="article:published_time" content="2018-07-17T03:22:56.000Z">
+<meta property="article:modified_time" content="2023-12-04T03:11:40.899Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="RNN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lightnine/Understanding-LSTM-Networks/RNN-rolled.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/Understanding-LSTM-Networks.html"/>
+
+
+
+
+
+  <title>Understanding LSTM Networks | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Understanding-LSTM-Networks.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Understanding LSTM Networks</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T11:22:56+08:00">
+                2018-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这是一篇译文,<a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">原文地址</a>.如果英文可以,建议直接看英文.</p>
+<h1 id="循环神经网络-Recurrent-Neural-Networks"><a href="#循环神经网络-Recurrent-Neural-Networks" class="headerlink" title="循环神经网络(Recurrent Neural Networks)"></a>循环神经网络(Recurrent Neural Networks)</h1><p>在我们思考时,我们不会从头开始,肯定会在思考时加入之前的知识.就如同当你在阅读当前的博客时,你读的每个单词都是基于前面的单词.你不会扔掉所有的东西,然后在从头开始.你的想法有持久性.<br>传统的神经网络不能使用之前信息.假设你使用传统神经网络来将一部电影中的正在发生的事件分类,怎么使用当前事件之前的信息是很困难的.<br>循环神经网络解决了这个问题,在其中有循环,允许信息能够保持.<br><img src="/Understanding-LSTM-Networks/RNN-rolled.png" class="" title="Recurrent Neural Networks have loops."><br>这个图看起来有点奇怪,我们可以将其展开,如下图所示<br><img src="/Understanding-LSTM-Networks/RNN-unrolled.png" class="" title="An unrolled recurrent neural network"><br>从图中可以看出,RNN使用了前一时刻的状态来预测当前的状态<br>RNN在很多领域都取得了成功,比如:语音识别,自然语言处理,翻译,图像字幕等等.这里Andrej Karpathy的<a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">blog</a>,里面列举了RNN一些应用.<br>本文主要介绍LSTM模型,LSTM模型是RNN的一种变种,在很多领域的表现都要比一般的RNN模型更好</p>
+<h1 id="长期依赖存在的问题-The-Problem-of-Long-Term-Dependencies"><a href="#长期依赖存在的问题-The-Problem-of-Long-Term-Dependencies" class="headerlink" title="长期依赖存在的问题(The Problem of Long-Term Dependencies)"></a>长期依赖存在的问题(The Problem of Long-Term Dependencies)</h1><p>加入我们要基于之前的单词预测下一个单词,如”the clouds are in the <em>sky</em>“,我们要预测最后一个单词sky.在这个例子中,我们不需要更多的上下文,很明显最后一个单词是sky.RNN针对这种情况有很好的表现.<br><img src="/Understanding-LSTM-Networks/RNN-shorttermdepdencies.png" class=""><br>但是在有些情况下,我们需要更多的上下文.例如,我们要预测”I grew up in France… I speak fluent <em>French</em>.”中的最后一个单词French.从最近的信息,比如speak fluent等,可以推测最后一个单词是一种语言.但是如果要知道具体的语言,我们需要更多的上下文.预测点和其对应的相关信息之间的差距很大是由很大可能的.<br>但是,不幸的是随着差距增加,RNN不可能学会如何连接这种信息<br><img src="/Understanding-LSTM-Networks/RNN-longtermdependencies.png" class=""><br>从图中可以看出$h_{t+1}$不能很好地利用$X_0$和$X_1$的信息.理论上,RNN能够学习到长期依赖,但是在实践中,要想在RNN中使用这些长期依赖很困难.幸运的是LSTM模型解决了这个问题.</p>
+<h1 id="LSTM网络-LSTM-Networks"><a href="#LSTM网络-LSTM-Networks" class="headerlink" title="LSTM网络(LSTM Networks)"></a>LSTM网络(LSTM Networks)</h1><p>LSTM全称Long Short Term Memory,长短期记忆网络.LSTM的设计就是为了避免长依赖问题,记忆长周期的信息是LSTM的默认行为.<br>所有的递归神经网络都具有重复模块的链式结构.在标准的RNN中,重复模块是一个非常简单的结构,例如单层tanh<br><img src="/Understanding-LSTM-Networks/LSTM3-SimpleRNN.png" class="" title="The repeating module in a standard RNN contains a single layer."><br>LSTM也有这种链式结构,但是重复的模块有一个不同的结构,在其中一个模块中,包含一个四层的神经网络,并且这四层以一种特别方式进行交互.<br><img src="/Understanding-LSTM-Networks/LSTM3-chain.png" class="" title="The repeating module in an LSTM contains four interacting layers."><br>图中的示例如下<br><img src="/Understanding-LSTM-Networks/LSTM2-notation.png" class=""><br>接下来我会详细介绍其中涉及的内容.</p>
+<h1 id="LSTMs中的核心思想-The-Core-Idea-Behind-LSTMs"><a href="#LSTMs中的核心思想-The-Core-Idea-Behind-LSTMs" class="headerlink" title="LSTMs中的核心思想(The Core Idea Behind LSTMs)"></a>LSTMs中的核心思想(The Core Idea Behind LSTMs)</h1><p>LSTMs中的核心是单元状态,在图中就是最上面的那条水平线.单元状态就像是一条输送带.单元状态沿着整个链流动,对其只有一些线性作用,信息的流动很容易.<br><img src="/Understanding-LSTM-Networks/LSTM3-C-line.png" class=""><br>LSTM能够移除或者添加信息到单元状态,并且由成为门的结构来控制.门可以选择性的让信息通过或不通过,它是由sigmoid神经网络层和点积操作组成.<br><img src="/Understanding-LSTM-Networks/LSTM3-gate.png" class=""><br>sigmoid层的输出范围0-1,描述了可以通过多少的信息.输出为0意味着什么都不通过,输出为1意味着都能通过.从LSTM的结构中,我们可以看到LSTM的一个重复模块包括三个这样的门.</p>
+<h1 id="一步一步认识LSTM"><a href="#一步一步认识LSTM" class="headerlink" title="一步一步认识LSTM"></a>一步一步认识LSTM</h1><p>LSTM的第一步就是决定从单元状态中丢弃哪些信息.这个决定是由一个称为”遗忘门(forget gate layer)”单层sigmoid层组成.它接收$h<em>{t-1}$和$x_t$作为输入,输出0到1之间的数字.对于前一个单元状态$C</em>{t-1}$,当遗忘门的输出为1时,表示完全保留$C<em>{t-1}$;当遗忘门的输出为0时,表示完全舍弃$C</em>{t-1}$.<br>我们在回到之前根据之前的内容来预测下一个单词这个问题.在这样的问题中,单元状态可能包括当前对象的性别,所以可以使用正确的代词.但是当遇到一个新的对象时,我们就想要忘记老对象的性别.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-f.png" class=""></p>
+<blockquote>
+<p>图中的$W<em>f \cdot [h</em>{t-1},x<em>t]$,大家看起来有些不清楚.个人认为比较合适的写法如下<br>$\sigma(W_fx_t + U_r h</em>{t-1} + b_f)$.大家可以参考下<a href="http://blog.echen.me/2017/05/30/exploring-lstms/">英文博客</a>,<a href="https://www.jiqizhixin.com/articles/2017-07-24-2">中文博客</a></p>
+</blockquote>
+<p>接下来这一步就是决定新信息中的哪些部分需要保存在单元状态中.这包括两个部分,第一部分是sigmoid层(input gate layer),决定更新的值.第二部分是一个tanh层,用来创建一个新的候选值.在下一步中,我们将会把这两个结合起来用来给单元状态做更新.在语言模型的例子中,这一步就代表我们将新对象的性别加入单元状态中,用来代替我们需要忘记的老对象性别.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-i.png" class=""><br>现在要把旧的单元状态$C_{t-1}$更新为$C_t$.上一步已经决定了更新的内容.我们把旧的单元状态乘以$f_t$,表示我们需要忘记的内容.然后将结果加上$i_t*\tilde{C_t}$,这表示将候选值进行缩放或者延伸.在语言模型的例子中,这表示我们从旧对象的性别中去除信息,然后加上新的信息.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-C.png" class=""><br>最终,我们需要决定输出的内容.输出内容基于单元状态,但是需要一些处理.首先,我们使用一个sigmoid层来决定单元状态的哪部分需要输出.然后,我们将单元状态经过tanh(将值限定在-1到1之间),在乘以sigmoid gate的输出.所以我们仅仅输出了我们决定的.<br>对于语言模型例子,因为网络之前看到了主语,所以接下来它可能想要输出的信息是关于动词的.例如,网络会根据主语的单数或复数来决定接下来动词的形式.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-o.png" class=""></p>
+<h1 id="长短期记忆模型的其他形式-Variants-on-Long-Short-Term-Memory"><a href="#长短期记忆模型的其他形式-Variants-on-Long-Short-Term-Memory" class="headerlink" title="长短期记忆模型的其他形式(Variants on Long Short Term Memory)"></a>长短期记忆模型的其他形式(Variants on Long Short Term Memory)</h1><p>上面提到的是LSTM的一般形式.但是还有好多LSTM的一些变形,虽然变化不大.其中一个流行的LSTM变形是由<a href="ftp://ftp.idsia.ch/pub/juergen/TimeCount-IJCNN2000.pdf">Gers &amp; Schmidhuber (2000)</a>提出.此模型添加了”peephole connections”,这意味着让门看到了单元状态.<br><img src="/Understanding-LSTM-Networks/LSTM3-var-peepholes.png" class=""><br>从图中可以看到模型对于所有的gate都添加了peepholes,但是有很多文章只添加了一些peepholes,而另一些则没有.</p>
+<p>LSTM另一种变形是将input gate和forget gate进行耦合.这种网络不会单独的决定哪些内容需要忘记,哪些新的信息需要添加,而是一起做这些决定.当我们将要输入内容时,我们仅仅忘记;当我们忘记旧的内容时,我们仅仅输入一些新的值.模型的结构如下<br><img src="/Understanding-LSTM-Networks/LSTM3-var-tied.png" class=""></p>
+<p>一种引入注意的LSTM变形是GRU(Gated Recurrent Unit),它将forget gate和input gate结合为一个单独的”update gate”.它同样融合了单元状态和隐藏状态以及一些其他的改变.GRU模型要比标准的LSTM模型简单,并且越来越流行.<br><img src="/Understanding-LSTM-Networks/LSTM3-var-GRU.png" class=""><br>这里仅仅列举了一些LSTM变形,还有很多其他的LSTM变形.比如Depth Gated RNNs by <a href="http://arxiv.org/pdf/1508.03790v2.pdf">Yao, et al. (2015)</a>.同时在解决长期依赖问题上,也有跟LSTM完全不同的方法,比如Clockwork RNNs by <a href="http://arxiv.org/pdf/1402.3511v1.pdf">Koutnik, et al. (2014)</a>.<br><a href="http://arxiv.org/pdf/1503.04069.pdf">Greff, et al. (2015)</a>对这些变形做了一个对比.<a href="http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf">Jozefowicz, et al. (2015)</a>测试很多的RNN结构,发现在一些特定的任务上比LSTM模型表现的更好的模型.</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">colah博客</a><br><a href="http://blog.echen.me/2017/05/30/exploring-lstms/">echen博客</a></p>
+<blockquote>
+<p>echen博客中公式介绍的较为详细</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RNN/" rel="tag"># RNN</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/python3%E5%AD%A6%E4%B9%A0.html" rel="next" title="python3学习">
+                <i class="fa fa-chevron-left"></i> python3学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html" rel="prev" title="docker常用命令">
+                docker常用命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-Recurrent-Neural-Networks"><span class="nav-number">1.</span> <span class="nav-text">循环神经网络(Recurrent Neural Networks)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%BF%E6%9C%9F%E4%BE%9D%E8%B5%96%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98-The-Problem-of-Long-Term-Dependencies"><span class="nav-number">2.</span> <span class="nav-text">长期依赖存在的问题(The Problem of Long-Term Dependencies)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LSTM%E7%BD%91%E7%BB%9C-LSTM-Networks"><span class="nav-number">3.</span> <span class="nav-text">LSTM网络(LSTM Networks)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LSTMs%E4%B8%AD%E7%9A%84%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3-The-Core-Idea-Behind-LSTMs"><span class="nav-number">4.</span> <span class="nav-text">LSTMs中的核心思想(The Core Idea Behind LSTMs)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E8%AE%A4%E8%AF%86LSTM"><span class="nav-number">5.</span> <span class="nav-text">一步一步认识LSTM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%85%B6%E4%BB%96%E5%BD%A2%E5%BC%8F-Variants-on-Long-Short-Term-Memory"><span class="nav-number">6.</span> <span class="nav-text">长短期记忆模型的其他形式(Variants on Long Short Term Memory)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

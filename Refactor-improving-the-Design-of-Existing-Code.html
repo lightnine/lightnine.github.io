@@ -1,37 +1,784 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="技术," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言Refactor-improving the Design of Existing Code(重构-改善既有代码的设计),这是Martin Fowler的一本书.主要是针对Java语言.书已经出版多年了,买这本书也有一年多了,但是一直只看了第一章.最近因为工作不是很忙,就拾起来读了.这里主要是记录下读这本书的一些感想以及收获.读这本书有个收获,重构不单单只是修改函数名称,重命名变量名称那么简单">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Refactor-improving the Design of Existing Code">
+<meta property="og:url" content="https://lightnine/github.io/Refactor-improving-the-Design-of-Existing-Code.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="前言Refactor-improving the Design of Existing Code(重构-改善既有代码的设计),这是Martin Fowler的一本书.主要是针对Java语言.书已经出版多年了,买这本书也有一年多了,但是一直只看了第一章.最近因为工作不是很忙,就拾起来读了.这里主要是记录下读这本书的一些感想以及收获.读这本书有个收获,重构不单单只是修改函数名称,重命名变量名称那么简单">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-06-23T07:18:53.000Z">
+<meta property="article:modified_time" content="2023-12-04T03:11:40.899Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="技术">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/Refactor-improving-the-Design-of-Existing-Code.html"/>
+
+
+
+
+
+  <title>Refactor-improving the Design of Existing Code | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Refactor-improving-the-Design-of-Existing-Code.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Refactor-improving the Design of Existing Code</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-23T15:18:53+08:00">
+                2018-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">读书笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Refactor-improving the Design of Existing Code(重构-改善既有代码的设计),这是Martin Fowler的一本书.主要是针对Java语言.书已经出版多年了,买这本书也有一年多了,但是一直只看了第一章.最近因为工作不是很忙,就拾起来读了.这里主要是记录下读这本书的一些感想以及收获.<br>读这本书有个收获,重构不单单只是修改函数名称,重命名变量名称那么简单.比如进行类的分解,将合适的函数放置在合适的类中.而这些都需要我们在平常的编程活动中去实践.<br>什么时候进行重构呢?当遇到几个方面时,可以考虑进行重构.发现当为函数添加新功能时,并不能很好的添加进去,这时候我们可以进行重构;当写完功能时,我们也可以考虑重构.总之,重构并不是开发过程中必须要通过的一个过程,就像编译-链接等.你可以随时进行重构.</p>
+<h2 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h2><p>我们在平时编程的时候,不可能一次性的就把问题或者程序写的完美无缺,除非我们已经非常熟知某个问题或者某个领域,即使非常熟悉,可能还有我们没有发现的提升之处.那么当我们的程序写的不完美的时候,我们怎么办呢?这时候就可以采用重构的方法来小步快跑的提升我们程序的易读性,优化程序的结构.而这本书给我们提供了如何进行重构的一系列方法.<br>整个开发流程:<br>开发—-&gt; 测试 —-&gt; 重构 —-&gt; 测试</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在我们重构之前,一定要有合适的测试.在Java中,我们经常用的就是Junit和TestNG了.其中Junit主要是用来做单元测试,而TestNG主要是功能测试或者集成测试.如果我们是开发人员,可能使用Junit比较多,不过TestNG一般也会用到.在我们重构完成之后,一定要跑测试用例,跑通了所有的测试用例,这项重构才算是完成.</p>
+<h3 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h3><ol>
+<li>重复代码<br> 遇到相同的程序结构,应该想办法将它们合二为一,这样程序会变得更好</li>
+<li>过长函数<br>函数的代码行数不宜过长,并且函数的命名应该体现出函数做了什么而不是表明怎么做</li>
+<li>过大的类<br>当类过大时,我们可以采取Extract class 或者Extract Subclass来减小类的大小</li>
+<li>过长的参数列<br>将函数的参数可以用对象来进行传递</li>
+<li>发散式变化<br>如果某个类经常因为不同的原因在不同的方向上发生变化,那么这个类就产生了发散式变化.理想情况是针对外界的某一个变化产生的所有相应修改,都应该发生在单一类中.采用 <strong>Extract Class</strong>将因为特定原因造成的所有变化提炼到另一个类中</li>
+<li>霰弹式修改<br>如果遇到某种变化,都必须在许多不同的类内做出许多小修改,那么就产生了霰弹式修改.遇到这种情况,应该使用<strong>Move Method</strong>和<strong>Move Field</strong>将所有的修改集中在一个类中.<br>发散式修改是指”一个类受多种变化的影响”,而霰弹式修改是指”一种变化引发多个类的相应修改”.理想情况是外界变化与需要修改的类趋于一一对应.</li>
+<li>依恋情结<br>函数对某个类的兴趣高过对自己所处类的兴趣.这时候我们应该将此函数移动到此函数对应的类中.</li>
+<li>数据泥团<br>两个类中相同的字段,许多函数签名中相同的参数.这些总是绑定在一起出现的数据应该拥有属于它们的对象</li>
+<li>基本类型偏执<br>我们有时候可以用对象来替代基本类型,比如当表示由一个起始值和一个结束值组成的range类,一个币种的money类.我们可以创建对应的小对象.</li>
+<li>switch惊悚现身<br>在面向对象程序中尽量少用switch语句,因为switch容易造成重复.而且修改switch条件时,需要找到所有的switch来进行修改</li>
+<li>平行继承体系</li>
+<li>冗余类<br>消除没有用的类</li>
+<li>夸夸其谈未来性</li>
+<li>令人迷惑的暂时字段</li>
+<li>过度耦合的消息链</li>
+<li>中间人<br>不要过度使用委托</li>
+<li>狎昵关系</li>
+<li>异曲同工的类</li>
+<li>不完美的类库</li>
+<li>过多的注释</li>
+</ol>
+<h3 id="重构方法"><a href="#重构方法" class="headerlink" title="重构方法"></a>重构方法</h3><blockquote>
+<p>这里仅仅记录了部分的重构方法</p>
+</blockquote>
+<ol>
+<li>提取方法<br>在重构中有一个很核心的动作就是将代码提取为一个单独的方法.这种方式其实也杜绝了重复代码的出现,能够在我们修改代码的时候只需要修改一处就可以.并且能够在多个地方使用</li>
+<li>将注释提取为方法<br>理想的程序就是代码完全能够表达自己,当我们在程序中看到注释或者添加注释的时候,我们可以先思考下能否将注释下的代码提取为一个方法,并且方法的函数名称能够体现注释的内容,方法名称要体现程序做了什么而不是怎么做.</li>
+<li>明确类的职责<br>类的职责不宜过于多,不宜过于复杂.如果看到一个类承担的职责很多,我们可以考虑是否可以将此类拆分,将不属于其应该承担的责任提取到一个新的类中.然后在源类中通过引用来使用新类中的字段或方法</li>
+<li>用查询来代替变量<br>就是在我们使用变量时,我们应该采用计算变量的方法来替代此变量.其实对于这一做法,我是抱有怀疑态度的,因为这造成了函数运行多次.会造成性能下降,但是书中说性能优化属于优化阶段的工作,而且这样重构会为优化阶段带来很好的铺垫.这个我觉得还是主要看平时我们的工作中需要具体情况具体分析.不能尽信书,什么东西都需要我们自己的独立思考</li>
+<li>以卫语句取代嵌套条件表达式<br>条件表达式的两种形式:1.所有分支都属于正常分支;2.只有一种是正常行为,其他都是不正常行为.针对情况1,建议使用if…else结构;针对情况2,使用if进行判断,然后直接返回结果.这样子处理能够提高程序清晰度</li>
+<li>封装集合<br>当我们在类中有个字段是集合时,我们的返回函数不应该直接返回集合自身,而是应该返回集合的只读副本.另外,不应该为这整个集合提供一个设值函数,应该提供为集合添加,删除元素的函数.</li>
+<li>分解条件表达式<br>将复杂的条件表达式分解为较简单的表达式,可是试着尝试将if段落以及else then等提炼为单独的函数</li>
+<li>合并条件表达式<br>如果发现检查条件各不相同,但是最终的行为一致.应该使用逻辑与和逻辑或合并为一个条件表示式</li>
+<li>引入参数对象<br>可以使用对象来替换函数中的众多参数.比如,遇到数据范围的,参数是一个开始时间,结束时间,那么可以新建一个日期范围类,其中的开始时间和结束时间不能修改.用此类来替换开始时间和结束时间.这样做的好处是可以缩短参数列表.</li>
+<li>移除设置函数<br>如果类中的某个字段在对象创建之后不能修改,那么就不提供设置函数,并且将此字段设为<strong>final</strong></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag"># 技术</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition.html" rel="next" title="CS231n Convolutional Neural Networks for Visual Recognition">
+                <i class="fa fa-chevron-left"></i> CS231n Convolutional Neural Networks for Visual Recognition
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/python3%E5%AD%A6%E4%B9%A0.html" rel="prev" title="python3学习">
+                python3学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">重构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">2.1.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%9A%84%E5%9D%8F%E5%91%B3%E9%81%93"><span class="nav-number">2.2.</span> <span class="nav-text">代码的坏味道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%9E%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">重构方法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,37 +1,779 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,操作系统," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="最近半个月读完了《linux鸟哥私房菜》这本书，其实在研究生的时候这本书已经读过一遍，这次拿出来读，主要是巩固熟悉一下linux操作系统的相关概念。  这本书整体来说对于初学者还是比较合适的。但是里面也有错误，同时书排版的方式有些地方有些问题，但是这些问题都不是很大。通过阅读这本书，对于linux的了解还是比较深度一些的。如果想要更深入的了解linux，可以看看《Unix &amp; Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux鸟哥私房菜收获">
+<meta property="og:url" content="https://lightnine/github.io/linux%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C%E6%94%B6%E8%8E%B7.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="最近半个月读完了《linux鸟哥私房菜》这本书，其实在研究生的时候这本书已经读过一遍，这次拿出来读，主要是巩固熟悉一下linux操作系统的相关概念。  这本书整体来说对于初学者还是比较合适的。但是里面也有错误，同时书排版的方式有些地方有些问题，但是这些问题都不是很大。通过阅读这本书，对于linux的了解还是比较深度一些的。如果想要更深入的了解linux，可以看看《Unix &amp; Linux">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-08-30T01:26:35.000Z">
+<meta property="article:modified_time" content="2023-12-04T03:11:40.910Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/linux鸟哥私房菜收获.html"/>
+
+
+
+
+
+  <title>linux鸟哥私房菜收获 | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/linux%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C%E6%94%B6%E8%8E%B7.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux鸟哥私房菜收获</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T09:26:35+08:00">
+                2018-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>最近半个月读完了《linux鸟哥私房菜》这本书，其实在研究生的时候这本书已经读过一遍，这次拿出来读，主要是巩固熟悉一下linux操作系统的相关概念。</p>
+</blockquote>
+<p>这本书整体来说对于初学者还是比较合适的。但是里面也有错误，同时书排版的方式有些地方有些问题，但是这些问题都不是很大。通过阅读这本书，对于linux的了解还是比较深度一些的。如果想要更深入的了解linux，可以看看《Unix &amp; Linux大学教程》这本书，这本书对于命令的介绍和使用会更加深入些。</p>
+<h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><p>操作系统是硬件和在操作系统上面运行软件的一个中间层。当然这里面包括了很多的内容，包括如何管理硬盘，内存，CPU等等一系列内容。所以一个操作系统要包括以下内容：文件系统，内存管理，网络管理，进程线程管理等等。下面主要聊一聊读了《linux鸟哥私房菜》的一些获得内容。</p>
+<h2 id="linux命令"><a href="#linux命令" class="headerlink" title="linux命令"></a>linux命令</h2><p>在linux中更常用的还是命令行命令，由于在我们平时的工作中，使用linux主要是作为服务器，而服务器基本上是不提供X Window的。所以掌握linux命令就变得很重要。在linux下面的命令，我们要学会使用帮助文档，即如下获取命令的详细使用说明，其实就是软件程序的使用说明。</p>
+<h3 id="命令帮助"><a href="#命令帮助" class="headerlink" title="命令帮助"></a>命令帮助</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">man [<span class="built_in">command</span>]</span><br><span class="line">[<span class="built_in">command</span>] --<span class="built_in">help</span>(-h)</span><br></pre></td></tr></table></figure>
+<p>man的输出内容主要包括以下内容：<br>NAME：简短的命令，数据名称说明<br>SYNOPSIS：简短的命令执行语法简介<br>DESCRIPTION：较为完整的说明<br>OPTIONS：针对SYNOPSIS部分，所有可用的选项说明<br>COMMANDS:当这个程序在执行的时候，可以在此程序中执行的命令<br>FILES：这个程序所使用或参考或连接到的某些文件<br>SEE ALSO：这个命令有相关的其他说明<br>EXAMPLE：一些可以参考的使用例子<br>BUGS：是否有错误</p>
+<h3 id="命令分类"><a href="#命令分类" class="headerlink" title="命令分类"></a>命令分类</h3><p>因为在linux中命令太多了，我们不可能全部都记住的，但是一些常用的还是需要记忆一下的，这样至少我们在使用linux的时候可以能够操作。还有就是我们在使用命令的时候，可以稍微联想一下这个命令对应的英文单词，这样子能够帮助我们进行记忆。比如cd(change directory),mv(move),rm(remove)等等。而且linux下的很多命令在其他的软件中都有相同的意思。比如在docker操作中，<code>docker rm</code>也是代表的删除等意思。其实外国人这些简写都是根据相对应的单词而来。当然我这里仅仅列举了较少的一些命令，更多的命令大家还是多多使用linux进行探索吧。</p>
+<h4 id="文件与目录相关管理命令"><a href="#文件与目录相关管理命令" class="headerlink" title="文件与目录相关管理命令"></a>文件与目录相关管理命令</h4><p>这部分命令主要是如何新建文件，目录；如何复制，移动文件；如何查看文件，目录等等。常用的命令如下，具体的使用规则可以使用帮助进行查看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>:切换目录；<span class="built_in">ls</span>:列出目录和文件；<span class="built_in">cp</span>:复制；</span><br><span class="line"><span class="built_in">rm</span>：删除；<span class="built_in">mv</span>：移动；<span class="built_in">touch</span>：创建文件；</span><br><span class="line"><span class="built_in">mkdir</span>：创建文件夹；<span class="built_in">cat</span>：查看文件内容；more：查看文件内容（每次输出一页）；</span><br><span class="line">less:查看文件内容（可以往前翻页）</span><br></pre></td></tr></table></figure>
+<h4 id="磁盘和文件系统管理"><a href="#磁盘和文件系统管理" class="headerlink" title="磁盘和文件系统管理"></a>磁盘和文件系统管理</h4><p>对于文件系统，大家可以找本关于操作系统原理的书好好了解一下。了解常规的文件系统对于理解分布式文件系统会比较有帮助。文件系统在我们开发的过程中是很重要的，特别是现在容器话，集群化。在linux文件系统中mount(挂载点)的含义，日志系统如何记录文件的操作，inode等等。常用命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df:查看磁盘整体的情况；</span><br><span class="line">du：查看某一个目录的容量情况；</span><br><span class="line">mount：挂载某一个文件系统；</span><br><span class="line">ln：创建连接文件（有点类似于windows的快捷方式，但是分为软连接和硬连接）</span><br></pre></td></tr></table></figure>
+<h4 id="文件和文件系统的压缩和打包"><a href="#文件和文件系统的压缩和打包" class="headerlink" title="文件和文件系统的压缩和打包"></a>文件和文件系统的压缩和打包</h4><p>在平时我们linux的过程中，tar命令是一个经常出现的命令，掌握tar命令的使用很关键。因为tar命令不光能够打包文件，同时还能够解压文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar:打包文件；</span><br><span class="line">gzip:压缩文件；bzip2：压缩文件；</span><br><span class="line">dump：备份工具</span><br></pre></td></tr></table></figure>
+<p>tar命令能够压缩文件是因为这个命令支持gzip和bzip2软件。对于tar命令我们要掌握以下常用的命令<br><strong>压缩</strong>：<code>tar -jcv -f filename.tar.bz2 被压缩的文件或目录名称</code><br><strong>查询</strong>：<code>tar -jtv -f filename.tar.bz2</code>,可以查看文件内的内容<br><strong>解压缩</strong>：<code>tar -jxv -f filename.tar.bz2 -C 被解压缩的目录</code></p>
+<h4 id="其他常用命令"><a href="#其他常用命令" class="headerlink" title="其他常用命令"></a>其他常用命令</h4><p>其他常用的命令，比如管道和数据重定向等等，如果我们需要编写shell脚本，这些命令会非常有用。在linux中掌握shell脚本是很重要的，shell脚本能够帮助我们做一些自动化的事情，代替手工作业。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grep:匹配文件；<span class="built_in">sort</span>：排序；</span><br><span class="line"><span class="built_in">wc</span>：计数，比如统计文件内行数；<span class="built_in">history</span>：查看历史命令</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在linux的学习中，更重要的还是要多用。关记忆这些命令是没有用的，在我们用linux的命令的过程中，仔细想想每个命令的用法，同时加深自己对于这些命令背后的原理以及linux系统本身的原理的理解，相信能够完全掌握linux的使用的</p>
+</blockquote>
+<h2 id="权限理解"><a href="#权限理解" class="headerlink" title="权限理解"></a>权限理解</h2><p>因为linux是支持多用户的，即多个人可以同时登陆一台linux系统上的。所以权限管理就变得非常重要。如果不考虑特殊权限的，文件和目录的权限主要分为三种，分别为可读(r)、可写(w)、可执行(x)，对应的数字分别为4,2,1。<br>对于文件，这三个权限比较好理解。那么对于目录呢？<br><strong>目录可读</strong>：你可以查询改目录下的文件名数据，即可以利用ls这个命令将目录下的内容列表显示出来。<br><strong>目录可写</strong>：表示你具有更改该目录结构列表的权限，即在该目录下新建文件和目录；删除已经存在的文件与目录（不论文件的权限如何）；将已经存在的文件或目录进行重命名；转移该目录内的文件，目录位置。<br><strong>目录可执行</strong>：目录的x代表用户能否进入该目录成为工作目录的用途。能不能进入某个目录只与该目录的x权限有关。同时如果没有某个目录的x权限，是无法执行该目录下的任何命令。</p>
+<p>常用命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span>:改变文件权限；<span class="built_in">chown</span>：改变文件所有者；<span class="built_in">chgrp</span>：改变文件所属用户组</span><br></pre></td></tr></table></figure>
+<h2 id="linux常用目录介绍"><a href="#linux常用目录介绍" class="headerlink" title="linux常用目录介绍"></a>linux常用目录介绍</h2><p>在linux中，目录的用途是有具体的规范的，即FHS标准。这个规范的目的就是系统让用户可以了解已安装软件通常放置与哪个目录下。大家在平时的使用过程中最好是遵循这些规范。<br>FHS主要定义了三层目录，分别如下：<br><strong>/(root,根目录)</strong>:与开机系统有关<br><strong>/usr(UNIX software resource)</strong>:与软件安装/执行有关，可以看到usr是UNIX软件资源的缩写<br><strong>/var(variable)</strong>:与系统运作过程有关</p>
+<h3 id="根目录分类"><a href="#根目录分类" class="headerlink" title="根目录分类"></a>根目录分类</h3><p>根目录一般情况下会有这些目录，目录的含义如下：<br><strong>/bin</strong>:主要放置在单用户维护模式下还能使用的命令，可以被root和一般用户使用，主要由cat，chmod，chown，date，mv，mkdir，cp，bash等<br><strong>/boot</strong>:开机会用到的文件，包括内核文件和开机的配置文件<br><strong>/dev</strong>:因为linux中所有的内容都是文件，而任何设备和接口设备都是以文件的形式存在于这个目录中。<br><strong>/etc</strong>:系统主要的配置文件。例如用户的账户密码，各种服务的起始文件等。<br><strong>/home</strong>:系统默认的用户主文件夹<br><strong>/lib</strong>:开机时会用到的函数库，以及在/bin,/sbin下面的命令会调用的函数库。<br><strong>/media</strong>:可删除的设备，包括软盘，光盘，DVD等<br><strong>/mnt</strong>:如果暂时挂载某些额外的设备，一般建议放置在这个目录中<br><strong>/opt</strong>:给第三方软件放置的目录<br><strong>/root</strong>:系统管理员的主文件夹<br><strong>/sbin</strong>:主要是开机过程中需要的，包括开机、修复、还原系统所需要的命令<br><strong>/srv(service的缩写)</strong>:一些网络服务启动之后，这些网络服务需要取用数据的目录。如WWW服务需要的网页数据就可以放置在/srv/www中<br><strong>/tmp</strong>:放置临时文件的目录，重要一般不建议放在这个目录里，因为这个目录会定时清理<br><strong>/proc</strong>:这个目录下的数据都在内存中，如系统的内核，进程，外部设备，网络状态等。</p>
+<h3 id="usr下目录"><a href="#usr下目录" class="headerlink" title="/usr下目录"></a>/usr下目录</h3><p><strong>/usr/bin/</strong>:绝大部分的用户可使用命令<br><strong>/usr/include/</strong>:C/C++等程序语言的头文件与包含文件放置处。<br><strong>/usr/lib/</strong>:包含应用软件的函数库、目标文件以及不被一般用户惯用的执行文件或脚本<br><strong>/usr/local/</strong>:系统管理员在本机自行安装自己下载的软件，一般安装在这个目录下<br><strong>/usr/sbin/</strong>:非系统正常运行所需要的系统命令<br><strong>/usr/share/</strong>:放置共享文件的地方<br><strong>/usr/src/</strong>:一般源码放置在这个目录下，而内核源码一般放在/usr/src/linux下</p>
+<h3 id="var-下目录"><a href="#var-下目录" class="headerlink" title="/var 下目录"></a>/var 下目录</h3><p><strong>/var/cache/</strong>:应用程序本身运行过程中会产生的一些暂存文件<br><strong>/var/lib/</strong>:程序本身执行的过程中，需要使用到的数据文件放置的目录，比如Mysql数据库放置在/var/lib/mysql,rpm数据库主要放到/var/lib/rpm下<br><strong>/var/log/</strong>：登录文件放置的目录，如/var/log/wtmp（记录登录者的信息）<br><strong>/var/mail/</strong>:放置个人邮箱的目录</p>
+<blockquote>
+<p>你有时候看到的linux系统目录可能不仅仅包括这些或者不存在其中的某些目录，这是因为linux系统版本，同时这也是个规范，有些linux开发厂商会依据这些规范做些修改。所以不一样也没有关系。</p>
+</blockquote>
+<p>总结：因为linux系统包括的内容太多了，这里我仅仅提到了linux系统下的冰山一角。比如如何关机，系统的等级，如何在线安装软件，如何离线安装软件，如何创建用户和用户组，SELinux等等内容。大家都可以通过这本书学到。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/docker%E4%B8%8Etensorflow%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8.html" rel="next" title="docker与tensorflow结合使用">
+                <i class="fa fa-chevron-left"></i> docker与tensorflow结合使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95.html" rel="prev" title="线性回归算法">
+                线性回归算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux%E5%91%BD%E4%BB%A4"><span class="nav-number">1.1.</span> <span class="nav-text">linux命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9"><span class="nav-number">1.1.1.</span> <span class="nav-text">命令帮助</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.2.</span> <span class="nav-text">命令分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8E%E7%9B%AE%E5%BD%95%E7%9B%B8%E5%85%B3%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">文件与目录相关管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%92%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">磁盘和文件系统管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%92%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%92%8C%E6%89%93%E5%8C%85"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">文件和文件系统的压缩和打包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">其他常用命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%90%86%E8%A7%A3"><span class="nav-number">1.2.</span> <span class="nav-text">权限理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux%E5%B8%B8%E7%94%A8%E7%9B%AE%E5%BD%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.3.</span> <span class="nav-text">linux常用目录介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E7%9B%AE%E5%BD%95%E5%88%86%E7%B1%BB"><span class="nav-number">1.3.1.</span> <span class="nav-text">根目录分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#usr%E4%B8%8B%E7%9B%AE%E5%BD%95"><span class="nav-number">1.3.2.</span> <span class="nav-text">&#x2F;usr下目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#var-%E4%B8%8B%E7%9B%AE%E5%BD%95"><span class="nav-number">1.3.3.</span> <span class="nav-text">&#x2F;var 下目录</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

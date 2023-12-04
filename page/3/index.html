@@ -1,23 +1,2235 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
 
-{% block page_class %}
-  {% if is_home() %}page-home{% endif -%}
-{% endblock %}
 
-{% block content %}
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="有困难就是一个字&quot;干&quot;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="个人博客">
+<meta property="og:url" content="https://lightnine/github.io/page/3/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="有困难就是一个字&quot;干&quot;">
+<meta property="og:locale">
+<meta property="article:author" content="liang">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/page/3/"/>
+
+
+
+
+
+  <title>个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
   <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/jupyter-notebook%E4%BD%BF%E7%94%A8.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/jupyter-notebook%E4%BD%BF%E7%94%A8.html" itemprop="url">jupyter notebook使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-15T23:33:18+08:00">
+                2018-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="jupyter-notebook"><a href="#jupyter-notebook" class="headerlink" title="jupyter notebook"></a>jupyter notebook</h1><p>Jupyter notebook, 前身是 IPython notebook, 它是一个非常灵活的工具，有助于帮助你构建很多可读的分析，你可以在里面同时保留代码，图片，评论，公式和绘制的图像。<br>这篇文章主要是记录下jupyter notebook使用过程中一些常用的内容和技巧，包括一些magic使用</p>
+<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>windows上，<strong>Ctrl + Shift + P</strong>可以调出快捷键的帮助信息，所有的快捷键都能够看到。掌握快捷键能够帮助我们更好的使用jupyter notebook</p>
+<h2 id="Jupyter-Magic-Commands"><a href="#Jupyter-Magic-Commands" class="headerlink" title="Jupyter Magic Commands"></a>Jupyter Magic Commands</h2><ol>
+<li>%matplotlib inline</li>
+</ol>
+<p>如果想在jupyter中画图，可以添加如下代码，则图像就能够进行显示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+<p>2. Timing</p>
+<p>对于计时有两个十分有用的魔法命令：%%time 和 %timeit. 如果你有些代码运行地十分缓慢，而你想确定是否问题出在这里，这两个命令将会非常方便。</p>
+<p><strong>%%time</strong> 将会给出cell的代码运行一次所花费的时间。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">%%time</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line">    time.sleep(<span class="number">0.01</span>)<span class="comment"># sleep for 0.01 seconds</span></span><br></pre></td></tr></table></figure>
+<p><strong>%timeit</strong> 使用Python的timeit模块，它将会执行一个语句100，000次(默认情况下)，然后给出运行最快3次的平均值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line">%timeit numpy.random.normal(size=<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="运行文件"><a href="#运行文件" class="headerlink" title="运行文件"></a>运行文件</h2>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Quartz%E4%B8%8ESpring%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Quartz%E4%B8%8ESpring%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE.html" itemprop="url">Quartz与Spring结合使用及集群配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-15T00:44:35+08:00">
+                2018-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Quartz与Spring结合使用及集群配置"><a href="#Quartz与Spring结合使用及集群配置" class="headerlink" title="Quartz与Spring结合使用及集群配置"></a>Quartz与Spring结合使用及集群配置</h1><p>本文的原文在我个人的<a href="https://blog.csdn.net/benjaminlee1/article/details/72993879">CSDN</a>上。是在2017年的时候由于工作上面需要用到在集群环境中使用调度，采用了Quartz实现，当时进行了记录。不过现在我写博客主要是在个人站点上，所以就把之前的博客部分搬移过来了。<br>本文代码<a href="https://github.com/lightnine/spring-quartz">github地址</a></p>
+<h2 id="quartz介绍"><a href="#quartz介绍" class="headerlink" title="quartz介绍"></a>quartz介绍</h2><p>quartz是进行任务调度执行的框架，相对于Java中线程池调度以及Spring自带注解的调度方法，有以下几个有点：</p>
+<ol>
+<li>能够支持上千上万个调度任务的执行 </li>
+<li>任务调度方式较为灵活 </li>
+<li>支持集群</li>
+</ol>
+<h2 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h2><ol>
+<li>quartz版本：2.2.1，这是quartz最新的版本，其他版本可能跟此版本有一定差异</li>
+<li>操作系统centos7,我在vmware中搭建了三台独立的虚拟机</li>
+<li>JDK8</li>
+<li>数据库：mysql 5.7.18</li>
+<li>tomcat8</li>
+</ol>
+<h2 id="工程目录结构"><a href="#工程目录结构" class="headerlink" title="工程目录结构"></a>工程目录结构</h2><p>工程目录结构如下，采用Idea IDE<br><img src="/Quartz%E4%B8%8ESpring%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" class="" title="工程目录结构"></p>
+<p>文件说明:<br>resources下是各种配置资源，create-schema.sql用于创建任务表，tables_mysql_innodb.sql用于创建quartz集群运行需要的表，共有十一张表。quartz_properties是quartz的配置</p>
+<h2 id="主要配置文件内容"><a href="#主要配置文件内容" class="headerlink" title="主要配置文件内容"></a>主要配置文件内容</h2><p>配置文件中都有每个配置项详细的说明，我这里就只给出具体的配置内容<br>spring配置文件有两个，分别为applicationContext.xml和spring-mvc.xml<br><strong>applicationContext.xml文件如下</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:aop</span>=<span class="string">&quot;http://www.springframework.org/schema/aop&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">    http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="string"><span class="tag">    http://www.springframework.org/schema/context/spring-context-3.0.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.ll.*&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 启用@Aspect支持 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 加载数据库配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">&quot;classpath:jdbc.properties&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 数据源 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span></span></span><br><span class="line"><span class="tag">          <span class="attr">destroy-method</span>=<span class="string">&quot;close&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClassName&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.driver&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.url&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.username&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.password&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;initialSize&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.initialSize&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;maxActive&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.maxActive&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;maxIdle&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.minIdle&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;maxWait&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.maxWait&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.core.JdbcTemplate&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">&quot;dataSource&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;fetchSize&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.jdbcTemplate.fetchSize&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 访问数据库方式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;jdbcDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.dexcoder.dal.spring.JdbcDaoImpl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;jdbcTemplate&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置quartz调度器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;scheduler&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.scheduling.quartz.SchedulerFactoryBean&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;overwriteExistingJobs&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--必须的，QuartzScheduler 延时启动，应用启动完后 QuartzScheduler 再启动 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;startupDelay&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 设置自动启动 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;autoStartup&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 把spring上下 文以key/value的方式存放在了quartz的上下文中了 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;applicationContextSchedulerContextKey&quot;</span> <span class="attr">value</span>=<span class="string">&quot;applicationContext&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- scheduler的名称 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;schedulerName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;ClusterScheduler&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;configLocation&quot;</span> <span class="attr">value</span>=<span class="string">&quot;classpath:quartz.properties&quot;</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!--         &lt;property name=&quot;quartzProperties&quot;&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--             &lt;props&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.scheduler.instanceName&quot;&gt;ClusterScheduler&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.scheduler.instanceId&quot;&gt;AUTO&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 线程池配置 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.threadPool.class&quot;&gt;org.quartz.simpl.SimpleThreadPool&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.threadPool.threadCount&quot;&gt;20&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.threadPool.threadPriority&quot;&gt;5&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 JobStore 配置 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.class&quot;&gt;org.quartz.impl.jdbcjobstore.JobStoreTX&lt;/prop&gt; --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--                 集群配置 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.isClustered&quot;&gt;true&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.clusterCheckinInterval&quot;&gt;15000&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.maxMisfiresToHandleAtATime&quot;&gt;1&lt;/prop&gt; --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.misfireThreshold&quot;&gt;120000&lt;/prop&gt; --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.tablePrefix&quot;&gt;QRTZ_&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--             &lt;/props&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--         &lt;/property&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>spring-mvc.xml内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">        http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="string"><span class="tag">        http://www.springframework.org/schema/context/spring-context-3.0.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.ll.*&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">&quot;org.springframework.web.servlet.view.ContentNegotiatingViewResolver&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;order&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;ignoreAcceptHeader&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;mediaTypes&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">map</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">&quot;json&quot;</span> <span class="attr">value</span>=<span class="string">&quot;application/json;charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">&quot;xml&quot;</span> <span class="attr">value</span>=<span class="string">&quot;application/xml;charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">&quot;rss&quot;</span> <span class="attr">value</span>=<span class="string">&quot;application/rss+xml;charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">map</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;defaultViews&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;velocityConfig&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">&quot;org.springframework.web.servlet.view.velocity.VelocityConfigurer&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;resourceLoaderPath&quot;</span> <span class="attr">value</span>=<span class="string">&quot;/WEB-INF&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;configLocation&quot;</span> <span class="attr">value</span>=<span class="string">&quot;classpath:velocity.properties&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;viewResolver&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">&quot;org.springframework.web.servlet.view.velocity.VelocityViewResolver&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;property name=&quot;order&quot; value=&quot;2&quot;/&gt; --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;suffix&quot;</span> <span class="attr">value</span>=<span class="string">&quot;.vm&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;prefix&quot;</span> <span class="attr">value</span>=<span class="string">&quot;/&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;property name=&quot;exposeSpringMacroHelpers&quot; value=&quot;true&quot;/&gt; --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;property name=&quot;requestContextAttribute&quot; value=&quot;rc&quot;/&gt; --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;contentType&quot;</span> <span class="attr">value</span>=<span class="string">&quot;text/html;charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Quartz配置文件为quartz.properties,内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">#配置参数详解，查看http://haiziwoainixx.iteye.com/blog/1838055</span><br><span class="line">#============================================================================</span><br><span class="line"># Configure Main Scheduler Properties  </span><br><span class="line">#============================================================================</span><br><span class="line"># 可为任何值,用在jdbc jobstrore中来唯一标识实例，但是在所有集群中必须相同</span><br><span class="line">org.quartz.scheduler.instanceName: MyClusteredScheduler</span><br><span class="line">#AUTO即可，基于主机名和时间戳来产生实例ID</span><br><span class="line">#集群中的每一个实例都必须有一个唯一的&quot;instance id&quot;,应该有相同的&quot;scheduler instance name&quot;</span><br><span class="line">org.quartz.scheduler.instanceId: AUTO</span><br><span class="line">#禁用quartz软件更新</span><br><span class="line">org.quartz.scheduler.skipUpdateCheck: true</span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Configure ThreadPool  执行任务线程池配置</span><br><span class="line">#============================================================================</span><br><span class="line">#线程池类型，执行任务的线程</span><br><span class="line">org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool</span><br><span class="line">#线程数量</span><br><span class="line">org.quartz.threadPool.threadCount: 10</span><br><span class="line">#线程优先级</span><br><span class="line">org.quartz.threadPool.threadPriority: 5</span><br><span class="line">org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread = true </span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Configure JobStore  任务存储方式</span><br><span class="line">#============================================================================</span><br><span class="line"></span><br><span class="line">org.quartz.jobStore.misfireThreshold: 60000</span><br><span class="line">#可以设置两种属性，存储在内存的RAMJobStore和存储在数据库的JobStoreSupport</span><br><span class="line">#(包括JobStoreTX和JobStoreCMT两种实现JobStoreCMT是依赖于容器来进行事务的管理，而JobStoreTX是自己管理事务)</span><br><span class="line">#这里的属性为 JobStoreTX，将任务持久化到数据中。</span><br><span class="line">#因为集群中节点依赖于数据库来传播 Scheduler 实例的状态，你只能在使用 JDBC JobStore 时应用Quartz 集群。    </span><br><span class="line">#这意味着你必须使用 JobStoreTX 或是 JobStoreCMT 作为 Job 存储；你不能在集群中使用 RAMJobStore。</span><br><span class="line">org.quartz.jobStore.class=org.quartz.impl.jdbcjobstore.JobStoreTX</span><br><span class="line"></span><br><span class="line">#JobStoreSupport 使用一个驱动代理来操作 trigger 和 job 的数据存储</span><br><span class="line">org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.StdJDBCDelegate</span><br><span class="line">#若要设置为true，则将JobDataMaps中的值当作string</span><br><span class="line">org.quartz.jobStore.useProperties=false</span><br><span class="line">#对应下方的数据源配置，与spring结合不需要这个配置</span><br><span class="line">#org.quartz.jobStore.dataSource=myDS</span><br><span class="line">#org.quartz.jobStore.tablePrefix=QRTZ_</span><br><span class="line"></span><br><span class="line">#你就告诉了Scheduler实例要它参与到一个集群当中。这一属性会贯穿于调度框架的始终，用于修改集群环境中操作的默认行为。</span><br><span class="line">org.quartz.jobStore.isClustered=true</span><br><span class="line">#属性定义了Scheduler实例检入到数据库中的频率(单位：毫秒)。默认值是 15000 (即15 秒)。</span><br><span class="line">org.quartz.jobStore.clusterCheckinInterval = 20000</span><br><span class="line"></span><br><span class="line">#这是 JobStore 能处理的错过触发的 Trigger 的最大数量。</span><br><span class="line">#处理太多(超过两打) 很快会导致数据库表被锁定够长的时间，这样就妨碍了触发别的(还未错过触发) trigger 执行的性能。</span><br><span class="line">org.quartz.jobStore.maxMisfiresToHandleAtATime = 1</span><br><span class="line">org.quartz.jobStore.misfireThreshold = 120000</span><br><span class="line">org.quartz.jobStore.txIsolationLevelSerializable = false</span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Other Example Delegates 其他的数据库驱动管理委托类</span><br><span class="line">#============================================================================</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.DB2v6Delegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.DB2v7Delegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.DriverDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.HSQLDBDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.MSSQLDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.PointbaseDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.PostgreSQLDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.StdJDBCDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.WebLogicDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.oracle.OracleDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.oracle.WebLogicOracleDelegate</span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Configure Datasources  数据源配置，与spring结合不需要这个配置</span><br><span class="line">#============================================================================</span><br><span class="line"></span><br><span class="line">#org.quartz.dataSource.myDS.driver: com.mysql.jdbc.Driver</span><br><span class="line">#org.quartz.dataSource.myDS.URL: jdbc:mysql://localhost:3306/quartz</span><br><span class="line">#org.quartz.dataSource.myDS.user: root</span><br><span class="line">#org.quartz.dataSource.myDS.password: 123</span><br><span class="line">#org.quartz.dataSource.myDS.maxConnections: 5</span><br><span class="line">#org.quartz.dataSource.myDS.validationQuery: select 0</span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Configure Plugins</span><br><span class="line">#============================================================================</span><br><span class="line">#当事件的JVM终止后，在调度器上也将此事件终止</span><br><span class="line">#the shutdown-hook plugin catches the event of the JVM terminating, and calls shutdown on the scheduler.</span><br><span class="line">org.quartz.plugin.shutdownHook.class: org.quartz.plugins.management.ShutdownHookPlugin</span><br><span class="line">org.quartz.plugin.shutdownHook.cleanShutdown: true</span><br><span class="line"></span><br><span class="line">#记录trigger历史的日志插件</span><br><span class="line">#org.quartz.plugin.triggHistory.class: org.quartz.plugins.history.LoggingJobHistoryPlugin</span><br></pre></td></tr></table></figure>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>当按照此项目配置完成之后，将项目打包成war包，然后在一台centos下启动项目，添加任务，之后再另一台centos下也运行此war包。为了简单起见，这里添加的任务仅仅是输出任务的详细信息，并没有其他动作。在两台机器的catalina.out中可以看到输出的结果，可以看到任务可以负载均衡的运行在不同的机器上。</p>
+<blockquote>
+<p>如何动态的查看catalina.out中的内容，可以用tail -f来查看，能够实时看到文件的变化</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/python%E7%9F%A5%E8%AF%86%E7%82%B9.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/python%E7%9F%A5%E8%AF%86%E7%82%B9.html" itemprop="url">python知识点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-07T22:12:22+08:00">
+                2018-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>都是关于python3的内容</p>
+</blockquote>
+<h1 id="Python知识点"><a href="#Python知识点" class="headerlink" title="Python知识点"></a>Python知识点</h1><p>这里主要是记录下我平常编程中用到，但是不太清楚地知识点，仅仅作为一个记录使用</p>
+<h2 id="python基本类型"><a href="#python基本类型" class="headerlink" title="python基本类型"></a>python基本类型</h2><ol>
+<li>Number(数字)</li>
+<li>String(字符串)</li>
+<li>List(列表)</li>
+<li>Tuple(元组)</li>
+<li>Set(集合)</li>
+<li>Dictionary(字典)</li>
+</ol>
+<p>不可变数据：Number（数字）、String（字符串）、Tuple（元组）；<br>可变数据：List（列表）、Dictionary（字典）、Set（集合）。<br>使用type()可以查看变量的类型，用isinstance()也可以查看。区别：</p>
+<ul>
+<li>type()不会认为子类是一种父类类型</li>
+<li>isinstance()认为子类是一种父类类型</li>
+</ul>
+<p>如下代码所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>(<span class="title class_ inherited__">A</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">isinstance</span>(A(), A)  <span class="comment"># returns True</span></span><br><span class="line"><span class="built_in">type</span>(A()) == A      <span class="comment"># returns True</span></span><br><span class="line"><span class="built_in">isinstance</span>(B(), A)    <span class="comment"># returns True</span></span><br><span class="line"><span class="built_in">type</span>(B()) == A        <span class="comment"># returns False</span></span><br></pre></td></tr></table></figure>
+<h3 id="Number"><a href="#Number" class="headerlink" title="Number"></a>Number</h3><p>Python3中Number包括：int,float,bool,complex.注意只有一种整数类型int，表示长整型。</p>
+<h2 id="numpy相关"><a href="#numpy相关" class="headerlink" title="numpy相关"></a>numpy相关</h2><h3 id="维度问题"><a href="#维度问题" class="headerlink" title="维度问题"></a>维度问题</h3><p>注意下面的col_r1和col_r2的输出以及对应维度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>], [<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>], [<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>]])</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line">col_r1 = a[:, <span class="number">1</span>]</span><br><span class="line">col_r2 = a[:, <span class="number">1</span>:<span class="number">2</span>]</span><br><span class="line"><span class="built_in">print</span>(col_r1)</span><br><span class="line"><span class="built_in">print</span>(col_r1.shape)</span><br><span class="line"><span class="built_in">print</span>(col_r2)</span><br><span class="line"><span class="built_in">print</span>(col_r2.shape)</span><br></pre></td></tr></table></figure>
+<h3 id="numpy数组访问"><a href="#numpy数组访问" class="headerlink" title="numpy数组访问"></a>numpy数组访问</h3><p>注意这里使用数组索引来访问numpy数组。这里可以看成[[[0, 1, 2], [0, 1, 0]]]中(0,0),(1,1),(2,0)看成三对<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line"><span class="built_in">print</span>(a[[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]])  <span class="comment"># Prints &quot;[1 4 5]&quot;</span></span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>numpy中有mat和array，都可以用来表示多维数据。如果一个</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95.html" itemprop="url">线性回归算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T23:41:13+08:00">
+                2018-09-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="线性回归算法"><a href="#线性回归算法" class="headerlink" title="线性回归算法"></a>线性回归算法</h1><blockquote>
+<p>注：本文所有代码和数据均在个人github下<a href="https://github.com/lightnine/machine-learning/blob/master/src/regression/regression.py">click me</a></p>
+</blockquote>
+<p>回归算法一般是针对预测是连续的情况下，对于预测值是离散的，采用的算法是分类算法。线性回归算法包括很多种变形，这里提到的线性回归算法是其中的几种典型算法。在实际应用中，我们采用线性算法可以预测商品的价格，预测房子的房价等等，虽然线性回归算法比较简单，但是在实际中还是有很多的使用的。</p>
+<blockquote>
+<p>在机器学习中，我们要紧盯三件事情。第一，算法的损失函数；第二，采用什么求值算法求损失函数的最小值；第三，算法的评价指标</p>
+</blockquote>
+<h2 id="一般线性回归算法"><a href="#一般线性回归算法" class="headerlink" title="一般线性回归算法"></a>一般线性回归算法</h2><p>一般的线性回归又叫做最小二乘算法，最小二乘是因为算法的损失函数是最小二乘的，损失函数如下：</p>
+<script type="math/tex; mode=display">J(\theta)={\frac 12}\sum\limits_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^2 \tag {1.1}</script><p>其中$h_\theta(x^{(i)})$是算法针对数据的预测值，而$y^{(i)}$是数据的真实值，$m$表示训练数据的条数，而${\frac 12}$是为了此公式求导方便而加入的。而$\theta$是算法的参数，在这里就是线性回归的权重值。通过此公式我们可以得到，线性回归算法的损失函数就是针对每个样本计算预测值和真实值得差，然后将差求平方，之后将全体样本的差平方相加即得到损失函数。<br>针对损失函数，我们有两种算法可以求取损失函数的最小值。</p>
+<h3 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h3><p>梯度下降算法的一般形式：</p>
+<script type="math/tex; mode=display">\theta_j: = \theta_j - \alpha{\frac \partial  {\partial\theta_j}}J(\theta) \tag {1.2}</script><p>这里写的是梯度下降算法的标量形式。这个公式描述了梯度下降算法是如何更新算法的参数的，其中$\alpha$是参数的更新步长。可以看到这里的关键是如何求取损失函数关于参数j的偏导数。<br>将损失函数带入到梯度下降算法,即公式$(1.2)$中，并且求导，可以得到下式：</p>
+<script type="math/tex; mode=display">\theta_j:= \theta_j + \alpha{\sum_{i=1}^m (y^{(i)} - h_\theta(x^{(i)}))x_j^{(i)}} \tag {1.3}</script><p>我们重复的使用公式$(1.3)$直到达到收敛条件，即可以求得线性回归算法中的参数值。<br>从公式中，可以看到用真实值和预测值之间的差值来更新参数值，这种方式或者思想在很多的机器学习算法中可以看到，包括深度学习的后向传播算法。同时，可以看到每一次的迭代都要使用整个数据集。这种方式叫做批量梯度下降算法。还有一种方式可以求取$\theta$值，叫做随机梯度下降算法，算法如下：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.PNG" class="" title="随机梯度下降算法"><br>从中我们可以看到，随机梯度下降算法每次采用一个训练样本取更新所有的参数值，注意那里的(for every j)。当训练样本很多时，相比于批量梯度下降算法，随机梯度下降算法能够更快的更新算法的参数值，并且能够更快的逼近损失函数的最小值。</p>
+<h3 id="代数解"><a href="#代数解" class="headerlink" title="代数解"></a>代数解</h3><p>我们将损失函数用向量表示，如下所示：</p>
+<script type="math/tex; mode=display">J(\theta) = {\frac 12}(X\theta - \vec{y})^T(X\theta - \vec{y}) \tag{1.4}</script><p>公式中的$X$表示训练数据的矩阵。因为损失函数是凸二次函数，所以只有一个最小值，所以导数为0的点就是损失函数的最小值。<br>具体的推导过程如下(主要利用了矩阵的迹运算)：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0.PNG" class="" title="推导过程"><br>令导数等于0，从而得到：</p>
+<script type="math/tex; mode=display">\theta = (X^TX)^{(-1)}X^T\vec{y} \tag{1.5}</script><h3 id="回归模型的概率解释"><a href="#回归模型的概率解释" class="headerlink" title="回归模型的概率解释"></a>回归模型的概率解释</h3><p>大家想过没有，为什么在线性回归模型里面选择最小二乘作为损失函数？接下来从概率的角度来解释选择最小二乘作为损失函数的原因。<br>首先，假设目标变量和输入数据存入如下的关系：</p>
+<script type="math/tex; mode=display">y^{(i)} = \theta^Tx^{(i)} + \epsilon^{(i)} \tag{1.6}</script><p>这里的$\epsilon^{(i)}$是误差项，包括模型未考虑到影响目标变量的因素和随机噪声。<br>接下来假设，误差项相互独立同分布，并且服从高斯分布(即正态分布)</p>
+<blockquote>
+<p>为什么要假设误差项服从高斯分布? 第一是因为采用高斯分布，在数学上处理会比较简单；第二是因为根据中心极限定理，独立的随机变量的和，其总的影响接近高斯分布</p>
+</blockquote>
+<p>误差项的概率密度函数为：</p>
+<script type="math/tex; mode=display">p(\epsilon^{(i)}) = {\frac 1{\sqrt{2\pi}}}exp(-{\frac {(\epsilon^{(i)})^2} {2\sigma^2}}) \tag {1.7}</script><p>根据公式$(1.6)$和公式$(1.7)$,我们可以得出如下结论：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83.PNG" class="" title="概率分布"><br>在公式中，$\theta$不是随机变量，而是实际存在的值，虽然我们不知道真实值是多少。$p(y^{(i)}|x^{(i)};\theta)$的含义是给定$x^{(i)}$,参数设定为$\theta$时,<script type="math/tex">y^{(i)}</script>的概率密度。注意公式中用的分号。<br>数据的概率是由$p(\vec{y} | X;\theta)$给出的，而总的概率可以看成是在固定$\theta$时，关于$\vec{y}$的函数。换个角度，我们想要将这个函数明确的看成是关于$\theta$的函数，所以我们将其称作似然函数，从而我们得到关于$\theta$的似然函数：</p>
+<blockquote>
+<p>似然(likelihood)和概率(probability)实际上是一个东西，但是似然函数是对参数$\theta$定义的，为了加以区分，使用了似然这一术语。我们可以说参数的似然，数据的概率，但不能说数据的似然，参数的概率。</p>
+</blockquote>
+<script type="math/tex; mode=display">L(\theta) = L(\theta;X,\vec{y}) = p(\vec{y}|X;\theta)</script><p>极大似然估计就是选择$\theta$,使参数的似然函数最大化，也就是选择参数使得已有样本的出现概率最大。<br>因为$L(\theta)$是严格单调递增的，并且对数函数也是递增的，所以取对数，得到的$\theta$跟不取对象是一样的。<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0.PNG" class="" title="似然函数"><br>对数似然函数$\mathcal {l}(\theta)$:<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%AF%B9%E6%95%B0%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0.PNG" class="" title="对数似然函数"><br>最大化似然函数，就是最大化对数似然函数，即最小化</p>
+<script type="math/tex; mode=display">{\frac 12}{\sum\limits_{i=1}^{m}}(y^{(i)} - \theta^Tx^{(i)})^2</script><p>这个式子刚好是线性回归算法中采用的损失函数。总结一下，最小二乘回归模型刚好就是在假设了误差独立同服从正态分布后，得到的最大似然估计。同时注意到，正态分布中的方差$\sigma^2$的取值对模型并没有影响。</p>
+<h3 id="编程实现"><a href="#编程实现" class="headerlink" title="编程实现"></a>编程实现</h3><h4 id="代数解实现线性回归算法"><a href="#代数解实现线性回归算法" class="headerlink" title="代数解实现线性回归算法"></a>代数解实现线性回归算法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">standard_regression</span>(<span class="params">x_arr, y_arr</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    这里直接采用代数解直接求取权重大小.这里有个条件是xTx的逆必须存在,</span></span><br><span class="line"><span class="string">    如果不存在,则直接返回</span></span><br><span class="line"><span class="string">    :param x_arr:</span></span><br><span class="line"><span class="string">    :param y_arr:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    x_mat = np.mat(x_arr)</span><br><span class="line">    y_mat = np.mat(y_arr).T</span><br><span class="line">    xTx = x_mat.T * x_mat</span><br><span class="line">    <span class="keyword">if</span> np.linalg.det(xTx) == <span class="number">0.0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;矩阵是奇异的,逆不存在&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    ws = xTx.I * (x_mat.T * y_mat)</span><br><span class="line">    <span class="keyword">return</span> ws</span><br></pre></td></tr></table></figure>
+<p>根据<code>standard_regression</code>函数可以直接求取算法的权重。然后根据权重就可以求得数据的预测结果，这里选择的数据在<a href="https://github.com/lightnine/machine-learning/blob/master/src/regression/data/ex0.txt">点我</a><br>画出的图像如下：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%B5%8B%E8%AF%95.png" class="" title="测试"><br>直线为拟合直线，散点是真实值。</p>
+<h4 id="随机梯度下降实现线性回归"><a href="#随机梯度下降实现线性回归" class="headerlink" title="随机梯度下降实现线性回归"></a>随机梯度下降实现线性回归</h4><p>由于代码篇幅比较长，所以可以直接上我的github上面看。<a href="https://github.com/lightnine/machine-learning/blob/master/src/regression/regression_sgd.py">代码</a></p>
+<h2 id="局部加权线性回归算法"><a href="#局部加权线性回归算法" class="headerlink" title="局部加权线性回归算法"></a>局部加权线性回归算法</h2><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%B1%80%E9%83%A8%E5%8A%A0%E6%9D%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.PNG" class="" title="局部加权线性回归">
+<p>每个点都对应一个不同的$\theta$，利用$\theta$计算预测值。<br>下面我们用刚才介绍的局部加权线性回归来拟合一下这个模型，简单回顾一下过程：<br>1.用高斯核函数计算出第ｉ个样本处，其它所有样本点的权重Ｗ<br>2.用权重ｗ对第ｉ个样本作加权线性回归，得到回归方程，即拟合的直线方程<br>3.用刚才得到的经验回归直线计算出$x^i$处的估计值$y^i$<br>4.重复一至三步，得到每个样本点的估计值</p>
+<p>同时,从计算公式中，可以看到对于每个点的预测值，需要利用所有的数据样本进行计算。如果数据量比较大，计算量就会是一个大问题。<br>相比于上面提到线性回归算法(<strong>参数算法</strong>)，局部加权线性回归算法是<strong>非参数算法</strong>。</p>
+<h3 id="参数算法vs非参数算法"><a href="#参数算法vs非参数算法" class="headerlink" title="参数算法vs非参数算法"></a>参数算法vs非参数算法</h3><p>引用<a href="https://zhuanlan.zhihu.com/p/26012348">地址</a></p>
+<blockquote>
+<p>参数算法：<br>如果我们对所要学习的问题有足够的认识，具备一定的先验知识，此时我们一般会假定要学习的目标函数f(x)或分布P(y|x)的具体形式。然后，通过训练数据集，基于ERM、SRM、MLE、MAP等学习策略，可以估计出f(x)或P(y|x)中含有的未知参数。一旦未知参数估计完毕，训练数据一般来说，就失去其作用了，因为这些估计出来的参数就是训练数据的浓缩。通过这种方式建立起来的模型就是参数模型。参数模型的一个很重要的特点是，如果对于模型的假设正确，那么只需要很少的训练数据就可以从假设空间中学出一个很好的模型。但是，如果模型的假设错误，那么无论训练的数据量有多大，甚至趋于无穷大，学出的模型都会与实际模型出现不可磨灭的偏差。感知机、逻辑斯特回归、高斯判别分析、朴素贝叶斯、线性支持向量机都属于参数模型。对于神经网络来说，当固定了隐层的数目以及每一层神经元的个数，它也属于参数模型。但由于隐层数目与每一层神经元个数的不确定性，很多时候，神经网络都被归类为半参数模型。<br>非参数算法：<br>当我们对所要学习的问题知之甚少，此时我们一般不会对潜在的模型做过多的假设。在面对预测任务的时候，我们通常会用上所有的训练数据。例如简单的核密度估计(KDE)的表达式中，就带有所有训练数据的信息。通过这种方式建立的模型就是非参数模型。非参数模型的一个很重要的特点就是：let the data speak for itself. 正因为如此，非参数模型的存储开销、计算开销都会比参数模型大的多。但是，由于不存在模型的错误假定问题，可以证明，当训练数据量趋于无穷大的时候，非参数模型可以逼近任意复杂的真实模型。这正是非参数模型诱人的一点。另外需要说明的一点是，非参数模型之所以叫做非参数，并不是因为模型中没有参数。实际上，非参数模型中一般会含有一个或多个超参数，外加无穷多个普通的参数。k近邻就是典型的非参数模型。</p>
+</blockquote>
+<p>总结就是所谓参数学习算法它有固定的明确的参数，参数 一旦确定，就不会改变了，我们不需要在保留训练集中的训练样本。而非参数学习算法，每进行一次预测，就需要重新学习一组 ， 是变化的，所以需要一直保留训练样本。</p>
+<h3 id="实际使用"><a href="#实际使用" class="headerlink" title="实际使用"></a>实际使用</h3><p>这里采用的数据跟线性回归算法采用的相同。选取不同的k值，得到的拟合曲线如下图：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%B1%80%E9%83%A8%E5%8A%A0%E6%9D%83%E5%9B%9E%E5%BD%92%E6%8B%9F%E5%90%88.png" class="" title="不同k值对于拟合曲线的影响"><br>从图中可以看到，当k值较小时，对于训练数据有很好的拟合效果；当k值较大时(比如取1)，对于训练数据拟合的效果不是很好。当然这都是针对训练数据，在实际使用中，我们更关注的是对于测试数据的效果如何。在实际中，我们可以将数据进行十倍交叉验证，选择最合适的k值。<br>从高斯公式中，我们从两个方面看。首先，我们固定k值，那么距离$x^{(i)}$较远的样本，其对应的权重相对较小；距离$x^{(i)}$较近的样本，其对应的权重相对较大，当x取$x^{(i)}$时，对应的权重为1。而如果我们固定x(即只看某一特定样本点)，k取值较大时，此样本点对应的权重相对较大；k取值较小时，此样本点对应的权重相对较大。所以k可以控制算法选择$x^{(i)}$点附近有多少样本参与计算。<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/k%E5%80%BC%E7%9A%84%E5%BD%B1%E5%93%8D.PNG" class="" title="k值的影响"><br>最上面的图是样本点，剩下三幅图都是针对样本点x=0.5,根据不同的k值，画出的x附近样本的权重变化。可以看到，当k取0.5时，当计算x=0.5时的预测值时，几乎所有的样本点都包括了；而当k=0.01时，仅仅取了x=0.5附近的点参与计算。如果k值取无穷大，那么w对于所有的点的权重都是1，那么局部加权线性回归就变成了普通的线性回归算法。</p>
+<h2 id="岭回归算法-Ridge-Regression"><a href="#岭回归算法-Ridge-Regression" class="headerlink" title="岭回归算法(Ridge Regression)"></a>岭回归算法(Ridge Regression)</h2><p>上面介绍的线性回归算法里面可以看到需要计算$X^TX$的逆，那么如果逆不存在呢？首先思考第一个问题，什么情况下，$X^TX$的逆不存在呢？</p>
+<ol>
+<li>X本身存在相关关系，即非满秩矩阵。比如其中两列是具有线性关系</li>
+<li>如果特征列多余样本数量，那么$X^TX$也是非满秩的。</li>
+</ol>
+<p>对于逆不存在的情况下，我们需要将原来的线性回归算法进行处理，使原先无法求逆的$X^TX$变成非奇异的。可以通过缩减的方式来处理这类问题，比如岭回归算法和LASSO算法。同时由于能够调整算法中权重的大小，能够防止线性回归算法的过拟合问题。</p>
+<h3 id="岭回归算法损失函数"><a href="#岭回归算法损失函数" class="headerlink" title="岭回归算法损失函数"></a>岭回归算法损失函数</h3><script type="math/tex; mode=display">f(w) = {\sum\limits_{i=1}^m{(y_i - x_i^Tw})^2} + \lambda{\sum\limits_{i=1}^n{w_i^2}}</script><p>通过改变$\lambda$的值，可以使得算法的方差和偏差之间达到平衡，增加$\lambda$,模型的方差减小而偏差增加。<br>对损失函数求取一阶导数，并另导数等于0，求得权重如下式：</p>
+<script type="math/tex; mode=display">\hat{w} = (X^TX + \lambda{I})^{(-1)}X^TY</script><p>在岭回归算法中$\lambda$的选择对于算法有很大的影响。下图展示了不同的$\lambda$的取值对于权重的影响，因为数据有八个特征，所以这里有八个权重。当$\lambda$较小时，权重的值跟采用常规的线性回归差不多；而当$\lambda$较大时，权重的值都会被调解的较小。<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%B2%AD%E5%9B%9E%E5%BD%92.png" class="" title="lambda值与权重的关系"><br>为了找到合适的$\lambda$值，我们在实践中往往会采用交叉测试来找到合适的$\lambda$值。</p>
+<h2 id="lasso回归算法-Least-Absolute-Shrinkage-and-Selection-Operator"><a href="#lasso回归算法-Least-Absolute-Shrinkage-and-Selection-Operator" class="headerlink" title="lasso回归算法(Least Absolute Shrinkage and Selection Operator)"></a>lasso回归算法(Least Absolute Shrinkage and Selection Operator)</h2><p>从岭回归算法中，我们可以看到，算法防止过拟合主要是在损失函数中添加惩罚项。在岭回归中，惩罚项如下所示:</p>
+<script type="math/tex; mode=display">{\sum\limits_{k=1}^n{w_k^2}} <= \lambda</script><p>而在lasso回归算法中，惩罚项变成下式：</p>
+<script type="math/tex; mode=display">{\sum\limits_{k=1}^n{|w_k|}} <= \lambda</script><p>即将权重的平方和小于$\lambda$，替换为权重的绝对值和小于$\lambda$.进行了这个变化后，能够将权重缩小到0，而岭回归中无法将权重值缩小到0，只能接近0.</p>
+<h3 id="lasso回归算法损失函数"><a href="#lasso回归算法损失函数" class="headerlink" title="lasso回归算法损失函数"></a>lasso回归算法损失函数</h3><script type="math/tex; mode=display">f(w) = {\sum\limits_{i=1}^m{(y_i - x_i^Tw})^2} + \lambda{\sum\limits_{i=1}^n{|w_i|}}</script><blockquote>
+<p>我们也可以结合岭回归算法和lasso的损失函数，构建新的损失函数。这就是弹性网络(ElasticNet)</p>
+</blockquote>
+<h3 id="逐步向前回归"><a href="#逐步向前回归" class="headerlink" title="逐步向前回归"></a>逐步向前回归</h3><p>LASSO计算复杂度相对较高，本部分稍微介绍一下逐步向前回归，他属于一种贪心算法，给定初始系数向量，然后不断迭代遍历每个系数，增加或减小一个很小的数，看看代价函数是否变小，如果变小就保留，如果变大就舍弃，然后不断迭代直到回归系数达到稳定。代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">run_stage</span>():</span><br><span class="line">    x_arr, y_arr = load_data_set(<span class="string">&#x27;./data/abalone.txt&#x27;</span>)</span><br><span class="line">    all_w_001 = stage_wise(x_arr, y_arr, <span class="number">0.001</span>, <span class="number">5000</span>)</span><br><span class="line">    <span class="built_in">print</span>(all_w_001)</span><br><span class="line">    all_w_01 = stage_wise(x_arr, y_arr, <span class="number">0.01</span>, <span class="number">200</span>)</span><br><span class="line">    <span class="built_in">print</span>(all_w_01)</span><br><span class="line">  </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">stage_wise</span>(<span class="params">x_arr, y_arr, eps=<span class="number">0.01</span>, num_iter=<span class="number">100</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    forward stagewise regression算法（前向梯度算法）</span></span><br><span class="line"><span class="string">    是一种近似的 lasso算法</span></span><br><span class="line"><span class="string">    :param x_arr:</span></span><br><span class="line"><span class="string">    :param y_arr:</span></span><br><span class="line"><span class="string">    :param eps:每次特征权重的变化步长</span></span><br><span class="line"><span class="string">    :param num_iter: 迭代次数</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    x_mat = np.mat(x_arr)</span><br><span class="line">    y_mat = np.mat(y_arr).T</span><br><span class="line">    y_mean = np.mean(y_mat, <span class="number">0</span>)</span><br><span class="line">    y_mat = y_mat - y_mean</span><br><span class="line">    x_mean = np.mean(x_mat, <span class="number">0</span>)</span><br><span class="line">    x_var = np.var(x_mat, <span class="number">0</span>)</span><br><span class="line">    x_mat = (x_mat - x_mean) / x_var</span><br><span class="line">    m, n = np.shape(x_mat)</span><br><span class="line">    ws = np.zeros((n, <span class="number">1</span>))</span><br><span class="line">    ws_best = ws.copy()</span><br><span class="line">    return_mat = np.zeros((num_iter, n))  <span class="comment"># 保存每次迭代最好的权重值</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_iter):</span><br><span class="line">        <span class="comment"># print(ws.T)</span></span><br><span class="line">        lowest_error = np.inf</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">for</span> sign <span class="keyword">in</span> [-<span class="number">1</span>, <span class="number">1</span>]:</span><br><span class="line">                ws_test = ws.copy()</span><br><span class="line">                ws_test[j] += eps * sign</span><br><span class="line">                y_test = x_mat * ws_test</span><br><span class="line">                rss_err = rss_error(y_mat.A, y_test.A)  <span class="comment"># 将矩阵转为数组</span></span><br><span class="line">                <span class="keyword">if</span> rss_err &lt; lowest_error:</span><br><span class="line">                    lowest_error = rss_err</span><br><span class="line">                    ws_best = ws_test</span><br><span class="line">        ws = ws_best.copy()</span><br><span class="line">        return_mat[i, :] = ws.T</span><br><span class="line">    <span class="keyword">return</span> return_mat</span><br></pre></td></tr></table></figure>
+<p>逐步回归算法的主要有点在于他可以帮助人们理解现有的模型并作出改进。当构建了一个模型后，可以运行逐步回归算法找出重要的特征，即使停止那些不重要特征的收集。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上面提到的这些线性回归算法，我们应该怎么选择呢？一般来说有一点正则项的表现更好，因此通常你应该避免使用简单的线性回归。岭回归是一个很好的首选项，但是如果你的特征仅有少数是真正有用的，你应该选择Lasso和弹性网络。就像我们讨论的那样，它两能够将无用特征的权重降为零。一般来说，弹性网络的表现要比Lasso好，因为当特征数量比样例的数量大的时候，或者特征之间有很强的相关性时，Lasso可能会表现的不规律。</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
+<li>《吴恩达cs229 课程讲义》</li>
+<li>《机器学习实战》</li>
+<li><a href="https://segmentfault.com/a/1190000015172330">机器学习实战_线性回归&amp;逻辑回归（二）</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/linux%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C%E6%94%B6%E8%8E%B7.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/linux%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C%E6%94%B6%E8%8E%B7.html" itemprop="url">linux鸟哥私房菜收获</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T09:26:35+08:00">
+                2018-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>最近半个月读完了《linux鸟哥私房菜》这本书，其实在研究生的时候这本书已经读过一遍，这次拿出来读，主要是巩固熟悉一下linux操作系统的相关概念。</p>
+</blockquote>
+<p>这本书整体来说对于初学者还是比较合适的。但是里面也有错误，同时书排版的方式有些地方有些问题，但是这些问题都不是很大。通过阅读这本书，对于linux的了解还是比较深度一些的。如果想要更深入的了解linux，可以看看《Unix &amp; Linux大学教程》这本书，这本书对于命令的介绍和使用会更加深入些。</p>
+<h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><p>操作系统是硬件和在操作系统上面运行软件的一个中间层。当然这里面包括了很多的内容，包括如何管理硬盘，内存，CPU等等一系列内容。所以一个操作系统要包括以下内容：文件系统，内存管理，网络管理，进程线程管理等等。下面主要聊一聊读了《linux鸟哥私房菜》的一些获得内容。</p>
+<h2 id="linux命令"><a href="#linux命令" class="headerlink" title="linux命令"></a>linux命令</h2><p>在linux中更常用的还是命令行命令，由于在我们平时的工作中，使用linux主要是作为服务器，而服务器基本上是不提供X Window的。所以掌握linux命令就变得很重要。在linux下面的命令，我们要学会使用帮助文档，即如下获取命令的详细使用说明，其实就是软件程序的使用说明。</p>
+<h3 id="命令帮助"><a href="#命令帮助" class="headerlink" title="命令帮助"></a>命令帮助</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">man [<span class="built_in">command</span>]</span><br><span class="line">[<span class="built_in">command</span>] --<span class="built_in">help</span>(-h)</span><br></pre></td></tr></table></figure>
+<p>man的输出内容主要包括以下内容：<br>NAME：简短的命令，数据名称说明<br>SYNOPSIS：简短的命令执行语法简介<br>DESCRIPTION：较为完整的说明<br>OPTIONS：针对SYNOPSIS部分，所有可用的选项说明<br>COMMANDS:当这个程序在执行的时候，可以在此程序中执行的命令<br>FILES：这个程序所使用或参考或连接到的某些文件<br>SEE ALSO：这个命令有相关的其他说明<br>EXAMPLE：一些可以参考的使用例子<br>BUGS：是否有错误</p>
+<h3 id="命令分类"><a href="#命令分类" class="headerlink" title="命令分类"></a>命令分类</h3><p>因为在linux中命令太多了，我们不可能全部都记住的，但是一些常用的还是需要记忆一下的，这样至少我们在使用linux的时候可以能够操作。还有就是我们在使用命令的时候，可以稍微联想一下这个命令对应的英文单词，这样子能够帮助我们进行记忆。比如cd(change directory),mv(move),rm(remove)等等。而且linux下的很多命令在其他的软件中都有相同的意思。比如在docker操作中，<code>docker rm</code>也是代表的删除等意思。其实外国人这些简写都是根据相对应的单词而来。当然我这里仅仅列举了较少的一些命令，更多的命令大家还是多多使用linux进行探索吧。</p>
+<h4 id="文件与目录相关管理命令"><a href="#文件与目录相关管理命令" class="headerlink" title="文件与目录相关管理命令"></a>文件与目录相关管理命令</h4><p>这部分命令主要是如何新建文件，目录；如何复制，移动文件；如何查看文件，目录等等。常用的命令如下，具体的使用规则可以使用帮助进行查看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>:切换目录；<span class="built_in">ls</span>:列出目录和文件；<span class="built_in">cp</span>:复制；</span><br><span class="line"><span class="built_in">rm</span>：删除；<span class="built_in">mv</span>：移动；<span class="built_in">touch</span>：创建文件；</span><br><span class="line"><span class="built_in">mkdir</span>：创建文件夹；<span class="built_in">cat</span>：查看文件内容；more：查看文件内容（每次输出一页）；</span><br><span class="line">less:查看文件内容（可以往前翻页）</span><br></pre></td></tr></table></figure>
+<h4 id="磁盘和文件系统管理"><a href="#磁盘和文件系统管理" class="headerlink" title="磁盘和文件系统管理"></a>磁盘和文件系统管理</h4><p>对于文件系统，大家可以找本关于操作系统原理的书好好了解一下。了解常规的文件系统对于理解分布式文件系统会比较有帮助。文件系统在我们开发的过程中是很重要的，特别是现在容器话，集群化。在linux文件系统中mount(挂载点)的含义，日志系统如何记录文件的操作，inode等等。常用命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df:查看磁盘整体的情况；</span><br><span class="line">du：查看某一个目录的容量情况；</span><br><span class="line">mount：挂载某一个文件系统；</span><br><span class="line">ln：创建连接文件（有点类似于windows的快捷方式，但是分为软连接和硬连接）</span><br></pre></td></tr></table></figure>
+<h4 id="文件和文件系统的压缩和打包"><a href="#文件和文件系统的压缩和打包" class="headerlink" title="文件和文件系统的压缩和打包"></a>文件和文件系统的压缩和打包</h4><p>在平时我们linux的过程中，tar命令是一个经常出现的命令，掌握tar命令的使用很关键。因为tar命令不光能够打包文件，同时还能够解压文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar:打包文件；</span><br><span class="line">gzip:压缩文件；bzip2：压缩文件；</span><br><span class="line">dump：备份工具</span><br></pre></td></tr></table></figure>
+<p>tar命令能够压缩文件是因为这个命令支持gzip和bzip2软件。对于tar命令我们要掌握以下常用的命令<br><strong>压缩</strong>：<code>tar -jcv -f filename.tar.bz2 被压缩的文件或目录名称</code><br><strong>查询</strong>：<code>tar -jtv -f filename.tar.bz2</code>,可以查看文件内的内容<br><strong>解压缩</strong>：<code>tar -jxv -f filename.tar.bz2 -C 被解压缩的目录</code></p>
+<h4 id="其他常用命令"><a href="#其他常用命令" class="headerlink" title="其他常用命令"></a>其他常用命令</h4><p>其他常用的命令，比如管道和数据重定向等等，如果我们需要编写shell脚本，这些命令会非常有用。在linux中掌握shell脚本是很重要的，shell脚本能够帮助我们做一些自动化的事情，代替手工作业。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grep:匹配文件；<span class="built_in">sort</span>：排序；</span><br><span class="line"><span class="built_in">wc</span>：计数，比如统计文件内行数；<span class="built_in">history</span>：查看历史命令</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在linux的学习中，更重要的还是要多用。关记忆这些命令是没有用的，在我们用linux的命令的过程中，仔细想想每个命令的用法，同时加深自己对于这些命令背后的原理以及linux系统本身的原理的理解，相信能够完全掌握linux的使用的</p>
+</blockquote>
+<h2 id="权限理解"><a href="#权限理解" class="headerlink" title="权限理解"></a>权限理解</h2><p>因为linux是支持多用户的，即多个人可以同时登陆一台linux系统上的。所以权限管理就变得非常重要。如果不考虑特殊权限的，文件和目录的权限主要分为三种，分别为可读(r)、可写(w)、可执行(x)，对应的数字分别为4,2,1。<br>对于文件，这三个权限比较好理解。那么对于目录呢？<br><strong>目录可读</strong>：你可以查询改目录下的文件名数据，即可以利用ls这个命令将目录下的内容列表显示出来。<br><strong>目录可写</strong>：表示你具有更改该目录结构列表的权限，即在该目录下新建文件和目录；删除已经存在的文件与目录（不论文件的权限如何）；将已经存在的文件或目录进行重命名；转移该目录内的文件，目录位置。<br><strong>目录可执行</strong>：目录的x代表用户能否进入该目录成为工作目录的用途。能不能进入某个目录只与该目录的x权限有关。同时如果没有某个目录的x权限，是无法执行该目录下的任何命令。</p>
+<p>常用命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span>:改变文件权限；<span class="built_in">chown</span>：改变文件所有者；<span class="built_in">chgrp</span>：改变文件所属用户组</span><br></pre></td></tr></table></figure>
+<h2 id="linux常用目录介绍"><a href="#linux常用目录介绍" class="headerlink" title="linux常用目录介绍"></a>linux常用目录介绍</h2><p>在linux中，目录的用途是有具体的规范的，即FHS标准。这个规范的目的就是系统让用户可以了解已安装软件通常放置与哪个目录下。大家在平时的使用过程中最好是遵循这些规范。<br>FHS主要定义了三层目录，分别如下：<br><strong>/(root,根目录)</strong>:与开机系统有关<br><strong>/usr(UNIX software resource)</strong>:与软件安装/执行有关，可以看到usr是UNIX软件资源的缩写<br><strong>/var(variable)</strong>:与系统运作过程有关</p>
+<h3 id="根目录分类"><a href="#根目录分类" class="headerlink" title="根目录分类"></a>根目录分类</h3><p>根目录一般情况下会有这些目录，目录的含义如下：<br><strong>/bin</strong>:主要放置在单用户维护模式下还能使用的命令，可以被root和一般用户使用，主要由cat，chmod，chown，date，mv，mkdir，cp，bash等<br><strong>/boot</strong>:开机会用到的文件，包括内核文件和开机的配置文件<br><strong>/dev</strong>:因为linux中所有的内容都是文件，而任何设备和接口设备都是以文件的形式存在于这个目录中。<br><strong>/etc</strong>:系统主要的配置文件。例如用户的账户密码，各种服务的起始文件等。<br><strong>/home</strong>:系统默认的用户主文件夹<br><strong>/lib</strong>:开机时会用到的函数库，以及在/bin,/sbin下面的命令会调用的函数库。<br><strong>/media</strong>:可删除的设备，包括软盘，光盘，DVD等<br><strong>/mnt</strong>:如果暂时挂载某些额外的设备，一般建议放置在这个目录中<br><strong>/opt</strong>:给第三方软件放置的目录<br><strong>/root</strong>:系统管理员的主文件夹<br><strong>/sbin</strong>:主要是开机过程中需要的，包括开机、修复、还原系统所需要的命令<br><strong>/srv(service的缩写)</strong>:一些网络服务启动之后，这些网络服务需要取用数据的目录。如WWW服务需要的网页数据就可以放置在/srv/www中<br><strong>/tmp</strong>:放置临时文件的目录，重要一般不建议放在这个目录里，因为这个目录会定时清理<br><strong>/proc</strong>:这个目录下的数据都在内存中，如系统的内核，进程，外部设备，网络状态等。</p>
+<h3 id="usr下目录"><a href="#usr下目录" class="headerlink" title="/usr下目录"></a>/usr下目录</h3><p><strong>/usr/bin/</strong>:绝大部分的用户可使用命令<br><strong>/usr/include/</strong>:C/C++等程序语言的头文件与包含文件放置处。<br><strong>/usr/lib/</strong>:包含应用软件的函数库、目标文件以及不被一般用户惯用的执行文件或脚本<br><strong>/usr/local/</strong>:系统管理员在本机自行安装自己下载的软件，一般安装在这个目录下<br><strong>/usr/sbin/</strong>:非系统正常运行所需要的系统命令<br><strong>/usr/share/</strong>:放置共享文件的地方<br><strong>/usr/src/</strong>:一般源码放置在这个目录下，而内核源码一般放在/usr/src/linux下</p>
+<h3 id="var-下目录"><a href="#var-下目录" class="headerlink" title="/var 下目录"></a>/var 下目录</h3><p><strong>/var/cache/</strong>:应用程序本身运行过程中会产生的一些暂存文件<br><strong>/var/lib/</strong>:程序本身执行的过程中，需要使用到的数据文件放置的目录，比如Mysql数据库放置在/var/lib/mysql,rpm数据库主要放到/var/lib/rpm下<br><strong>/var/log/</strong>：登录文件放置的目录，如/var/log/wtmp（记录登录者的信息）<br><strong>/var/mail/</strong>:放置个人邮箱的目录</p>
+<blockquote>
+<p>你有时候看到的linux系统目录可能不仅仅包括这些或者不存在其中的某些目录，这是因为linux系统版本，同时这也是个规范，有些linux开发厂商会依据这些规范做些修改。所以不一样也没有关系。</p>
+</blockquote>
+<p>总结：因为linux系统包括的内容太多了，这里我仅仅提到了linux系统下的冰山一角。比如如何关机，系统的等级，如何在线安装软件，如何离线安装软件，如何创建用户和用户组，SELinux等等内容。大家都可以通过这本书学到。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/docker%E4%B8%8Etensorflow%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/docker%E4%B8%8Etensorflow%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8.html" itemprop="url">docker与tensorflow结合使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T22:03:08+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近这段时间一直在学习docker的使用,以及如何在docker中使用tensorflow.今天就把在docker中如何使用tensorflow记录一下.</p>
+<h1 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h1><p>我是把docker安装在centos 7.4操作系统上面,在vmware中装的centos,vmware中安装centos很简单.具体的网络配置可以参考<a href="https://segmentfault.com/a/1190000008743806">vmware nat配置</a>.docker安装很简单,找到docker官网,直接按照上面的步骤安装即可.运行<code>docker version</code>查看版本如下</p>
+<img src="/docker%E4%B8%8Etensorflow%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8/docker-version.png" class="">
+<p>因为docker 采用的是客户端/服务端的结构,所以这里可以看到client以及server,它们分别都有版本号.</p>
+<h1 id="tensorflow"><a href="#tensorflow" class="headerlink" title="tensorflow"></a>tensorflow</h1><p>在docker中运行tensorflow的第一步就是要找到自己需要的镜像,我们可以去<a href="https://hub.docker.com">docker hub</a>找到自己需要的tensorflow镜像.tensorflow的镜像主要分两类,一种是在CPU上面跑的,还有一种是在GPU上面跑的,如果需要GPU的,那么还需要安装<strong>nvidia-docker</strong>.这里我使用的是CPU版本的.当然我们还需要选择具体的tensorflow版本.这里我拉取的命令如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull tensorflow/tensorflow:1.9.0-devel-py3</span><br></pre></td></tr></table></figure>
+<p>拉取成功之后,运行<code>docker images</code>可以看到有tensorflow镜像.</p>
+<h1 id="tensorflow在docker中使用"><a href="#tensorflow在docker中使用" class="headerlink" title="tensorflow在docker中使用"></a>tensorflow在docker中使用</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -p 8888:8888 --name tf-1.9 tensorflow/tensorflow:1.9.0-devel-py3</span><br></pre></td></tr></table></figure>
+<p>运行上面的命令,在容器中启动镜像.<code>-p</code>表示指定端口映射,即将本机的8888端口映射到容器的8888端口.<code>--name</code>用来指定容器的名字为<code>tf-1.9</code>.因为这里采用的镜像是devel模式的,所以默认不启动jupyter.如果想使用默认启动jupyter的镜像,那么直接拉取不带devel的镜像就可以.即拉取最近的镜像<code>docker pull tensorflow/tensorflow</code><br>启动之后,我们就进入了容器,<code>ls /</code> 查看容器根目录内容,可以看到有<code>run_jupyter.sh</code>文件.运行此文件,即在根目录下执行<code>./run_jupyter.sh --allow-root</code>,<code>--allow-root</code>参数是因为jupyter启动不推荐使用root,这里是主动允许使用root.然后在浏览器中就可以访问jupyter的内容了.<br><img src="/docker%E4%B8%8Etensorflow%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8/jupyter.png" class=""></p>
+<h1 id="创建自己的镜像"><a href="#创建自己的镜像" class="headerlink" title="创建自己的镜像"></a>创建自己的镜像</h1><p>上面仅仅是跑了一个什么都没有的镜像,如果我们需要在镜像里面跑我们的深度学习程序怎么办呢?这首先做的第一步就是要制作我们自己的镜像.这里我们跑一个简单的mnist数据集,程序可以直接去tensorflow上面找一个例子程序.这里我的程序如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Copyright 2015 The TensorFlow Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"><span class="comment"># ==============================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;Simple, end-to-end, LeNet-5-like convolutional MNIST model example.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">This should achieve a test error of 0.7%. Please keep this model as simple and</span></span><br><span class="line"><span class="string">linear as possible, it is meant as a tutorial for simple convolutional models.</span></span><br><span class="line"><span class="string">Run with --self_test on the command line to execute a short self-test.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> gzip</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"><span class="keyword">from</span> six.moves <span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">from</span> six.moves <span class="keyword">import</span> xrange  <span class="comment"># pylint: disable=redefined-builtin</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="comment"># CVDF mirror of http://yann.lecun.com/exdb/mnist/</span></span><br><span class="line"><span class="comment"># 如果WORK_DIRECTORY中没有需要的数据,则从此地址下载数据</span></span><br><span class="line">SOURCE_URL = <span class="string">&#x27;https://storage.googleapis.com/cvdf-datasets/mnist/&#x27;</span></span><br><span class="line"><span class="comment"># 训练数据位置</span></span><br><span class="line"><span class="comment"># WORK_DIRECTORY = &#x27;data&#x27;</span></span><br><span class="line">WORK_DIRECTORY = <span class="string">&#x27;./MNIST-data&#x27;</span></span><br><span class="line">IMAGE_SIZE = <span class="number">28</span></span><br><span class="line">NUM_CHANNELS = <span class="number">1</span></span><br><span class="line">PIXEL_DEPTH = <span class="number">255</span></span><br><span class="line">NUM_LABELS = <span class="number">10</span></span><br><span class="line">VALIDATION_SIZE = <span class="number">5000</span>  <span class="comment"># Size of the validation set.</span></span><br><span class="line">SEED = <span class="number">66478</span>  <span class="comment"># Set to None for random seed.</span></span><br><span class="line">BATCH_SIZE = <span class="number">64</span></span><br><span class="line">NUM_EPOCHS = <span class="number">10</span></span><br><span class="line">EVAL_BATCH_SIZE = <span class="number">64</span></span><br><span class="line">EVAL_FREQUENCY = <span class="number">100</span>  <span class="comment"># Number of steps between evaluations.</span></span><br><span class="line"></span><br><span class="line">FLAGS = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印信息设置</span></span><br><span class="line"><span class="comment"># logging.basicConfig(format=&#x27;%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s&#x27;,</span></span><br><span class="line"><span class="comment">#                     level=logging.DEBUG)</span></span><br><span class="line">logging.basicConfig(level=logging.DEBUG,  <span class="comment"># 控制台打印的日志级别</span></span><br><span class="line">                    filename=<span class="string">&#x27;cnn_mnist.log&#x27;</span>,</span><br><span class="line">                    filemode=<span class="string">&#x27;a&#x27;</span>,  <span class="comment"># 模式，有w和a，w就是写模式，每次都会重新写日志，覆盖之前的日志</span></span><br><span class="line">                    <span class="comment"># a是追加模式，默认如果不写的话，就是追加模式</span></span><br><span class="line">                    <span class="built_in">format</span>=</span><br><span class="line">                    <span class="string">&#x27;%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s&#x27;</span></span><br><span class="line">                    <span class="comment"># 日志格式</span></span><br><span class="line">                    )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">data_type</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Return the type of the activations, weights, and placeholder variables.&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> FLAGS.use_fp16:</span><br><span class="line">        <span class="keyword">return</span> tf.float16</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> tf.float32</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">maybe_download</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Download the data from Yann&#x27;s website, unless it&#x27;s already here.&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tf.gfile.Exists(WORK_DIRECTORY):</span><br><span class="line">        tf.gfile.MakeDirs(WORK_DIRECTORY)</span><br><span class="line">    filepath = os.path.join(WORK_DIRECTORY, filename)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tf.gfile.Exists(filepath):</span><br><span class="line">        filepath, _ = urllib.request.urlretrieve(SOURCE_URL + filename, filepath)</span><br><span class="line">        <span class="keyword">with</span> tf.gfile.GFile(filepath) <span class="keyword">as</span> f:</span><br><span class="line">            size = f.size()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Successfully downloaded&#x27;</span>, filename, size, <span class="string">&#x27;bytes.&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> filepath</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_data</span>(<span class="params">filename, num_images</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Extract the images into a 4D tensor [image index, y, x, channels].</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Values are rescaled from [0, 255] down to [-0.5, 0.5].</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    logging.info(<span class="string">&#x27;Extracting&#x27;</span> + filename)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Extracting&#x27;</span>, filename)</span><br><span class="line">    <span class="keyword">with</span> gzip.<span class="built_in">open</span>(filename) <span class="keyword">as</span> bytestream:</span><br><span class="line">        bytestream.read(<span class="number">16</span>)</span><br><span class="line">        buf = bytestream.read(IMAGE_SIZE * IMAGE_SIZE * num_images * NUM_CHANNELS)</span><br><span class="line">        data = numpy.frombuffer(buf, dtype=numpy.uint8).astype(numpy.float32)</span><br><span class="line">        data = (data - (PIXEL_DEPTH / <span class="number">2.0</span>)) / PIXEL_DEPTH</span><br><span class="line">        data = data.reshape(num_images, IMAGE_SIZE, IMAGE_SIZE, NUM_CHANNELS)</span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_labels</span>(<span class="params">filename, num_images</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Extract the labels into a vector of int64 label IDs.&quot;&quot;&quot;</span></span><br><span class="line">    logging.info(<span class="string">&#x27;Extracting&#x27;</span> + filename)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Extracting&#x27;</span>, filename)</span><br><span class="line">    <span class="keyword">with</span> gzip.<span class="built_in">open</span>(filename) <span class="keyword">as</span> bytestream:</span><br><span class="line">        bytestream.read(<span class="number">8</span>)</span><br><span class="line">        buf = bytestream.read(<span class="number">1</span> * num_images)</span><br><span class="line">        labels = numpy.frombuffer(buf, dtype=numpy.uint8).astype(numpy.int64)</span><br><span class="line">    <span class="keyword">return</span> labels</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fake_data</span>(<span class="params">num_images</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Generate a fake dataset that matches the dimensions of MNIST.&quot;&quot;&quot;</span></span><br><span class="line">    data = numpy.ndarray(</span><br><span class="line">        shape=(num_images, IMAGE_SIZE, IMAGE_SIZE, NUM_CHANNELS),</span><br><span class="line">        dtype=numpy.float32)</span><br><span class="line">    labels = numpy.zeros(shape=(num_images,), dtype=numpy.int64)</span><br><span class="line">    <span class="keyword">for</span> image <span class="keyword">in</span> xrange(num_images):</span><br><span class="line">        label = image % <span class="number">2</span></span><br><span class="line">        data[image, :, :, <span class="number">0</span>] = label - <span class="number">0.5</span></span><br><span class="line">        labels[image] = label</span><br><span class="line">    <span class="keyword">return</span> data, labels</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">error_rate</span>(<span class="params">predictions, labels</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Return the error rate based on dense predictions and sparse labels.&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">100.0</span> - (</span><br><span class="line">            <span class="number">100.0</span> *</span><br><span class="line">            numpy.<span class="built_in">sum</span>(numpy.argmax(predictions, <span class="number">1</span>) == labels) /</span><br><span class="line">            predictions.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">_</span>):</span><br><span class="line">    <span class="keyword">if</span> FLAGS.self_test:</span><br><span class="line">        logging.info(<span class="string">&#x27;Running self-test.&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Running self-test.&#x27;</span>)</span><br><span class="line">        train_data, train_labels = fake_data(<span class="number">256</span>)</span><br><span class="line">        validation_data, validation_labels = fake_data(EVAL_BATCH_SIZE)</span><br><span class="line">        test_data, test_labels = fake_data(EVAL_BATCH_SIZE)</span><br><span class="line">        num_epochs = <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># Get the data.</span></span><br><span class="line">        train_data_filename = maybe_download(<span class="string">&#x27;train-images-idx3-ubyte.gz&#x27;</span>)</span><br><span class="line">        train_labels_filename = maybe_download(<span class="string">&#x27;train-labels-idx1-ubyte.gz&#x27;</span>)</span><br><span class="line">        test_data_filename = maybe_download(<span class="string">&#x27;t10k-images-idx3-ubyte.gz&#x27;</span>)</span><br><span class="line">        test_labels_filename = maybe_download(<span class="string">&#x27;t10k-labels-idx1-ubyte.gz&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Extract it into numpy arrays.</span></span><br><span class="line">        train_data = extract_data(train_data_filename, <span class="number">60000</span>)</span><br><span class="line">        train_labels = extract_labels(train_labels_filename, <span class="number">60000</span>)</span><br><span class="line">        test_data = extract_data(test_data_filename, <span class="number">10000</span>)</span><br><span class="line">        test_labels = extract_labels(test_labels_filename, <span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Generate a validation set.</span></span><br><span class="line">        validation_data = train_data[:VALIDATION_SIZE, ...]</span><br><span class="line">        validation_labels = train_labels[:VALIDATION_SIZE]</span><br><span class="line">        train_data = train_data[VALIDATION_SIZE:, ...]</span><br><span class="line">        train_labels = train_labels[VALIDATION_SIZE:]</span><br><span class="line">        num_epochs = NUM_EPOCHS</span><br><span class="line">    train_size = train_labels.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># This is where training samples and labels are fed to the graph.</span></span><br><span class="line">    <span class="comment"># These placeholder nodes will be fed a batch of training data at each</span></span><br><span class="line">    <span class="comment"># training step using the &#123;feed_dict&#125; argument to the Run() call below.</span></span><br><span class="line">    train_data_node = tf.placeholder(</span><br><span class="line">        data_type(),</span><br><span class="line">        shape=(BATCH_SIZE, IMAGE_SIZE, IMAGE_SIZE, NUM_CHANNELS))</span><br><span class="line">    train_labels_node = tf.placeholder(tf.int64, shape=(BATCH_SIZE,))</span><br><span class="line">    eval_data = tf.placeholder(</span><br><span class="line">        data_type(),</span><br><span class="line">        shape=(EVAL_BATCH_SIZE, IMAGE_SIZE, IMAGE_SIZE, NUM_CHANNELS))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># The variables below hold all the trainable weights. They are passed an</span></span><br><span class="line">    <span class="comment"># initial value which will be assigned when we call:</span></span><br><span class="line">    <span class="comment"># &#123;tf.global_variables_initializer().run()&#125;</span></span><br><span class="line">    conv1_weights = tf.Variable(</span><br><span class="line">        tf.truncated_normal([<span class="number">5</span>, <span class="number">5</span>, NUM_CHANNELS, <span class="number">32</span>],  <span class="comment"># 5x5 filter, depth 32.</span></span><br><span class="line">                            stddev=<span class="number">0.1</span>,</span><br><span class="line">                            seed=SEED, dtype=data_type()))</span><br><span class="line">    conv1_biases = tf.Variable(tf.zeros([<span class="number">32</span>], dtype=data_type()))</span><br><span class="line">    conv2_weights = tf.Variable(tf.truncated_normal(</span><br><span class="line">        [<span class="number">5</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">64</span>], stddev=<span class="number">0.1</span>,</span><br><span class="line">        seed=SEED, dtype=data_type()))</span><br><span class="line">    conv2_biases = tf.Variable(tf.constant(<span class="number">0.1</span>, shape=[<span class="number">64</span>], dtype=data_type()))</span><br><span class="line">    fc1_weights = tf.Variable(  <span class="comment"># fully connected, depth 512.</span></span><br><span class="line">        tf.truncated_normal([IMAGE_SIZE // <span class="number">4</span> * IMAGE_SIZE // <span class="number">4</span> * <span class="number">64</span>, <span class="number">512</span>],</span><br><span class="line">                            stddev=<span class="number">0.1</span>,</span><br><span class="line">                            seed=SEED,</span><br><span class="line">                            dtype=data_type()))</span><br><span class="line">    fc1_biases = tf.Variable(tf.constant(<span class="number">0.1</span>, shape=[<span class="number">512</span>], dtype=data_type()))</span><br><span class="line">    fc2_weights = tf.Variable(tf.truncated_normal([<span class="number">512</span>, NUM_LABELS],</span><br><span class="line">                                                  stddev=<span class="number">0.1</span>,</span><br><span class="line">                                                  seed=SEED,</span><br><span class="line">                                                  dtype=data_type()))</span><br><span class="line">    fc2_biases = tf.Variable(tf.constant(</span><br><span class="line">        <span class="number">0.1</span>, shape=[NUM_LABELS], dtype=data_type()))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># We will replicate the model structure for the training subgraph, as well</span></span><br><span class="line">    <span class="comment"># as the evaluation subgraphs, while sharing the trainable parameters.</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">model</span>(<span class="params">data, train=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;The Model definition.&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 2D convolution, with &#x27;SAME&#x27; padding (i.e. the output feature map has</span></span><br><span class="line">        <span class="comment"># the same size as the input). Note that &#123;strides&#125; is a 4D array whose</span></span><br><span class="line">        <span class="comment"># shape matches the data layout: [image index, y, x, depth].</span></span><br><span class="line">        conv = tf.nn.conv2d(data,</span><br><span class="line">                            conv1_weights,</span><br><span class="line">                            strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                            padding=<span class="string">&#x27;SAME&#x27;</span>)</span><br><span class="line">        <span class="comment"># Bias and rectified linear non-linearity.</span></span><br><span class="line">        relu = tf.nn.relu(tf.nn.bias_add(conv, conv1_biases))</span><br><span class="line">        <span class="comment"># Max pooling. The kernel size spec &#123;ksize&#125; also follows the layout of</span></span><br><span class="line">        <span class="comment"># the data. Here we have a pooling window of 2, and a stride of 2.</span></span><br><span class="line">        pool = tf.nn.max_pool(relu,</span><br><span class="line">                              ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>],</span><br><span class="line">                              strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>],</span><br><span class="line">                              padding=<span class="string">&#x27;SAME&#x27;</span>)</span><br><span class="line">        conv = tf.nn.conv2d(pool,</span><br><span class="line">                            conv2_weights,</span><br><span class="line">                            strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                            padding=<span class="string">&#x27;SAME&#x27;</span>)</span><br><span class="line">        relu = tf.nn.relu(tf.nn.bias_add(conv, conv2_biases))</span><br><span class="line">        pool = tf.nn.max_pool(relu,</span><br><span class="line">                              ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>],</span><br><span class="line">                              strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>],</span><br><span class="line">                              padding=<span class="string">&#x27;SAME&#x27;</span>)</span><br><span class="line">        <span class="comment"># Reshape the feature map cuboid into a 2D matrix to feed it to the</span></span><br><span class="line">        <span class="comment"># fully connected layers.</span></span><br><span class="line">        pool_shape = pool.get_shape().as_list()</span><br><span class="line">        reshape = tf.reshape(</span><br><span class="line">            pool,</span><br><span class="line">            [pool_shape[<span class="number">0</span>], pool_shape[<span class="number">1</span>] * pool_shape[<span class="number">2</span>] * pool_shape[<span class="number">3</span>]])</span><br><span class="line">        <span class="comment"># Fully connected layer. Note that the &#x27;+&#x27; operation automatically</span></span><br><span class="line">        <span class="comment"># broadcasts the biases.</span></span><br><span class="line">        hidden = tf.nn.relu(tf.matmul(reshape, fc1_weights) + fc1_biases)</span><br><span class="line">        <span class="comment"># Add a 50% dropout during training only. Dropout also scales</span></span><br><span class="line">        <span class="comment"># activations such that no rescaling is needed at evaluation time.</span></span><br><span class="line">        <span class="keyword">if</span> train:</span><br><span class="line">            hidden = tf.nn.dropout(hidden, <span class="number">0.5</span>, seed=SEED)</span><br><span class="line">        <span class="keyword">return</span> tf.matmul(hidden, fc2_weights) + fc2_biases</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Training computation: logits + cross-entropy loss.</span></span><br><span class="line">    logits = model(train_data_node, <span class="literal">True</span>)</span><br><span class="line">    loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(</span><br><span class="line">        labels=train_labels_node, logits=logits))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># L2 regularization for the fully connected parameters.</span></span><br><span class="line">    regularizers = (tf.nn.l2_loss(fc1_weights) + tf.nn.l2_loss(fc1_biases) +</span><br><span class="line">                    tf.nn.l2_loss(fc2_weights) + tf.nn.l2_loss(fc2_biases))</span><br><span class="line">    <span class="comment"># Add the regularization term to the loss.</span></span><br><span class="line">    loss += <span class="number">5e-4</span> * regularizers</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Optimizer: set up a variable that&#x27;s incremented once per batch and</span></span><br><span class="line">    <span class="comment"># controls the learning rate decay.</span></span><br><span class="line">    batch = tf.Variable(<span class="number">0</span>, dtype=data_type())</span><br><span class="line">    <span class="comment"># Decay once per epoch, using an exponential schedule starting at 0.01.</span></span><br><span class="line">    learning_rate = tf.train.exponential_decay(</span><br><span class="line">        <span class="number">0.01</span>,  <span class="comment"># Base learning rate.</span></span><br><span class="line">        batch * BATCH_SIZE,  <span class="comment"># Current index into the dataset.</span></span><br><span class="line">        train_size,  <span class="comment"># Decay step.</span></span><br><span class="line">        <span class="number">0.95</span>,  <span class="comment"># Decay rate.</span></span><br><span class="line">        staircase=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># Use simple momentum for the optimization.</span></span><br><span class="line">    optimizer = tf.train.MomentumOptimizer(learning_rate,</span><br><span class="line">                                           <span class="number">0.9</span>).minimize(loss,</span><br><span class="line">                                                         global_step=batch)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Predictions for the current training minibatch.</span></span><br><span class="line">    train_prediction = tf.nn.softmax(logits)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Predictions for the test and validation, which we&#x27;ll compute less often.</span></span><br><span class="line">    eval_prediction = tf.nn.softmax(model(eval_data))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Small utility function to evaluate a dataset by feeding batches of data to</span></span><br><span class="line">    <span class="comment"># &#123;eval_data&#125; and pulling the results from &#123;eval_predictions&#125;.</span></span><br><span class="line">    <span class="comment"># Saves memory and enables this to run on smaller GPUs.</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">eval_in_batches</span>(<span class="params">data, sess</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Get all predictions for a dataset by running it in small batches.&quot;&quot;&quot;</span></span><br><span class="line">        size = data.shape[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> size &lt; EVAL_BATCH_SIZE:</span><br><span class="line">            logging.error(<span class="string">&quot;batch size for evals larger than dataset: %d&quot;</span> % size)</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;batch size for evals larger than dataset: %d&quot;</span> % size)</span><br><span class="line">        predictions = numpy.ndarray(shape=(size, NUM_LABELS), dtype=numpy.float32)</span><br><span class="line">        <span class="keyword">for</span> begin <span class="keyword">in</span> xrange(<span class="number">0</span>, size, EVAL_BATCH_SIZE):</span><br><span class="line">            end = begin + EVAL_BATCH_SIZE</span><br><span class="line">            <span class="keyword">if</span> end &lt;= size:</span><br><span class="line">                predictions[begin:end, :] = sess.run(</span><br><span class="line">                    eval_prediction,</span><br><span class="line">                    feed_dict=&#123;eval_data: data[begin:end, ...]&#125;)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                batch_predictions = sess.run(</span><br><span class="line">                    eval_prediction,</span><br><span class="line">                    feed_dict=&#123;eval_data: data[-EVAL_BATCH_SIZE:, ...]&#125;)</span><br><span class="line">                predictions[begin:, :] = batch_predictions[begin - size:, :]</span><br><span class="line">        <span class="keyword">return</span> predictions</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Create a local session to run the training.</span></span><br><span class="line">    start_time = time.time()</span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        <span class="comment"># Run all the initializers to prepare the trainable parameters.</span></span><br><span class="line">        tf.global_variables_initializer().run()</span><br><span class="line">        logging.info(<span class="string">&#x27;Initialized!&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Initialized!&#x27;</span>)</span><br><span class="line">        <span class="comment"># Loop through training steps.</span></span><br><span class="line">        <span class="keyword">for</span> step <span class="keyword">in</span> xrange(<span class="built_in">int</span>(num_epochs * train_size) // BATCH_SIZE):</span><br><span class="line">            <span class="comment"># Compute the offset of the current minibatch in the data.</span></span><br><span class="line">            <span class="comment"># Note that we could use better randomization across epochs.</span></span><br><span class="line">            offset = (step * BATCH_SIZE) % (train_size - BATCH_SIZE)</span><br><span class="line">            batch_data = train_data[offset:(offset + BATCH_SIZE), ...]</span><br><span class="line">            batch_labels = train_labels[offset:(offset + BATCH_SIZE)]</span><br><span class="line">            <span class="comment"># This dictionary maps the batch data (as a numpy array) to the</span></span><br><span class="line">            <span class="comment"># node in the graph it should be fed to.</span></span><br><span class="line">            feed_dict = &#123;train_data_node: batch_data,</span><br><span class="line">                         train_labels_node: batch_labels&#125;</span><br><span class="line">            <span class="comment"># Run the optimizer to update weights.</span></span><br><span class="line">            sess.run(optimizer, feed_dict=feed_dict)</span><br><span class="line">            <span class="comment"># print some extra information once reach the evaluation frequency</span></span><br><span class="line">            <span class="keyword">if</span> step % EVAL_FREQUENCY == <span class="number">0</span>:</span><br><span class="line">                <span class="comment"># fetch some extra nodes&#x27; data</span></span><br><span class="line">                l, lr, predictions = sess.run([loss, learning_rate, train_prediction],</span><br><span class="line">                                              feed_dict=feed_dict)</span><br><span class="line">                elapsed_time = time.time() - start_time</span><br><span class="line">                start_time = time.time()</span><br><span class="line">                logging.info(<span class="string">&#x27;Step %d (epoch %.2f), %.1f ms&#x27;</span> %(step, <span class="built_in">float</span>(step) * BATCH_SIZE / train_size, <span class="number">1000</span> * elapsed_time / EVAL_FREQUENCY))</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;Step %d (epoch %.2f), %.1f ms&#x27;</span> %</span><br><span class="line">                      (step, <span class="built_in">float</span>(step) * BATCH_SIZE / train_size,</span><br><span class="line">                       <span class="number">1000</span> * elapsed_time / EVAL_FREQUENCY))</span><br><span class="line">                logging.info(<span class="string">&#x27;Minibatch loss: %.3f, learning rate: %.6f&#x27;</span> % (l, lr))</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;Minibatch loss: %.3f, learning rate: %.6f&#x27;</span> % (l, lr))</span><br><span class="line">                logging.info(<span class="string">&#x27;Minibatch error: %.1f%%&#x27;</span> % error_rate(predictions, batch_labels))</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;Minibatch error: %.1f%%&#x27;</span> % error_rate(predictions, batch_labels))</span><br><span class="line">                logging.info(<span class="string">&#x27;Validation error: %.1f%%&#x27;</span> % error_rate(eval_in_batches(validation_data, sess), validation_labels))</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;Validation error: %.1f%%&#x27;</span> % error_rate(</span><br><span class="line">                    eval_in_batches(validation_data, sess), validation_labels))</span><br><span class="line">                sys.stdout.flush()</span><br><span class="line">        <span class="comment"># Finally print the result!</span></span><br><span class="line">        test_error = error_rate(eval_in_batches(test_data, sess), test_labels)</span><br><span class="line">        logging.info(<span class="string">&#x27;Test error: %.1f%%&#x27;</span> % test_error)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Test error: %.1f%%&#x27;</span> % test_error)</span><br><span class="line">        <span class="keyword">if</span> FLAGS.self_test:</span><br><span class="line">            logging.info(<span class="string">&#x27;test_error&#x27;</span> + test_error)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;test_error&#x27;</span>, test_error)</span><br><span class="line">            <span class="keyword">assert</span> test_error == <span class="number">0.0</span>, <span class="string">&#x27;expected 0.0 test_error, got %.2f&#x27;</span> % (</span><br><span class="line">                test_error,)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    parser = argparse.ArgumentParser()</span><br><span class="line">    parser.add_argument(</span><br><span class="line">        <span class="string">&#x27;--use_fp16&#x27;</span>,</span><br><span class="line">        default=<span class="literal">False</span>,</span><br><span class="line">        <span class="built_in">help</span>=<span class="string">&#x27;Use half floats instead of full floats if True.&#x27;</span>,</span><br><span class="line">        action=<span class="string">&#x27;store_true&#x27;</span>)</span><br><span class="line">    parser.add_argument(</span><br><span class="line">        <span class="string">&#x27;--self_test&#x27;</span>,</span><br><span class="line">        default=<span class="literal">False</span>,</span><br><span class="line">        action=<span class="string">&#x27;store_true&#x27;</span>,</span><br><span class="line">        <span class="built_in">help</span>=<span class="string">&#x27;True if running a self test.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    FLAGS, unparsed = parser.parse_known_args()</span><br><span class="line">    tf.app.run(main=main, argv=[sys.argv[<span class="number">0</span>]] + unparsed)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里我在原来的程序基础上面稍微改了下,因为我已经提前将数据下载好了,所以我让程序直接读取本机指定目录下的训练数据,同时增加了日志文件输出.这是为了在公司的容器云平台上测试获取容器输出文件</p>
+<h2 id="编写Dockerfile"><a href="#编写Dockerfile" class="headerlink" title="编写Dockerfile"></a>编写Dockerfile</h2><p>我们可以在我们的用户目录下,创建一个空的文件夹,将mnist数据集以及程序文件都拷贝进这个文件夹下.其实数据集应该是放在数据卷中,但是这里为了方便,我直接将训练数据打进了镜像中.然后创建Dockerfile,文件内容如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM tensorflow/tensorflow:1.9.0-devel-py3</span><br><span class="line"></span><br><span class="line">COPY . /home/ll</span><br><span class="line">WORKDIR /home/ll</span><br><span class="line">CMD [<span class="string">&#x27;python&#x27;</span>, <span class="string">&#x27;convolutional.py&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<p>即Dockerfile文件中最后一行表示容器启动的运行的命令</p>
+<h2 id="build镜像"><a href="#build镜像" class="headerlink" title="build镜像"></a>build镜像</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t tf:1.9 .</span><br></pre></td></tr></table></figure>
+<p><code>-t</code>参数指定镜像跟tag,最后的<code>.</code>指定了镜像中的上下文.构建完之后使用<code>docker images</code>可以查看多了<code>tf:1.9</code>镜像</p>
+<h2 id="运行镜像"><a href="#运行镜像" class="headerlink" title="运行镜像"></a>运行镜像</h2><p>运行下面的命令,运行上一步构建好的镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name <span class="built_in">test</span> tf:1.9</span><br></pre></td></tr></table></figure>
+<p>然后就能够看到训练的输出.<br><img src="/docker%E4%B8%8Etensorflow%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8/tensorflow.png" class=""><br>同时可以在看一个连接,进入容器,即运行下面命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it <span class="built_in">test</span> /bin/bash</span><br></pre></td></tr></table></figure>
+<p>可以看到如下内容<br><img src="/docker%E4%B8%8Etensorflow%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8/container.png" class=""><br>即看到了cnn_mnist.log的日志输出文件</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html" itemprop="url">docker常用命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T16:53:41+08:00">
+                2018-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="docker命令"><a href="#docker命令" class="headerlink" title="docker命令"></a>docker命令</h1><h2 id="docker基本命令"><a href="#docker基本命令" class="headerlink" title="docker基本命令"></a>docker基本命令</h2><h3 id="查看docker版本"><a href="#查看docker版本" class="headerlink" title="查看docker版本"></a>查看docker版本</h3><p><code>docker version</code></p>
+<h3 id="查看docker信息"><a href="#查看docker信息" class="headerlink" title="查看docker信息"></a>查看docker信息</h3><p><code>docker info</code></p>
+<h3 id="启动docker-服务"><a href="#启动docker-服务" class="headerlink" title="启动docker 服务"></a>启动docker 服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo service docker start</span><br><span class="line">或者</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+<h2 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h2><h3 id="列出本机的所有image文件"><a href="#列出本机的所有image文件" class="headerlink" title="列出本机的所有image文件"></a>列出本机的所有image文件</h3><p><code>docker image ls</code></p>
+<h3 id="删除image文件"><a href="#删除image文件" class="headerlink" title="删除image文件"></a>删除image文件</h3><p><code>docker image rm [imageName]</code></p>
+<h3 id="拉取image文件"><a href="#拉取image文件" class="headerlink" title="拉取image文件"></a>拉取image文件</h3><p><code>docker image pull library/hello-world</code><br>library/hello-world是 image 文件在仓库里面的位置，其中library是 image 文件所在的组，hello-world是 image 文件的名字.因为Docker官方提供的镜像都在library中,所以可以省略library,即使用下面的命令<br><code>docker image pull hello-world</code></p>
+<h3 id="运行image-文件"><a href="#运行image-文件" class="headerlink" title="运行image 文件"></a>运行image 文件</h3><p><code>docker container run hello-world</code><br>run命令每运行一次,就会新建一个容器.docker container run命令具有自动抓取 image 文件的功能。如果发现本地没有指定的 image 文件，就会从仓库自动抓取。因此，前面的docker image pull命令并不是必需的步骤.<br><code>-v</code>参数: 用来进行数据卷的挂载,将本机主机的目录挂载到容器的某一目录</p>
+<h2 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h2><h3 id="终止容器"><a href="#终止容器" class="headerlink" title="终止容器"></a>终止容器</h3><p><code>docker container kill [containID]</code></p>
+<blockquote>
+<p>image 文件生成的容器实例，本身也是一个文件，称为容器文件。也就是说，一旦容器生成，就会同时存在两个文件： image 文件和容器文件。而且关闭容器并不会删除容器文件，只是容器停止运行而已。</p>
+</blockquote>
+<h3 id="列出本机正在运行的容器"><a href="#列出本机正在运行的容器" class="headerlink" title="列出本机正在运行的容器"></a>列出本机正在运行的容器</h3><p><code>docker container ls</code></p>
+<h3 id="列出本机所有容器，包括终止运行的容器"><a href="#列出本机所有容器，包括终止运行的容器" class="headerlink" title="列出本机所有容器，包括终止运行的容器"></a>列出本机所有容器，包括终止运行的容器</h3><p><code>docker container ls --all</code></p>
+<h3 id="删除容器文件"><a href="#删除容器文件" class="headerlink" title="删除容器文件"></a>删除容器文件</h3><p><code>docker container rm [containerID]</code>或<br><code>docker rm [containerID]</code><br>注: 删除正在运行的容器,需要添加<code>-f</code>参数;<code>-v</code>参数可以删除没有用的数据卷</p>
+<h3 id="查看容器信息"><a href="#查看容器信息" class="headerlink" title="查看容器信息"></a>查看容器信息</h3><p><code>docker ps</code></p>
+<h3 id="重启容器"><a href="#重启容器" class="headerlink" title="重启容器"></a>重启容器</h3><p>restart命令会将运行的容器终止,然后在重新启动<br><code>docker container restart [containerID 或 name]</code></p>
+<h3 id="导出容器"><a href="#导出容器" class="headerlink" title="导出容器"></a>导出容器</h3><p>导出容器快照到本地文件<br><code>docker export [containerID]</code><br>示例:<br><code>docker export 7691a814370e &gt; ubuntu.tar</code></p>
+<h3 id="创建image-文件"><a href="#创建image-文件" class="headerlink" title="创建image 文件"></a>创建image 文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker image build -t koa-demo .</span><br><span class="line">或者</span><br><span class="line">docker image build -t koa-demo:0.0.1 .</span><br></pre></td></tr></table></figure>
+<p><strong>-t</strong> 用来指定image 文件的名字,后面可以用冒号指定标签.如果不指定,默认的标签就是<strong>latest</strong>. 最后的点表示Dockerfile文件所在的路径,一个点表示当前路径</p>
+<h3 id="从image文件生成容器"><a href="#从image文件生成容器" class="headerlink" title="从image文件生成容器"></a>从image文件生成容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker container run -p 8000:3000 -it koa-demo /bin/bash</span><br><span class="line">或者</span><br><span class="line">docker container run -p 8000:3000 -it koa-demo:0.0.1 /bin/bash</span><br></pre></td></tr></table></figure>
+<p>参数含义:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">-p参数:</span> <span class="string">容器的3000端口映射到本机的8000端口.</span></span><br><span class="line"><span class="string">-it参数:</span> <span class="string">容器的Shell映射到当前的Shell,然后你在本机窗口输入的命令,就会传入容器.</span></span><br><span class="line"><span class="attr">koa-demo:0.0.1:</span> <span class="string">image文件的名字,默认标签是latest.</span></span><br><span class="line"><span class="string">/bin/bash:</span> <span class="string">容器启动以后,内部第一个执行的命令.这里启动Bash,保证用户可以使用Shell</span></span><br></pre></td></tr></table></figure>
+<p><code>docker container run --rm -p 8000:3000 -it koa-demo /bin/bash</code><br>—rm参数:在容器终止运行后自动删除容器文件</p>
+<h2 id="其他有用的命令"><a href="#其他有用的命令" class="headerlink" title="其他有用的命令"></a>其他有用的命令</h2><h3 id="docker-container-start"><a href="#docker-container-start" class="headerlink" title="docker container start"></a>docker container start</h3><p>前面的docker container run命令是新建容器，每运行一次，就会新建一个容器。同样的命令运行两次，就会生成两个一模一样的容器文件。如果希望重复使用容器，就要使用docker container start命令，它用来启动已经生成、已经停止运行的容器文件。<br><code>docker container start [containerID]</code></p>
+<h3 id="docker-container-stop"><a href="#docker-container-stop" class="headerlink" title="docker container stop"></a>docker container stop</h3><p>前面的docker container kill命令终止容器运行，相当于向容器里面的主进程发出 SIGKILL 信号。而docker container stop命令也是用来终止容器运行，相当于向容器里面的主进程发出 SIGTERM 信号，然后过一段时间再发出 SIGKILL 信号.<br><code>docker container stop [containerID]</code><br>这两个信号的差别是，应用程序收到 SIGTERM 信号以后，可以自行进行收尾清理工作，但也可以不理会这个信号。如果收到 SIGKILL 信号，就会强行立即终止，那些正在进行中的操作会全部丢失。</p>
+<h3 id="docker-container-logs"><a href="#docker-container-logs" class="headerlink" title="docker container logs"></a>docker container logs</h3><p>docker container logs命令用来查看 docker 容器的输出，即容器里面 Shell 的标准输出。如果docker run命令运行容器的时候，没有使用-it参数，就要用这个命令查看输出。<br><code>docker container logs [containerID]</code></p>
+<h3 id="docker-container-exec"><a href="#docker-container-exec" class="headerlink" title="docker container exec"></a>docker container exec</h3><p>docker container exec命令用于进入一个正在运行的 docker 容器。如果docker run命令运行容器的时候，没有使用-it参数，就要用这个命令进入容器。一旦进入了容器，就可以在容器的 Shell 执行命令了。<br><code>docker container exec -it [containerID] /bin/bash</code></p>
+<h3 id="docker-container-cp"><a href="#docker-container-cp" class="headerlink" title="docker container cp"></a>docker container cp</h3><p>docker container cp命令用于从正在运行的 Docker 容器里面，将文件拷贝到本机。下面是拷贝到当前目录的写法。<br><code>docker container cp [containID]:[/path/to/file] .</code></p>
+<h3 id="删除所有不运行的容器"><a href="#删除所有不运行的容器" class="headerlink" title="删除所有不运行的容器"></a>删除所有不运行的容器</h3><p><code>docker rm $(docker ps -a -q)</code></p>
+<p>参考文章:<a href="http://www.ruanyifeng.com/blog/2018/02/docker-tutorial.html">Docker 入门教程-阮一峰</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Understanding-LSTM-Networks.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Understanding-LSTM-Networks.html" itemprop="url">Understanding LSTM Networks</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T11:22:56+08:00">
+                2018-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这是一篇译文,<a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">原文地址</a>.如果英文可以,建议直接看英文.</p>
+<h1 id="循环神经网络-Recurrent-Neural-Networks"><a href="#循环神经网络-Recurrent-Neural-Networks" class="headerlink" title="循环神经网络(Recurrent Neural Networks)"></a>循环神经网络(Recurrent Neural Networks)</h1><p>在我们思考时,我们不会从头开始,肯定会在思考时加入之前的知识.就如同当你在阅读当前的博客时,你读的每个单词都是基于前面的单词.你不会扔掉所有的东西,然后在从头开始.你的想法有持久性.<br>传统的神经网络不能使用之前信息.假设你使用传统神经网络来将一部电影中的正在发生的事件分类,怎么使用当前事件之前的信息是很困难的.<br>循环神经网络解决了这个问题,在其中有循环,允许信息能够保持.<br><img src="/Understanding-LSTM-Networks/RNN-rolled.png" class="" title="Recurrent Neural Networks have loops."><br>这个图看起来有点奇怪,我们可以将其展开,如下图所示<br><img src="/Understanding-LSTM-Networks/RNN-unrolled.png" class="" title="An unrolled recurrent neural network"><br>从图中可以看出,RNN使用了前一时刻的状态来预测当前的状态<br>RNN在很多领域都取得了成功,比如:语音识别,自然语言处理,翻译,图像字幕等等.这里Andrej Karpathy的<a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">blog</a>,里面列举了RNN一些应用.<br>本文主要介绍LSTM模型,LSTM模型是RNN的一种变种,在很多领域的表现都要比一般的RNN模型更好</p>
+<h1 id="长期依赖存在的问题-The-Problem-of-Long-Term-Dependencies"><a href="#长期依赖存在的问题-The-Problem-of-Long-Term-Dependencies" class="headerlink" title="长期依赖存在的问题(The Problem of Long-Term Dependencies)"></a>长期依赖存在的问题(The Problem of Long-Term Dependencies)</h1><p>加入我们要基于之前的单词预测下一个单词,如”the clouds are in the <em>sky</em>“,我们要预测最后一个单词sky.在这个例子中,我们不需要更多的上下文,很明显最后一个单词是sky.RNN针对这种情况有很好的表现.<br><img src="/Understanding-LSTM-Networks/RNN-shorttermdepdencies.png" class=""><br>但是在有些情况下,我们需要更多的上下文.例如,我们要预测”I grew up in France… I speak fluent <em>French</em>.”中的最后一个单词French.从最近的信息,比如speak fluent等,可以推测最后一个单词是一种语言.但是如果要知道具体的语言,我们需要更多的上下文.预测点和其对应的相关信息之间的差距很大是由很大可能的.<br>但是,不幸的是随着差距增加,RNN不可能学会如何连接这种信息<br><img src="/Understanding-LSTM-Networks/RNN-longtermdependencies.png" class=""><br>从图中可以看出$h_{t+1}$不能很好地利用$X_0$和$X_1$的信息.理论上,RNN能够学习到长期依赖,但是在实践中,要想在RNN中使用这些长期依赖很困难.幸运的是LSTM模型解决了这个问题.</p>
+<h1 id="LSTM网络-LSTM-Networks"><a href="#LSTM网络-LSTM-Networks" class="headerlink" title="LSTM网络(LSTM Networks)"></a>LSTM网络(LSTM Networks)</h1><p>LSTM全称Long Short Term Memory,长短期记忆网络.LSTM的设计就是为了避免长依赖问题,记忆长周期的信息是LSTM的默认行为.<br>所有的递归神经网络都具有重复模块的链式结构.在标准的RNN中,重复模块是一个非常简单的结构,例如单层tanh<br><img src="/Understanding-LSTM-Networks/LSTM3-SimpleRNN.png" class="" title="The repeating module in a standard RNN contains a single layer."><br>LSTM也有这种链式结构,但是重复的模块有一个不同的结构,在其中一个模块中,包含一个四层的神经网络,并且这四层以一种特别方式进行交互.<br><img src="/Understanding-LSTM-Networks/LSTM3-chain.png" class="" title="The repeating module in an LSTM contains four interacting layers."><br>图中的示例如下<br><img src="/Understanding-LSTM-Networks/LSTM2-notation.png" class=""><br>接下来我会详细介绍其中涉及的内容.</p>
+<h1 id="LSTMs中的核心思想-The-Core-Idea-Behind-LSTMs"><a href="#LSTMs中的核心思想-The-Core-Idea-Behind-LSTMs" class="headerlink" title="LSTMs中的核心思想(The Core Idea Behind LSTMs)"></a>LSTMs中的核心思想(The Core Idea Behind LSTMs)</h1><p>LSTMs中的核心是单元状态,在图中就是最上面的那条水平线.单元状态就像是一条输送带.单元状态沿着整个链流动,对其只有一些线性作用,信息的流动很容易.<br><img src="/Understanding-LSTM-Networks/LSTM3-C-line.png" class=""><br>LSTM能够移除或者添加信息到单元状态,并且由成为门的结构来控制.门可以选择性的让信息通过或不通过,它是由sigmoid神经网络层和点积操作组成.<br><img src="/Understanding-LSTM-Networks/LSTM3-gate.png" class=""><br>sigmoid层的输出范围0-1,描述了可以通过多少的信息.输出为0意味着什么都不通过,输出为1意味着都能通过.从LSTM的结构中,我们可以看到LSTM的一个重复模块包括三个这样的门.</p>
+<h1 id="一步一步认识LSTM"><a href="#一步一步认识LSTM" class="headerlink" title="一步一步认识LSTM"></a>一步一步认识LSTM</h1><p>LSTM的第一步就是决定从单元状态中丢弃哪些信息.这个决定是由一个称为”遗忘门(forget gate layer)”单层sigmoid层组成.它接收$h<em>{t-1}$和$x_t$作为输入,输出0到1之间的数字.对于前一个单元状态$C</em>{t-1}$,当遗忘门的输出为1时,表示完全保留$C<em>{t-1}$;当遗忘门的输出为0时,表示完全舍弃$C</em>{t-1}$.<br>我们在回到之前根据之前的内容来预测下一个单词这个问题.在这样的问题中,单元状态可能包括当前对象的性别,所以可以使用正确的代词.但是当遇到一个新的对象时,我们就想要忘记老对象的性别.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-f.png" class=""></p>
+<blockquote>
+<p>图中的$W<em>f \cdot [h</em>{t-1},x<em>t]$,大家看起来有些不清楚.个人认为比较合适的写法如下<br>$\sigma(W_fx_t + U_r h</em>{t-1} + b_f)$.大家可以参考下<a href="http://blog.echen.me/2017/05/30/exploring-lstms/">英文博客</a>,<a href="https://www.jiqizhixin.com/articles/2017-07-24-2">中文博客</a></p>
+</blockquote>
+<p>接下来这一步就是决定新信息中的哪些部分需要保存在单元状态中.这包括两个部分,第一部分是sigmoid层(input gate layer),决定更新的值.第二部分是一个tanh层,用来创建一个新的候选值.在下一步中,我们将会把这两个结合起来用来给单元状态做更新.在语言模型的例子中,这一步就代表我们将新对象的性别加入单元状态中,用来代替我们需要忘记的老对象性别.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-i.png" class=""><br>现在要把旧的单元状态$C_{t-1}$更新为$C_t$.上一步已经决定了更新的内容.我们把旧的单元状态乘以$f_t$,表示我们需要忘记的内容.然后将结果加上$i_t*\tilde{C_t}$,这表示将候选值进行缩放或者延伸.在语言模型的例子中,这表示我们从旧对象的性别中去除信息,然后加上新的信息.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-C.png" class=""><br>最终,我们需要决定输出的内容.输出内容基于单元状态,但是需要一些处理.首先,我们使用一个sigmoid层来决定单元状态的哪部分需要输出.然后,我们将单元状态经过tanh(将值限定在-1到1之间),在乘以sigmoid gate的输出.所以我们仅仅输出了我们决定的.<br>对于语言模型例子,因为网络之前看到了主语,所以接下来它可能想要输出的信息是关于动词的.例如,网络会根据主语的单数或复数来决定接下来动词的形式.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-o.png" class=""></p>
+<h1 id="长短期记忆模型的其他形式-Variants-on-Long-Short-Term-Memory"><a href="#长短期记忆模型的其他形式-Variants-on-Long-Short-Term-Memory" class="headerlink" title="长短期记忆模型的其他形式(Variants on Long Short Term Memory)"></a>长短期记忆模型的其他形式(Variants on Long Short Term Memory)</h1><p>上面提到的是LSTM的一般形式.但是还有好多LSTM的一些变形,虽然变化不大.其中一个流行的LSTM变形是由<a href="ftp://ftp.idsia.ch/pub/juergen/TimeCount-IJCNN2000.pdf">Gers &amp; Schmidhuber (2000)</a>提出.此模型添加了”peephole connections”,这意味着让门看到了单元状态.<br><img src="/Understanding-LSTM-Networks/LSTM3-var-peepholes.png" class=""><br>从图中可以看到模型对于所有的gate都添加了peepholes,但是有很多文章只添加了一些peepholes,而另一些则没有.</p>
+<p>LSTM另一种变形是将input gate和forget gate进行耦合.这种网络不会单独的决定哪些内容需要忘记,哪些新的信息需要添加,而是一起做这些决定.当我们将要输入内容时,我们仅仅忘记;当我们忘记旧的内容时,我们仅仅输入一些新的值.模型的结构如下<br><img src="/Understanding-LSTM-Networks/LSTM3-var-tied.png" class=""></p>
+<p>一种引入注意的LSTM变形是GRU(Gated Recurrent Unit),它将forget gate和input gate结合为一个单独的”update gate”.它同样融合了单元状态和隐藏状态以及一些其他的改变.GRU模型要比标准的LSTM模型简单,并且越来越流行.<br><img src="/Understanding-LSTM-Networks/LSTM3-var-GRU.png" class=""><br>这里仅仅列举了一些LSTM变形,还有很多其他的LSTM变形.比如Depth Gated RNNs by <a href="http://arxiv.org/pdf/1508.03790v2.pdf">Yao, et al. (2015)</a>.同时在解决长期依赖问题上,也有跟LSTM完全不同的方法,比如Clockwork RNNs by <a href="http://arxiv.org/pdf/1402.3511v1.pdf">Koutnik, et al. (2014)</a>.<br><a href="http://arxiv.org/pdf/1503.04069.pdf">Greff, et al. (2015)</a>对这些变形做了一个对比.<a href="http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf">Jozefowicz, et al. (2015)</a>测试很多的RNN结构,发现在一些特定的任务上比LSTM模型表现的更好的模型.</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">colah博客</a><br><a href="http://blog.echen.me/2017/05/30/exploring-lstms/">echen博客</a></p>
+<blockquote>
+<p>echen博客中公式介绍的较为详细</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/python3%E5%AD%A6%E4%B9%A0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/python3%E5%AD%A6%E4%B9%A0.html" itemprop="url">python3学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T11:48:04+08:00">
+                2018-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h1><p>在python中,一个py文件就是一个模块.而为了避免模块名称冲突,Python又引入了按目录来组织模块的方法,成为Package.引入了包后,对应的模块名前面就添加了包名.类似于Java中的Package.</p>
+<p>__init__.py:在包目录下,必须有__init__.py这个文件,如果没有这个文件,那么python会将此文件作为一个普通目录,而不在是一个package.__init__.py可以为空,也可以有代码(一般都是一些import语句).__init__.py本身是一个模块,其模块名为对应的package名称.</p>
+<h1 id="Python示例程序"><a href="#Python示例程序" class="headerlink" title="Python示例程序"></a>Python示例程序</h1><figure class="highlight python"><figcaption><span>hello.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27; a test module &#x27;</span></span><br><span class="line"></span><br><span class="line">__author__ = <span class="string">&#x27;Michael Liao&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">    args = sys.argv</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(args)==<span class="number">1</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Hello, world!&#x27;</span>)</span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">len</span>(args)==<span class="number">2</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Hello, %s!&#x27;</span> % args[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Too many arguments!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    test()</span><br></pre></td></tr></table></figure>
+<p>程序说明:程序开始的一,二行是标准注释.第一行注释说明这个文件可以直接在Unix/Linux/Max上运行.第二行表示文件本身使用utf-8编码.第四行是模块的文档注释,第六行是作者信息.<br><code>if __name__ == &#39;__main__&#39;:</code>:当我们在命令行运行模块时,python解释器会将一个特殊的变量<code>__name__</code>设置为<code>__main__</code>.但是如果在其他模块中导入此模块,python解释器并不是设置<code>__name__</code>变量.</p>
+<h1 id="python中的作用域"><a href="#python中的作用域" class="headerlink" title="python中的作用域"></a>python中的作用域</h1><p>正常的变量或函数是公开的,可以直接引用如<code>abc</code>,<code>xyz</code>等.<br>类似<code>__xxx__</code>的变量时特殊变量,也可以直接引用,但是有特殊用途.如<code>__author__</code>,<code>__name__</code>.而模块的文档注释可以用<code>__doc__</code>来访问<br>类似于<code>_x</code>,<code>__x</code>这样定义的变量或函数是非公开的,类似Java的private.</p>
+<h1 id="python模块搜索路径"><a href="#python模块搜索路径" class="headerlink" title="python模块搜索路径"></a>python模块搜索路径</h1><p>当我们引入模块时,即使用import导入模块时,python解释器从搜索路径中查找对应的模块.如果找不到,则会报错.<br>默认情况下,Python解释器会搜索当前目录、所有已安装的内置模块和第三方模块，搜索路径存放在sys模块的path变量中.下面代码可以查看搜索路径内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import sys</span><br><span class="line">&gt;&gt;&gt; sys.path</span><br></pre></td></tr></table></figure>
+<h2 id="修改搜索路径"><a href="#修改搜索路径" class="headerlink" title="修改搜索路径"></a>修改搜索路径</h2><p>可以使用两种方式修改搜索路径</p>
+<ol>
+<li>直接修改<code>sys.path</code> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import sys</span><br><span class="line">&gt;&gt;&gt; sys.path.append(<span class="string">&#x27;待添加路径&#x27;</span>)</span><br></pre></td></tr></table></figure>
+ 但是这种方式只在程序运行时有效,程序运行结束后失效</li>
+<li>设置<code>PATHONPATH</code><br> 直接将待添加的路径加入<code>PATHONPATH</code>环境变量中即可</li>
+</ol>
+<h1 id="类与对象"><a href="#类与对象" class="headerlink" title="类与对象"></a>类与对象</h1><p>在python类中,<code>__init__</code>方法就相当于Java中类的构造函数,<strong>self</strong>表示实例自身.<br>如果类中的变量定义前加了两个下划线,那么此变量就成为一个私有变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, score</span>):</span><br><span class="line">        self.__name = name</span><br><span class="line">        self.score = score</span><br><span class="line">a = Student(<span class="string">&#x27;1&#x27;</span>, <span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(a.__name)</span><br><span class="line"><span class="built_in">print</span>(a.score)</span><br></pre></td></tr></table></figure>
+<p>打印<code>__name</code>时,将会报错,而可以打印score的内容.</p>
+<h2 id="鸭子类型"><a href="#鸭子类型" class="headerlink" title="鸭子类型"></a>鸭子类型</h2><blockquote>
+<p>注明:个人解决因为无法限制方法入参的类型,那么传递进去什么都可以</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Animal is running...&#x27;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_twice</span>(<span class="params">animal</span>):</span><br><span class="line">    animal.run()</span><br><span class="line">    animal.run()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Timer</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Start...&#x27;</span>)</span><br><span class="line">run_twice(Timer())</span><br></pre></td></tr></table></figure>
+<p>在Java中,如果定义<code>run_twice</code>方法,必须定义函数的形参类型,如果指定了只能接受Animal类型,则只能传递Animal类型或其子类.但是在python不是这样,只要传递进的类型中存在<code>run</code>方法即可.不过python中不存在限制入参是什么类型.</p>
+<blockquote>
+<p>这就是动态语言的“鸭子类型”，它并不要求严格的继承体系，一个对象只要“看起来像鸭子，走起路来像鸭子”，那它就可以被看做是鸭子。</p>
+</blockquote>
+<h2 id="slots"><a href="#slots" class="headerlink" title="__slots__"></a><code>__slots__</code></h2><p>python是动态语言，可以在运行过程中给类实例以及类本身添加属性和方法。如果想要限制动态添加的属性，则可以在类中定义<code>__slots__</code>,如下代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    __slots__ = (<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;age&#x27;</span>) <span class="comment"># 运行绑定的属性限制为name和age</span></span><br></pre></td></tr></table></figure>
+<h2 id="property"><a href="#property" class="headerlink" title="@property"></a><code>@property</code></h2><p><code>@property</code>是python内置装饰器,可以在给属性添加getter以及setter方法，从而简化代码。如下使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">score</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self._score</span><br><span class="line"></span><br><span class="line"><span class="meta">    @score.setter</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">score</span>(<span class="params">self, value</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(value, <span class="built_in">int</span>):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;score must be an integer!&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> value &lt; <span class="number">0</span> <span class="keyword">or</span> value &gt; <span class="number">100</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;score must between 0 ~ 100!&#x27;</span>)</span><br><span class="line">        self._score = value</span><br></pre></td></tr></table></figure>
+<p>第一个score方法被<code>@property</code>修改,从而为score属性添加了getter方法,第二个score方法被<code>@score.setter</code>修饰,添加了setter方法.如果去掉第二个score,则score属性将没有setter方法.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Refactor-improving-the-Design-of-Existing-Code.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Refactor-improving-the-Design-of-Existing-Code.html" itemprop="url">Refactor-improving the Design of Existing Code</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-23T15:18:53+08:00">
+                2018-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">读书笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Refactor-improving the Design of Existing Code(重构-改善既有代码的设计),这是Martin Fowler的一本书.主要是针对Java语言.书已经出版多年了,买这本书也有一年多了,但是一直只看了第一章.最近因为工作不是很忙,就拾起来读了.这里主要是记录下读这本书的一些感想以及收获.<br>读这本书有个收获,重构不单单只是修改函数名称,重命名变量名称那么简单.比如进行类的分解,将合适的函数放置在合适的类中.而这些都需要我们在平常的编程活动中去实践.<br>什么时候进行重构呢?当遇到几个方面时,可以考虑进行重构.发现当为函数添加新功能时,并不能很好的添加进去,这时候我们可以进行重构;当写完功能时,我们也可以考虑重构.总之,重构并不是开发过程中必须要通过的一个过程,就像编译-链接等.你可以随时进行重构.</p>
+<h2 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h2><p>我们在平时编程的时候,不可能一次性的就把问题或者程序写的完美无缺,除非我们已经非常熟知某个问题或者某个领域,即使非常熟悉,可能还有我们没有发现的提升之处.那么当我们的程序写的不完美的时候,我们怎么办呢?这时候就可以采用重构的方法来小步快跑的提升我们程序的易读性,优化程序的结构.而这本书给我们提供了如何进行重构的一系列方法.<br>整个开发流程:<br>开发—-&gt; 测试 —-&gt; 重构 —-&gt; 测试</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在我们重构之前,一定要有合适的测试.在Java中,我们经常用的就是Junit和TestNG了.其中Junit主要是用来做单元测试,而TestNG主要是功能测试或者集成测试.如果我们是开发人员,可能使用Junit比较多,不过TestNG一般也会用到.在我们重构完成之后,一定要跑测试用例,跑通了所有的测试用例,这项重构才算是完成.</p>
+<h3 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h3><ol>
+<li>重复代码<br> 遇到相同的程序结构,应该想办法将它们合二为一,这样程序会变得更好</li>
+<li>过长函数<br>函数的代码行数不宜过长,并且函数的命名应该体现出函数做了什么而不是表明怎么做</li>
+<li>过大的类<br>当类过大时,我们可以采取Extract class 或者Extract Subclass来减小类的大小</li>
+<li>过长的参数列<br>将函数的参数可以用对象来进行传递</li>
+<li>发散式变化<br>如果某个类经常因为不同的原因在不同的方向上发生变化,那么这个类就产生了发散式变化.理想情况是针对外界的某一个变化产生的所有相应修改,都应该发生在单一类中.采用 <strong>Extract Class</strong>将因为特定原因造成的所有变化提炼到另一个类中</li>
+<li>霰弹式修改<br>如果遇到某种变化,都必须在许多不同的类内做出许多小修改,那么就产生了霰弹式修改.遇到这种情况,应该使用<strong>Move Method</strong>和<strong>Move Field</strong>将所有的修改集中在一个类中.<br>发散式修改是指”一个类受多种变化的影响”,而霰弹式修改是指”一种变化引发多个类的相应修改”.理想情况是外界变化与需要修改的类趋于一一对应.</li>
+<li>依恋情结<br>函数对某个类的兴趣高过对自己所处类的兴趣.这时候我们应该将此函数移动到此函数对应的类中.</li>
+<li>数据泥团<br>两个类中相同的字段,许多函数签名中相同的参数.这些总是绑定在一起出现的数据应该拥有属于它们的对象</li>
+<li>基本类型偏执<br>我们有时候可以用对象来替代基本类型,比如当表示由一个起始值和一个结束值组成的range类,一个币种的money类.我们可以创建对应的小对象.</li>
+<li>switch惊悚现身<br>在面向对象程序中尽量少用switch语句,因为switch容易造成重复.而且修改switch条件时,需要找到所有的switch来进行修改</li>
+<li>平行继承体系</li>
+<li>冗余类<br>消除没有用的类</li>
+<li>夸夸其谈未来性</li>
+<li>令人迷惑的暂时字段</li>
+<li>过度耦合的消息链</li>
+<li>中间人<br>不要过度使用委托</li>
+<li>狎昵关系</li>
+<li>异曲同工的类</li>
+<li>不完美的类库</li>
+<li>过多的注释</li>
+</ol>
+<h3 id="重构方法"><a href="#重构方法" class="headerlink" title="重构方法"></a>重构方法</h3><blockquote>
+<p>这里仅仅记录了部分的重构方法</p>
+</blockquote>
+<ol>
+<li>提取方法<br>在重构中有一个很核心的动作就是将代码提取为一个单独的方法.这种方式其实也杜绝了重复代码的出现,能够在我们修改代码的时候只需要修改一处就可以.并且能够在多个地方使用</li>
+<li>将注释提取为方法<br>理想的程序就是代码完全能够表达自己,当我们在程序中看到注释或者添加注释的时候,我们可以先思考下能否将注释下的代码提取为一个方法,并且方法的函数名称能够体现注释的内容,方法名称要体现程序做了什么而不是怎么做.</li>
+<li>明确类的职责<br>类的职责不宜过于多,不宜过于复杂.如果看到一个类承担的职责很多,我们可以考虑是否可以将此类拆分,将不属于其应该承担的责任提取到一个新的类中.然后在源类中通过引用来使用新类中的字段或方法</li>
+<li>用查询来代替变量<br>就是在我们使用变量时,我们应该采用计算变量的方法来替代此变量.其实对于这一做法,我是抱有怀疑态度的,因为这造成了函数运行多次.会造成性能下降,但是书中说性能优化属于优化阶段的工作,而且这样重构会为优化阶段带来很好的铺垫.这个我觉得还是主要看平时我们的工作中需要具体情况具体分析.不能尽信书,什么东西都需要我们自己的独立思考</li>
+<li>以卫语句取代嵌套条件表达式<br>条件表达式的两种形式:1.所有分支都属于正常分支;2.只有一种是正常行为,其他都是不正常行为.针对情况1,建议使用if…else结构;针对情况2,使用if进行判断,然后直接返回结果.这样子处理能够提高程序清晰度</li>
+<li>封装集合<br>当我们在类中有个字段是集合时,我们的返回函数不应该直接返回集合自身,而是应该返回集合的只读副本.另外,不应该为这整个集合提供一个设值函数,应该提供为集合添加,删除元素的函数.</li>
+<li>分解条件表达式<br>将复杂的条件表达式分解为较简单的表达式,可是试着尝试将if段落以及else then等提炼为单独的函数</li>
+<li>合并条件表达式<br>如果发现检查条件各不相同,但是最终的行为一致.应该使用逻辑与和逻辑或合并为一个条件表示式</li>
+<li>引入参数对象<br>可以使用对象来替换函数中的众多参数.比如,遇到数据范围的,参数是一个开始时间,结束时间,那么可以新建一个日期范围类,其中的开始时间和结束时间不能修改.用此类来替换开始时间和结束时间.这样做的好处是可以缩短参数列表.</li>
+<li>移除设置函数<br>如果类中的某个字段在对象创建之后不能修改,那么就不提供设置函数,并且将此字段设为<strong>final</strong></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+  </nav>
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

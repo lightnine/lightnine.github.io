@@ -1,37 +1,778 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Quartz,调度,集群," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Quartz与Spring结合使用及集群配置本文的原文在我个人的CSDN上。是在2017年的时候由于工作上面需要用到在集群环境中使用调度，采用了Quartz实现，当时进行了记录。不过现在我写博客主要是在个人站点上，所以就把之前的博客部分搬移过来了。本文代码github地址 quartz介绍quartz是进行任务调度执行的框架，相对于Java中线程池调度以及Spring自带注解的调度方法，有以下几个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quartz与Spring结合使用及集群配置">
+<meta property="og:url" content="https://lightnine/github.io/Quartz%E4%B8%8ESpring%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="Quartz与Spring结合使用及集群配置本文的原文在我个人的CSDN上。是在2017年的时候由于工作上面需要用到在集群环境中使用调度，采用了Quartz实现，当时进行了记录。不过现在我写博客主要是在个人站点上，所以就把之前的博客部分搬移过来了。本文代码github地址 quartz介绍quartz是进行任务调度执行的框架，相对于Java中线程池调度以及Spring自带注解的调度方法，有以下几个">
+<meta property="og:locale">
+<meta property="og:image" content="https://lightnine/Quartz%E4%B8%8ESpring%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
+<meta property="article:published_time" content="2018-09-14T16:44:35.000Z">
+<meta property="article:modified_time" content="2023-12-04T03:11:40.898Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="Quartz">
+<meta property="article:tag" content="调度">
+<meta property="article:tag" content="集群">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lightnine/Quartz%E4%B8%8ESpring%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/Quartz与Spring结合使用及集群配置.html"/>
+
+
+
+
+
+  <title>Quartz与Spring结合使用及集群配置 | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Quartz%E4%B8%8ESpring%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Quartz与Spring结合使用及集群配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-15T00:44:35+08:00">
+                2018-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Quartz与Spring结合使用及集群配置"><a href="#Quartz与Spring结合使用及集群配置" class="headerlink" title="Quartz与Spring结合使用及集群配置"></a>Quartz与Spring结合使用及集群配置</h1><p>本文的原文在我个人的<a href="https://blog.csdn.net/benjaminlee1/article/details/72993879">CSDN</a>上。是在2017年的时候由于工作上面需要用到在集群环境中使用调度，采用了Quartz实现，当时进行了记录。不过现在我写博客主要是在个人站点上，所以就把之前的博客部分搬移过来了。<br>本文代码<a href="https://github.com/lightnine/spring-quartz">github地址</a></p>
+<h2 id="quartz介绍"><a href="#quartz介绍" class="headerlink" title="quartz介绍"></a>quartz介绍</h2><p>quartz是进行任务调度执行的框架，相对于Java中线程池调度以及Spring自带注解的调度方法，有以下几个有点：</p>
+<ol>
+<li>能够支持上千上万个调度任务的执行 </li>
+<li>任务调度方式较为灵活 </li>
+<li>支持集群</li>
+</ol>
+<h2 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h2><ol>
+<li>quartz版本：2.2.1，这是quartz最新的版本，其他版本可能跟此版本有一定差异</li>
+<li>操作系统centos7,我在vmware中搭建了三台独立的虚拟机</li>
+<li>JDK8</li>
+<li>数据库：mysql 5.7.18</li>
+<li>tomcat8</li>
+</ol>
+<h2 id="工程目录结构"><a href="#工程目录结构" class="headerlink" title="工程目录结构"></a>工程目录结构</h2><p>工程目录结构如下，采用Idea IDE<br><img src="/Quartz%E4%B8%8ESpring%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" class="" title="工程目录结构"></p>
+<p>文件说明:<br>resources下是各种配置资源，create-schema.sql用于创建任务表，tables_mysql_innodb.sql用于创建quartz集群运行需要的表，共有十一张表。quartz_properties是quartz的配置</p>
+<h2 id="主要配置文件内容"><a href="#主要配置文件内容" class="headerlink" title="主要配置文件内容"></a>主要配置文件内容</h2><p>配置文件中都有每个配置项详细的说明，我这里就只给出具体的配置内容<br>spring配置文件有两个，分别为applicationContext.xml和spring-mvc.xml<br><strong>applicationContext.xml文件如下</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:aop</span>=<span class="string">&quot;http://www.springframework.org/schema/aop&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">    http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="string"><span class="tag">    http://www.springframework.org/schema/context/spring-context-3.0.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.ll.*&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 启用@Aspect支持 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 加载数据库配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">&quot;classpath:jdbc.properties&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 数据源 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span></span></span><br><span class="line"><span class="tag">          <span class="attr">destroy-method</span>=<span class="string">&quot;close&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClassName&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.driver&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.url&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.username&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.password&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;initialSize&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.initialSize&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;maxActive&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.maxActive&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;maxIdle&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.minIdle&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;maxWait&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.maxWait&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.core.JdbcTemplate&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">&quot;dataSource&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;fetchSize&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>$&#123;jdbc.jdbcTemplate.fetchSize&#125;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 访问数据库方式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;jdbcDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.dexcoder.dal.spring.JdbcDaoImpl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;jdbcTemplate&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置quartz调度器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;scheduler&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.scheduling.quartz.SchedulerFactoryBean&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;overwriteExistingJobs&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--必须的，QuartzScheduler 延时启动，应用启动完后 QuartzScheduler 再启动 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;startupDelay&quot;</span> <span class="attr">value</span>=<span class="string">&quot;3&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 设置自动启动 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;autoStartup&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 把spring上下 文以key/value的方式存放在了quartz的上下文中了 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;applicationContextSchedulerContextKey&quot;</span> <span class="attr">value</span>=<span class="string">&quot;applicationContext&quot;</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- scheduler的名称 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;schedulerName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;ClusterScheduler&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;configLocation&quot;</span> <span class="attr">value</span>=<span class="string">&quot;classpath:quartz.properties&quot;</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!--         &lt;property name=&quot;quartzProperties&quot;&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--             &lt;props&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.scheduler.instanceName&quot;&gt;ClusterScheduler&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.scheduler.instanceId&quot;&gt;AUTO&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 线程池配置 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.threadPool.class&quot;&gt;org.quartz.simpl.SimpleThreadPool&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.threadPool.threadCount&quot;&gt;20&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.threadPool.threadPriority&quot;&gt;5&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 JobStore 配置 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.class&quot;&gt;org.quartz.impl.jdbcjobstore.JobStoreTX&lt;/prop&gt; --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--                 集群配置 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.isClustered&quot;&gt;true&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.clusterCheckinInterval&quot;&gt;15000&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.maxMisfiresToHandleAtATime&quot;&gt;1&lt;/prop&gt; --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.misfireThreshold&quot;&gt;120000&lt;/prop&gt; --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--                 &lt;prop key=&quot;org.quartz.jobStore.tablePrefix&quot;&gt;QRTZ_&lt;/prop&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--             &lt;/props&gt; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--         &lt;/property&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>spring-mvc.xml内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">        http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="string"><span class="tag">        http://www.springframework.org/schema/context/spring-context-3.0.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.ll.*&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">&quot;org.springframework.web.servlet.view.ContentNegotiatingViewResolver&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;order&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;ignoreAcceptHeader&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;mediaTypes&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">map</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">&quot;json&quot;</span> <span class="attr">value</span>=<span class="string">&quot;application/json;charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">&quot;xml&quot;</span> <span class="attr">value</span>=<span class="string">&quot;application/xml;charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">&quot;rss&quot;</span> <span class="attr">value</span>=<span class="string">&quot;application/rss+xml;charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">map</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;defaultViews&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;velocityConfig&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">&quot;org.springframework.web.servlet.view.velocity.VelocityConfigurer&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;resourceLoaderPath&quot;</span> <span class="attr">value</span>=<span class="string">&quot;/WEB-INF&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;configLocation&quot;</span> <span class="attr">value</span>=<span class="string">&quot;classpath:velocity.properties&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;viewResolver&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">&quot;org.springframework.web.servlet.view.velocity.VelocityViewResolver&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;property name=&quot;order&quot; value=&quot;2&quot;/&gt; --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;suffix&quot;</span> <span class="attr">value</span>=<span class="string">&quot;.vm&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;prefix&quot;</span> <span class="attr">value</span>=<span class="string">&quot;/&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;property name=&quot;exposeSpringMacroHelpers&quot; value=&quot;true&quot;/&gt; --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;property name=&quot;requestContextAttribute&quot; value=&quot;rc&quot;/&gt; --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;contentType&quot;</span> <span class="attr">value</span>=<span class="string">&quot;text/html;charset=UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Quartz配置文件为quartz.properties,内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">#配置参数详解，查看http://haiziwoainixx.iteye.com/blog/1838055</span><br><span class="line">#============================================================================</span><br><span class="line"># Configure Main Scheduler Properties  </span><br><span class="line">#============================================================================</span><br><span class="line"># 可为任何值,用在jdbc jobstrore中来唯一标识实例，但是在所有集群中必须相同</span><br><span class="line">org.quartz.scheduler.instanceName: MyClusteredScheduler</span><br><span class="line">#AUTO即可，基于主机名和时间戳来产生实例ID</span><br><span class="line">#集群中的每一个实例都必须有一个唯一的&quot;instance id&quot;,应该有相同的&quot;scheduler instance name&quot;</span><br><span class="line">org.quartz.scheduler.instanceId: AUTO</span><br><span class="line">#禁用quartz软件更新</span><br><span class="line">org.quartz.scheduler.skipUpdateCheck: true</span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Configure ThreadPool  执行任务线程池配置</span><br><span class="line">#============================================================================</span><br><span class="line">#线程池类型，执行任务的线程</span><br><span class="line">org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool</span><br><span class="line">#线程数量</span><br><span class="line">org.quartz.threadPool.threadCount: 10</span><br><span class="line">#线程优先级</span><br><span class="line">org.quartz.threadPool.threadPriority: 5</span><br><span class="line">org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread = true </span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Configure JobStore  任务存储方式</span><br><span class="line">#============================================================================</span><br><span class="line"></span><br><span class="line">org.quartz.jobStore.misfireThreshold: 60000</span><br><span class="line">#可以设置两种属性，存储在内存的RAMJobStore和存储在数据库的JobStoreSupport</span><br><span class="line">#(包括JobStoreTX和JobStoreCMT两种实现JobStoreCMT是依赖于容器来进行事务的管理，而JobStoreTX是自己管理事务)</span><br><span class="line">#这里的属性为 JobStoreTX，将任务持久化到数据中。</span><br><span class="line">#因为集群中节点依赖于数据库来传播 Scheduler 实例的状态，你只能在使用 JDBC JobStore 时应用Quartz 集群。    </span><br><span class="line">#这意味着你必须使用 JobStoreTX 或是 JobStoreCMT 作为 Job 存储；你不能在集群中使用 RAMJobStore。</span><br><span class="line">org.quartz.jobStore.class=org.quartz.impl.jdbcjobstore.JobStoreTX</span><br><span class="line"></span><br><span class="line">#JobStoreSupport 使用一个驱动代理来操作 trigger 和 job 的数据存储</span><br><span class="line">org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.StdJDBCDelegate</span><br><span class="line">#若要设置为true，则将JobDataMaps中的值当作string</span><br><span class="line">org.quartz.jobStore.useProperties=false</span><br><span class="line">#对应下方的数据源配置，与spring结合不需要这个配置</span><br><span class="line">#org.quartz.jobStore.dataSource=myDS</span><br><span class="line">#org.quartz.jobStore.tablePrefix=QRTZ_</span><br><span class="line"></span><br><span class="line">#你就告诉了Scheduler实例要它参与到一个集群当中。这一属性会贯穿于调度框架的始终，用于修改集群环境中操作的默认行为。</span><br><span class="line">org.quartz.jobStore.isClustered=true</span><br><span class="line">#属性定义了Scheduler实例检入到数据库中的频率(单位：毫秒)。默认值是 15000 (即15 秒)。</span><br><span class="line">org.quartz.jobStore.clusterCheckinInterval = 20000</span><br><span class="line"></span><br><span class="line">#这是 JobStore 能处理的错过触发的 Trigger 的最大数量。</span><br><span class="line">#处理太多(超过两打) 很快会导致数据库表被锁定够长的时间，这样就妨碍了触发别的(还未错过触发) trigger 执行的性能。</span><br><span class="line">org.quartz.jobStore.maxMisfiresToHandleAtATime = 1</span><br><span class="line">org.quartz.jobStore.misfireThreshold = 120000</span><br><span class="line">org.quartz.jobStore.txIsolationLevelSerializable = false</span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Other Example Delegates 其他的数据库驱动管理委托类</span><br><span class="line">#============================================================================</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.DB2v6Delegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.DB2v7Delegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.DriverDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.HSQLDBDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.MSSQLDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.PointbaseDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.PostgreSQLDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.StdJDBCDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.WebLogicDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.oracle.OracleDelegate</span><br><span class="line">#org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.oracle.WebLogicOracleDelegate</span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Configure Datasources  数据源配置，与spring结合不需要这个配置</span><br><span class="line">#============================================================================</span><br><span class="line"></span><br><span class="line">#org.quartz.dataSource.myDS.driver: com.mysql.jdbc.Driver</span><br><span class="line">#org.quartz.dataSource.myDS.URL: jdbc:mysql://localhost:3306/quartz</span><br><span class="line">#org.quartz.dataSource.myDS.user: root</span><br><span class="line">#org.quartz.dataSource.myDS.password: 123</span><br><span class="line">#org.quartz.dataSource.myDS.maxConnections: 5</span><br><span class="line">#org.quartz.dataSource.myDS.validationQuery: select 0</span><br><span class="line"></span><br><span class="line">#============================================================================</span><br><span class="line"># Configure Plugins</span><br><span class="line">#============================================================================</span><br><span class="line">#当事件的JVM终止后，在调度器上也将此事件终止</span><br><span class="line">#the shutdown-hook plugin catches the event of the JVM terminating, and calls shutdown on the scheduler.</span><br><span class="line">org.quartz.plugin.shutdownHook.class: org.quartz.plugins.management.ShutdownHookPlugin</span><br><span class="line">org.quartz.plugin.shutdownHook.cleanShutdown: true</span><br><span class="line"></span><br><span class="line">#记录trigger历史的日志插件</span><br><span class="line">#org.quartz.plugin.triggHistory.class: org.quartz.plugins.history.LoggingJobHistoryPlugin</span><br></pre></td></tr></table></figure>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>当按照此项目配置完成之后，将项目打包成war包，然后在一台centos下启动项目，添加任务，之后再另一台centos下也运行此war包。为了简单起见，这里添加的任务仅仅是输出任务的详细信息，并没有其他动作。在两台机器的catalina.out中可以看到输出的结果，可以看到任务可以负载均衡的运行在不同的机器上。</p>
+<blockquote>
+<p>如何动态的查看catalina.out中的内容，可以用tail -f来查看，能够实时看到文件的变化</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Quartz/" rel="tag"># Quartz</a>
+          
+            <a href="/tags/%E8%B0%83%E5%BA%A6/" rel="tag"># 调度</a>
+          
+            <a href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag"># 集群</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/python%E7%9F%A5%E8%AF%86%E7%82%B9.html" rel="next" title="python知识点">
+                <i class="fa fa-chevron-left"></i> python知识点
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/jupyter-notebook%E4%BD%BF%E7%94%A8.html" rel="prev" title="jupyter notebook使用">
+                jupyter notebook使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Quartz%E4%B8%8ESpring%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">Quartz与Spring结合使用及集群配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#quartz%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">quartz介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="nav-number">1.2.</span> <span class="nav-text">运行环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">工程目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="nav-number">1.4.</span> <span class="nav-text">主要配置文件内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C"><span class="nav-number">1.5.</span> <span class="nav-text">运行</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

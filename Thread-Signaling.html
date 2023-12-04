@@ -1,37 +1,862 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="并发," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="线程信号量及wait，notify方法本篇主要介绍线程之间如何进行信号的通知。同时介绍wait，notify底层的一些实现。 通过共享对象进行信号通知最简单的进行线程之间通知的方式就是采用共享变量的方式。比如下面的代码123456789public class MySignal&#123;  protected boolean hasDataToProcess &#x3D; false;  public s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thread Signaling">
+<meta property="og:url" content="https://lightnine/github.io/Thread-Signaling.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="线程信号量及wait，notify方法本篇主要介绍线程之间如何进行信号的通知。同时介绍wait，notify底层的一些实现。 通过共享对象进行信号通知最简单的进行线程之间通知的方式就是采用共享变量的方式。比如下面的代码123456789public class MySignal&#123;  protected boolean hasDataToProcess &#x3D; false;  public s">
+<meta property="og:locale">
+<meta property="og:image" content="https://lightnine/Thread-Signaling/monitor.png">
+<meta property="og:image" content="https://lightnine/Thread-Signaling/strings-wait-notify.png">
+<meta property="article:published_time" content="2019-05-14T02:52:48.000Z">
+<meta property="article:modified_time" content="2023-12-04T03:11:40.899Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="并发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lightnine/Thread-Signaling/monitor.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/Thread-Signaling.html"/>
+
+
+
+
+
+  <title>Thread Signaling | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Thread-Signaling.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Thread Signaling</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-14T10:52:48+08:00">
+                2019-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="线程信号量及wait，notify方法"><a href="#线程信号量及wait，notify方法" class="headerlink" title="线程信号量及wait，notify方法"></a>线程信号量及wait，notify方法</h1><p>本篇主要介绍线程之间如何进行信号的通知。同时介绍wait，notify底层的一些实现。</p>
+<h2 id="通过共享对象进行信号通知"><a href="#通过共享对象进行信号通知" class="headerlink" title="通过共享对象进行信号通知"></a>通过共享对象进行信号通知</h2><p>最简单的进行线程之间通知的方式就是采用共享变量的方式。比如下面的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MySignal</span>&#123;</span><br><span class="line">  <span class="keyword">protected</span> <span class="type">boolean</span> <span class="variable">hasDataToProcess</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="type">boolean</span> <span class="title function_">hasDataToProcess</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.hasDataToProcess;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">setHasDataToProcess</span><span class="params">(<span class="type">boolean</span> hasData)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.hasDataToProcess = hasData;  </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>线程A和线程B共享同一个MySingal实例，当线程A处理好数据后，可以设置hasDataToProcess属性为true，然后线程B获取到此属性。从而完成线程之间的信号通知。当然，如果线程A和线程B不是在同一个MySingal实例上进行的，则不能进行信号的传递。</p>
+<h2 id="忙等待"><a href="#忙等待" class="headerlink" title="忙等待"></a>忙等待</h2><p>在采用MySingal的例子中，一般会采用下面的代码来判断一个线程是否可以进行处理了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="type">MySignal</span> <span class="variable">sharedSignal</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MySingal</span>()</span><br><span class="line"><span class="keyword">while</span>(!sharedSignal.hasDataToProcess())&#123;</span><br><span class="line">  <span class="comment">//do nothing... busy waiting</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>从代码中可以看到，检测hasDataToProcess属性是在一个while循环中，如果hasDataToProcess为false，这就会造成线程一直在执行while语句，造成忙等待。这会造成CPU资源的浪费。</p>
+<h2 id="wait，notify，notifyAll使用"><a href="#wait，notify，notifyAll使用" class="headerlink" title="wait，notify，notifyAll使用"></a>wait，notify，notifyAll使用</h2><p>一般在Java中，我们一般会采用wait，notify或notifyAll进行线程之间信号的传递。线程调用某一个对象上的wait方法前，必须首先获取该对象上的锁，才能执行此对象上的wait方法。在调用notify或者notifyAll之前，也是要获取对应对象上的锁。调用wait方法时，会释放此对象上的锁，线程进入阻塞状态，等待信号。而调用notify后，会随机唤醒一个同对象上的线程，但是必须是退出了notify对应的synchronized块后，被唤醒的线程才能继续执行，因为被唤醒的线程还要获取对象上的锁。如下面的代码所示：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MonitorObject</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyWaitNotify</span>&#123;</span><br><span class="line">  <span class="type">MonitorObject</span> <span class="variable">myMonitorObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MonitorObject</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doWait</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(myMonitorObject)&#123;</span><br><span class="line">      <span class="keyword">try</span>&#123;</span><br><span class="line">        myMonitorObject.wait();</span><br><span class="line">      &#125; <span class="keyword">catch</span>(InterruptedException e)&#123;...&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doNotify</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(myMonitorObject)&#123;</span><br><span class="line">      myMonitorObject.notify();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>从代码中，可以看到在myMonitorObject上调用wait方法之前，会先获取myMonitorObject上的锁。在调用notify方法之前，也是要先获取myMonitorObject上的锁。在下面的内容中我会简单介绍wait和notify的底层原理。</p>
+<h3 id="wait-notify-notifyAll在Object源码中的介绍"><a href="#wait-notify-notifyAll在Object源码中的介绍" class="headerlink" title="wait notify notifyAll在Object源码中的介绍"></a>wait notify notifyAll在Object源码中的介绍</h3><p>在JDK1.8中，Object对象中有三个wait(),wait(long timeout),wait(long timeout, int nanos)这三个方法，它们的主要区别是后两个方法增加了等待的时间。<br>下面是JDK1.8中关于wait(long timeout)方法的描述：</p>
+<blockquote>
+<p>/**</p>
+<pre><code> * Causes the current thread to wait until either another thread invokes the
+ * &#123;@link java.lang.Object#notify()&#125; method or the
+ * &#123;@link java.lang.Object#notifyAll()&#125; method for this object, or a
+ * specified amount of time has elapsed.
+ * &lt;p&gt;
+ * The current thread must own this object&#39;s monitor.
+ * &lt;p&gt;
+ * This method causes the current thread (call it &lt;var&gt;T&lt;/var&gt;) to
+ * place itself in the wait set for this object and then to relinquish
+ * any and all synchronization claims on this object. Thread &lt;var&gt;T&lt;/var&gt;
+ * becomes disabled for thread scheduling purposes and lies dormant
+ * until one of four things happens:
+ * &lt;ul&gt;
+ * &lt;li&gt;Some other thread invokes the &#123;@code notify&#125; method for this
+ * object and thread &lt;var&gt;T&lt;/var&gt; happens to be arbitrarily chosen as
+ * the thread to be awakened.
+ * &lt;li&gt;Some other thread invokes the &#123;@code notifyAll&#125; method for this
+ * object.
+ * &lt;li&gt;Some other thread &#123;@linkplain Thread#interrupt() interrupts&#125;
+ * thread &lt;var&gt;T&lt;/var&gt;.
+ * &lt;li&gt;The specified amount of real time has elapsed, more or less.  If
+ * &#123;@code timeout&#125; is zero, however, then real time is not taken into
+ * consideration and the thread simply waits until notified.
+ * &lt;/ul&gt;
+ * The thread &lt;var&gt;T&lt;/var&gt; is then removed from the wait set for this
+ * object and re-enabled for thread scheduling. It then competes in the
+ * usual manner with other threads for the right to synchronize on the
+ * object; once it has gained control of the object, all its
+ * synchronization claims on the object are restored to the status quo
+ * ante - that is, to the situation as of the time that the &#123;@code wait&#125;
+ * method was invoked. Thread &lt;var&gt;T&lt;/var&gt; then returns from the
+ * invocation of the &#123;@code wait&#125; method. Thus, on return from the
+ * &#123;@code wait&#125; method, the synchronization state of the object and of
+ * thread &#123;@code T&#125; is exactly as it was when the &#123;@code wait&#125; method
+ * was invoked.
+ * &lt;p&gt;
+ * A thread can also wake up without being notified, interrupted, or
+ * timing out, a so-called &lt;i&gt;spurious wakeup&lt;/i&gt;.  While this will rarely
+ * occur in practice, applications must guard against it by testing for
+ * the condition that should have caused the thread to be awakened, and
+ * continuing to wait if the condition is not satisfied.  In other words,
+ * waits should always occur in loops, like this one:
+ * &lt;pre&gt;
+ *     synchronized (obj) &#123;
+ *         while (&amp;lt;condition does not hold&amp;gt;)
+ *             obj.wait(timeout);
+ *         ... // Perform action appropriate to condition
+ *     &#125;
+ * &lt;/pre&gt;
+ * (For more information on this topic, see Section 3.2.3 in Doug Lea&#39;s
+ * &quot;Concurrent Programming in Java (Second Edition)&quot; (Addison-Wesley,
+ * 2000), or Item 50 in Joshua Bloch&#39;s &quot;Effective Java Programming
+ * Language Guide&quot; (Addison-Wesley, 2001).
+ *
+ * &lt;p&gt;If the current thread is &#123;@linkplain java.lang.Thread#interrupt()
+ * interrupted&#125; by any thread before or while it is waiting, then an
+ * &#123;@code InterruptedException&#125; is thrown.  This exception is not
+ * thrown until the lock status of this object has been restored as
+ * described above.
+ *
+ * &lt;p&gt;
+ * Note that the &#123;@code wait&#125; method, as it places the current thread
+ * into the wait set for this object, unlocks only this object; any
+ * other objects on which the current thread may be synchronized remain
+ * locked while the thread waits.
+ * &lt;p&gt;
+ * This method should only be called by a thread that is the owner
+ * of this object&#39;s monitor. See the &#123;@code notify&#125; method for a
+ * description of the ways in which a thread can become the owner of
+ * a monitor.
+ *
+ * @param      timeout   the maximum time to wait in milliseconds.
+ * @throws  IllegalArgumentException      if the value of timeout is
+ *               negative.
+ * @throws  IllegalMonitorStateException  if the current thread is not
+ *               the owner of the object&#39;s monitor.
+ * @throws  InterruptedException if any thread interrupted the
+ *             current thread before or while the current thread
+ *             was waiting for a notification.  The &lt;i&gt;interrupted
+ *             status&lt;/i&gt; of the current thread is cleared when
+ *             this exception is thrown.
+ * @see        java.lang.Object#notify()
+ * @see        java.lang.Object#notifyAll()
+ */
+public final native void wait(long timeout) throws InterruptedException;
+</code></pre></blockquote>
+<p>从代码的注释中，我们可以获得以下一些内容：</p>
+<ol>
+<li>调用wait的线程一定要获取对象上的monitor，在调用wait后，会释放该对象上的锁。</li>
+<li>发生以下四种情况线程会被唤醒：<ul>
+<li>其他的线程在相同的对象上调用了notify</li>
+<li>其他的线程在相同的对象上调用了notifyAll</li>
+<li>其他的线程终止了当前线程(interrupt方法)，会扔出InterruptedException异常</li>
+<li>指定的最大等待时间到了</li>
+</ul>
+</li>
+<li>当线程被唤醒时，当前的线程会从对象的等待集合中移除，重新进入线程调度阶段。之后会跟其他线程竞争获取对象上的锁。</li>
+<li>线程可能在没有上述四种情况发生的时候，被唤醒。这被称为伪唤醒，下面会有详细介绍。</li>
+</ol>
+<h3 id="浅析Object-monitor的底层原理"><a href="#浅析Object-monitor的底层原理" class="headerlink" title="浅析Object monitor的底层原理"></a>浅析Object monitor的底层原理</h3><p>在JVM实现获取对象上的锁，是通过monitor进行实现的。图示如下：<br><img src="/Thread-Signaling/monitor.png" class="" title="java-memory-model"><br>当一个线程需要获取 Object 的锁时，会被放入 EntrySet 中进行等待，如果该线程获取到了锁，成为当前锁的 owner。如果根据程序逻辑，一个已经获得了锁的线程缺少某些外部条件，而无法继续进行下去（例如生产者发现队列已满或者消费者发现队列为空），那么该线程可以通过调用 wait 方法将锁释放，进入 wait set 中阻塞进行等待，其它线程在这个时候有机会获得锁，去干其它的事情，从而使得之前不成立的外部条件成立，这样先前被阻塞的线程就可以重新进入 EntrySet 去竞争锁。</p>
+<h3 id="notify和notifyAll区别"><a href="#notify和notifyAll区别" class="headerlink" title="notify和notifyAll区别"></a>notify和notifyAll区别</h3><p>乍一看，notify和notifyAll的区别很简单，就是notify只能随机选择一个处于等待状态的线程进行唤醒；而notifyAll可以唤醒所有处于等待状态下的线程，但是也是只有一个线程能够继续执行。<br>如果结合上面的图片，我们就能更好地进行理解。当线程在对象上调用notify方法时，随机选择一个处于等待状态的线程，并且把该线程放置在该对象的EntrySet列表中。而如果调用的是notifyAll方法时，所有的处于等待状态下的线程都会进入到EntrySet中，从而多个线程进行对象上的锁。notify有点类似于网络中的单播，而notifyAll类似于多播。</p>
+<h2 id="丢失信号"><a href="#丢失信号" class="headerlink" title="丢失信号"></a>丢失信号</h2><p>设想一下这种情况，有一个线程首先调用了notify方法，然后其他的线程调用了wait方法。那么处于wait下的线程将不会接受到之前线程发送的notify信号。如下面代码所示，<a href="https://github.com/lightnine/daydayup/blob/master/src/main/java/com/leon/concurrent/waitNotify/WaitNotifyMissSingal.java">代码地址</a>：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WaitNotifyMissSingal</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">Object</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;thread B is waiting to get lock&quot;</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (lock) &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;thread B get lock&quot;</span>);</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    lock.notify();</span><br><span class="line">                    System.out.println(<span class="string">&quot;thread B do notify method&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;thread A is waiting to get lock&quot;</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (lock) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        System.out.println(<span class="string">&quot;thread A get lock&quot;</span>);</span><br><span class="line">                        TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">                        System.out.println(<span class="string">&quot;thread A do wait method&quot;</span>);</span><br><span class="line">                        lock.wait();</span><br><span class="line">                        System.out.println(<span class="string">&quot;wait end&quot;</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>运行上面的代码，程序会一直运行下去。那么如何解决这个问题呢，其实在Object的wait的方法注释中也有对应的说明。我们可以把通知信号保存在信号类的成员变量中。<a href="https://github.com/lightnine/daydayup/blob/master/src/main/java/com/leon/concurrent/waitNotify/MyWaitNotify2.java">代码地址</a><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyWaitNotify2</span>&#123;</span><br><span class="line">  <span class="type">MonitorObject</span> <span class="variable">myMonitorObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MonitorObject</span>();</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">wasSignalled</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doWait</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(myMonitorObject)&#123;</span><br><span class="line">      <span class="keyword">if</span>(!wasSignalled)&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">          myMonitorObject.wait();</span><br><span class="line">         &#125; <span class="keyword">catch</span>(InterruptedException e)&#123;...&#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//clear signal and continue running.</span></span><br><span class="line">      wasSignalled = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doNotify</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(myMonitorObject)&#123;</span><br><span class="line">      wasSignalled = <span class="literal">true</span>;</span><br><span class="line">      myMonitorObject.notify();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在上面的代码中，将信号保存在了wasSingalled变量中，只要调用了notify方法，就是将wasSignalled设置为true，表示有线程执行了notify。在doWait方法中，如果wasSignalled为false，则当前的线程会执行wait方法，进入等待状态；而当wasSignalled为true时，不会执行wait方法，只会将wasSignalled设置为false。</p>
+<h2 id="伪唤醒"><a href="#伪唤醒" class="headerlink" title="伪唤醒"></a>伪唤醒</h2><p>因为一些底层操作系统的原因，具体的可以查看unix操作系统相关内容。简单理解，就是当线程没有接受到唤醒信号时，而线程被错误的唤醒。为了防止伪唤醒，一定要在while循环中检查信号变量的值。这样的循环也叫自旋锁。代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyWaitNotify3</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="type">MonitorObject</span> <span class="variable">myMonitorObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MonitorObject</span>();</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">wasSignalled</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doWait</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(myMonitorObject)&#123;</span><br><span class="line">      <span class="keyword">while</span>(!wasSignalled)&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">          myMonitorObject.wait();</span><br><span class="line">         &#125; <span class="keyword">catch</span>(InterruptedException e)&#123;...&#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//clear signal and continue running.</span></span><br><span class="line">      wasSignalled = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doNotify</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(myMonitorObject)&#123;</span><br><span class="line">      wasSignalled = <span class="literal">true</span>;</span><br><span class="line">      myMonitorObject.notify();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="不要在常量字符串或全局对象上调用wait方法"><a href="#不要在常量字符串或全局对象上调用wait方法" class="headerlink" title="不要在常量字符串或全局对象上调用wait方法"></a>不要在常量字符串或全局对象上调用wait方法</h2><p>请看下面的例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyWaitNotify</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="type">String</span> <span class="variable">myMonitorObject</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">wasSignalled</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doWait</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(myMonitorObject)&#123;</span><br><span class="line">      <span class="keyword">while</span>(!wasSignalled)&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">          myMonitorObject.wait();</span><br><span class="line">         &#125; <span class="keyword">catch</span>(InterruptedException e)&#123;...&#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//clear signal and continue running.</span></span><br><span class="line">      wasSignalled = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doNotify</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(myMonitorObject)&#123;</span><br><span class="line">      wasSignalled = <span class="literal">true</span>;</span><br><span class="line">      myMonitorObject.notify();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>从代码中我们可以看到，在上锁时是对myMonitorObject对象上锁，也是在myMonitorObject上调用wait方法，而myMonitorObject是一个空的字符串。我们知道，JVM会将相同的字符串看成同一个对象。也就说说，如果有两个MyWaitNotify实例，则这两个实例中的myMonitorObject是指向同一个对象的。那么一个在实例MyWaitNotify上调用wait的线程会被在另一个实例MyWaitNotify上调用doNotify方法的线程唤醒。下面的图表示了实例的成员指向了相同的对象。<br><img src="/Thread-Signaling/strings-wait-notify.png" class="" title="strings-wait-notify"><br>在上图中，4个线程是在相同的String常量上调用wait和notify方法，但是信号wasSignalled仍然是单独存放在对应的实例对象上。即一个在MyWaitNotify1实例上调用doNotify方法的线程可能会唤醒在MyWaitNotify2实例上等待的线程，但是唤醒信号仍然是单独保存在MyWaitNotify1实例中。<br>如果仔细看上面的程序，发现当在第二个MyWaitNotify2实例上调用doNotify方法时，会唤醒线程A或者B，但是由于在while循环中的wasSignalled变量，对于MyWaitNotify1实例仍然是false。所以被唤醒的线程A或者B从wait启动，但是会再次进入while循环调用wait，再次进入阻塞状态。这跟伪唤醒很像。<br>由于在doNotify方法中调用的notify方法，此方法不像notifyAll方法，notify方法只会唤醒一个线程，如果是线程C调用的doNotify，本来想唤醒的是线程D。但是有可能会错误的唤醒线程A或B，并且线程A或B会修改对应实例上的wasSignalled变量。而发给D的信号就丢失了，就有点像信号丢失的情况。如果将doNotify方法中的notify替换成notifyAll就不会有这个问题。但是这是一个坏主意，当应用仅仅只需要唤醒一个线程时，没有任何理由要把所有的线程都唤醒。<br>注意，对于wait/notify的情况，永远不要使用全局的对象例如string常量。在wait和notify上使用的对象针对对应的实例必须是独一的。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://tutorials.jenkov.com/java-concurrency/thread-signaling.html">http://tutorials.jenkov.com/java-concurrency/thread-signaling.html</a></li>
+<li><a href="http://www.php.cn/java-article-410323.html">http://www.php.cn/java-article-410323.html</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"># 并发</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/java-synchronized-keyword.html" rel="next" title="java synchronized keyword">
+                <i class="fa fa-chevron-left"></i> java synchronized keyword
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Read-Write-locks-in-java-java%E4%B8%AD%E7%9A%84%E8%AF%BB%E5%86%99%E9%94%81.html" rel="prev" title="Read/Write locks in java(java中的读写锁)">
+                Read/Write locks in java(java中的读写锁) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E4%BF%A1%E5%8F%B7%E9%87%8F%E5%8F%8Await%EF%BC%8Cnotify%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">线程信号量及wait，notify方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%85%B1%E4%BA%AB%E5%AF%B9%E8%B1%A1%E8%BF%9B%E8%A1%8C%E4%BF%A1%E5%8F%B7%E9%80%9A%E7%9F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">通过共享对象进行信号通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%99%E7%AD%89%E5%BE%85"><span class="nav-number">1.2.</span> <span class="nav-text">忙等待</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait%EF%BC%8Cnotify%EF%BC%8CnotifyAll%E4%BD%BF%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">wait，notify，notifyAll使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wait-notify-notifyAll%E5%9C%A8Object%E6%BA%90%E7%A0%81%E4%B8%AD%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.3.1.</span> <span class="nav-text">wait notify notifyAll在Object源码中的介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%85%E6%9E%90Object-monitor%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.2.</span> <span class="nav-text">浅析Object monitor的底层原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#notify%E5%92%8CnotifyAll%E5%8C%BA%E5%88%AB"><span class="nav-number">1.3.3.</span> <span class="nav-text">notify和notifyAll区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A2%E5%A4%B1%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.4.</span> <span class="nav-text">丢失信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E5%94%A4%E9%86%92"><span class="nav-number">1.5.</span> <span class="nav-text">伪唤醒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E5%9C%A8%E5%B8%B8%E9%87%8F%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%88%96%E5%85%A8%E5%B1%80%E5%AF%B9%E8%B1%A1%E4%B8%8A%E8%B0%83%E7%94%A8wait%E6%96%B9%E6%B3%95"><span class="nav-number">1.6.</span> <span class="nav-text">不要在常量字符串或全局对象上调用wait方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.7.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,37 +1,816 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="并发,内存模型," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Java内存模型规定了Java虚拟机如何跟计算机的内存协同工作。因为Java虚拟机模拟了计算机，所以自然Java虚拟机包括内存模型。 正确理解Java内存模型对于编写正确的并发程序非常重要。Java内存模型规定了线程何时以及怎么读取其他线程写的值，还有就是在获取共享变量时如何进行同步操作。 最初的Java内存模型是有缺陷的，因此在Java5中进行了修改，并且这个版本的Java内存模型一直到Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Memory Model">
+<meta property="og:url" content="https://lightnine/github.io/Java-Memory-Model.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="Java内存模型规定了Java虚拟机如何跟计算机的内存协同工作。因为Java虚拟机模拟了计算机，所以自然Java虚拟机包括内存模型。 正确理解Java内存模型对于编写正确的并发程序非常重要。Java内存模型规定了线程何时以及怎么读取其他线程写的值，还有就是在获取共享变量时如何进行同步操作。 最初的Java内存模型是有缺陷的，因此在Java5中进行了修改，并且这个版本的Java内存模型一直到Java">
+<meta property="og:locale">
+<meta property="og:image" content="https://lightnine/Java-Memory-Model/java-memory-model-1.png">
+<meta property="og:image" content="https://lightnine/Java-Memory-Model/java-memory-model-2.png">
+<meta property="og:image" content="https://lightnine/Java-Memory-Model/java-memory-model-3.png">
+<meta property="og:image" content="https://lightnine/Java-Memory-Model/java-memory-model-4.png">
+<meta property="og:image" content="https://lightnine/Java-Memory-Model/java-memory-model-5.png">
+<meta property="og:image" content="https://lightnine/Java-Memory-Model/java-memory-model-6.png">
+<meta property="og:image" content="https://lightnine/Java-Memory-Model/java-memory-model-7.png">
+<meta property="article:published_time" content="2019-05-06T10:58:33.000Z">
+<meta property="article:modified_time" content="2023-12-04T03:11:40.897Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="并发">
+<meta property="article:tag" content="内存模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lightnine/Java-Memory-Model/java-memory-model-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/Java-Memory-Model.html"/>
+
+
+
+
+
+  <title>Java Memory Model | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Java-Memory-Model.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java Memory Model</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-06T18:58:33+08:00">
+                2019-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Java内存模型规定了Java虚拟机如何跟计算机的内存协同工作。因为Java虚拟机模拟了计算机，所以自然Java虚拟机包括内存模型。</p>
+<p>正确理解Java内存模型对于编写正确的并发程序非常重要。Java内存模型规定了线程何时以及怎么读取其他线程写的值，还有就是在获取共享变量时如何进行同步操作。</p>
+<p>最初的Java内存模型是有缺陷的，因此在Java5中进行了修改，并且这个版本的Java内存模型一直到Java8都在使用。</p>
+<h1 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h1><p>JVM中的内存模型将内存分为线程栈内存和堆内存。下面的图从逻辑上展示了Java内存模型:<br><img src="/Java-Memory-Model/java-memory-model-1.png" class="" title="java-memory-model"></p>
+<p>每个在JVM中运行的线程都有它自己栈空间。线程的栈空间中包含了线程调用方法执行到那一刻的数据。随着线程执行它的代码，调用栈也随之改变。</p>
+<p>线程的栈空间同样也包含每个执行的方法的局部变量。线程只能获取它自己的栈空间，其中包含的局部变量对于其他线程是不可见的。即使两个线程执行相同的代码，这两个线程也是在各自的线程栈空间中创建各自的局部变量。</p>
+<p>所有的原型类型(boolean,byte,short,char,int,long,float,double)的局部变量都是存储在线程的栈空间中。一个线程可能传递一个原型变量的副本给另一个线程，但是另一个线程并不能共享这个原型变量。</p>
+<p>不管哪个线程创建了对象，这些对象都是存储在堆空间中。这也包括原型类型的包装器类型(e.g. Byte, Integer)。不管对象是被分配给局部变量还是作为另一个对象的成员变量，这个对象都是存储在堆空间中。</p>
+<p>下面的图中说明了调用栈和局部变量存储在线程的栈空间中，而对象存储在堆空间中:</p>
+<img src="/Java-Memory-Model/java-memory-model-2.png" class="" title="java-memory-model">
+<p>如果局部变量是原型类型，那么这个变量在线程的栈空间中。</p>
+<p>如果局部变量是一个指向对象的引用类型，那么这个引用是在线程的栈空间，但是对象本身是在堆空间中。</p>
+<p>如果一个对象包含方法，同时这些方法包含局部变量。那么这些局部变量(原型类型或者引用)是保存在线程栈空间中，即使这些方法所在的对象是存储在堆空间中。</p>
+<p>一个对象的成员变量是跟对象一起存储在堆内存中，不管这个成员变量是原型还是指向一个对象的引用。</p>
+<p>类的静态变量也是跟类的定义一起存在堆内存中。</p>
+<p>堆空间中对象能够被所有拥有指向此对象的引用的线程访问到。当一个线程能够访问一个对象时，那么这个线程也能够访问此对象的成员变量(这里要看这个对象的封装性)。如果两个线程同时调用了同一个对象的一个方法，那么这两个线程将能够访问这个对象的成员变量，但是每个线程都会获得局部变量的一份拷贝。</p>
+<p>下面的图说明了上面描述的内容：</p>
+<img src="/Java-Memory-Model/java-memory-model-3.png" class="" title="java-memory-model">
+<p>在上图中，两个线程有一系列的局部变量。其中一个局部变量(Local Variable 2)指向了堆内存上的共享对象(Object3)。这两个线程分别拥有一个指向同一个对像的引用，这两个引用是不同的。这些引用是局部变量，所以存储在各自线程的栈空间中。而这两个不同的引用指向了堆上的同一个对象。</p>
+<p>注意到共享对象(Object3)有两个引用指向了Object2和Object4,如图中箭头所示。通过Object3中的成员变量引用，这两个线程能够获取Object2和Object4。</p>
+<blockquote>
+<p>The diagram also shows a local variable which point to two different objects on the heap. In this case the references point to two different objects (Object 1 and Object 5), not the same object. In theory both threads could access both Object 1 and Object 5, if both threads had references to both objects. But in the diagram above each thread only has a reference to one of the two objects.</p>
+</blockquote>
+<p>上图中同样了展示了一个局部变量指向堆上两个不同的对象。指向不同对象(Object1, Object5)的引用不是同一个对象。理论上，如果这两个线程有指向这两个对象的引用，那么这两个线程都能够访问Object1和Object5。但是在上图中每个线程只有指向其中一个对象的引用。</p>
+<p>那么，在Java代码中如何反应上面的内存图呢？代码很简单，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        methodOne();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">methodOne</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">localVariable1</span> <span class="operator">=</span> <span class="number">45</span>;</span><br><span class="line"></span><br><span class="line">        <span class="type">MySharedObject</span> <span class="variable">localVariable2</span> <span class="operator">=</span></span><br><span class="line">            MySharedObject.sharedInstance;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//... do more with local variables.</span></span><br><span class="line"></span><br><span class="line">        methodTwo();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">methodTwo</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Integer</span> <span class="variable">localVariable1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(<span class="number">99</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//... do more with local variable.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MySharedObject</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//static variable pointing to instance of MySharedObject</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">MySharedObject</span> <span class="variable">sharedInstance</span> <span class="operator">=</span></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">MySharedObject</span>();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//member variables pointing to two objects on the heap</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">Integer</span> <span class="variable">object2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(<span class="number">22</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="type">Integer</span> <span class="variable">object4</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(<span class="number">44</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">long</span> <span class="variable">member1</span> <span class="operator">=</span> <span class="number">12345</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">long</span> <span class="variable">member1</span> <span class="operator">=</span> <span class="number">67890</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果两个线程执行run()方法,那么此代码就表明了上图所示的内存分布。run方法首先调用methodOne方法，然后methodOne方法调用methodTwo方法。</p>
+<p>在methodOne方法中定义了一个原型的局部变量localVariable1,同时定义了一个指向对象的引用localVariable2.</p>
+<p>每个执行methodOne方法的线程都会在各自的线程栈空间中创建localVariable1和localVariable2的副本。localVariable1在两个线程中是完全独立的，仅仅存在于对应线程的栈空间中。一个线程不能看到其他线程对于localVariable1变量的修改。</p>
+<p>执行methodOne方法的线程同样会创建localVariable2的副本。但是，这两个localVariable2的副本是指向在堆上的同一个对象。而localVariable2引用指向的对象是一个类的静态成员变量。而类的静态变量在堆中只存在一份。所以两个localVariable2指向同一个MySharedObject对象的实例，MySharedObject实例存储在堆内存上，对应图中的Object3对象。</p>
+<p>我们在来看看methodTwo方法是如何创建localVariable1局部变量的。这个局部变量是指向一个Integer对象的引用。methodTwo方法每次都重新创建一个Integer实例。局部变量localVariable2引用是存储在对应的栈空间中，而对应的Integer对象是在堆内存中，因为每次执行methodTwo方法都会创建Integer对象，所以在堆内存中会有两个Integer对象。即对应于图中的Object1和Object5对象。</p>
+<p>在MySharedObject中有两个long类型的局部变量，因为这些变量是类的成员变量，所以它们跟具体的对象一起保存在堆内存中。仅仅局部变量是保存在栈内存中的。</p>
+<h1 id="硬件内存架构"><a href="#硬件内存架构" class="headerlink" title="硬件内存架构"></a>硬件内存架构</h1><p>硬件内存跟Java内存模型是有些不一样的。为了更好地理解Java内存模型，我们需要了解硬件内存架构。下面的图简单描述了现代计算机的硬件架构：</p>
+<img src="/Java-Memory-Model/java-memory-model-4.png" class="" title="java-memory-model">
+<p>现代的计算机通常会有两个以上的CPU，同时这些CPU可能有多个核。这也意味着我们可以将多个线程同时运行在多个CPU上。在给定的时间点，每个CPU都能运行一个线程。即如果你的Java程序是多线程的，那么能够在多个CPU上同时运行(并行)。</p>
+<p>在上图中我们可以看到每个CPU内部都有一系列的寄存器。CPU在寄存器上执行的操作要比在主存中的操作快。这是因为CPU能够更快的获取寄存器上的内容。</p>
+<p>每个CPU都有一个对应的缓存内存。获取缓存中的内容要快于获取主存中的内容，但是没有获取寄存器中的内容快。CPU缓存的速度要介于寄存器和主存之间。有些CPU可能会有多级的缓存。</p>
+<p>一个计算机包含一个主存(RAM),所有的CPU都能够获取主存中的内容。主存的容量要远远大于缓存的容量。</p>
+<p>如果一个CPU要读取主存的内容，通常只会读取主存中部分区域的内容到CPU缓存中，然后在从缓存读取到寄存器中，之后进行计算。当CPU需要写结果到主存中，它会将寄存机中的值刷新到缓存中，然后在之后的某个时间点，在将缓存中的内容刷新到主存中。</p>
+<p>当CPU需要存储缓存中的值时，会将缓存中的值刷新到主存中。同时CPU缓存也可以局部的刷新缓存值以及写出缓存值。</p>
+<h1 id="Java内存模型和硬件内存架构之间的桥接"><a href="#Java内存模型和硬件内存架构之间的桥接" class="headerlink" title="Java内存模型和硬件内存架构之间的桥接"></a>Java内存模型和硬件内存架构之间的桥接</h1><p>像前面说明的，Java内存模型和硬件内存架构是不同的。硬件内存架构不会区分线程栈和堆空间。在硬件中，线程栈和堆空间都是在主存中的。同时，部分线程栈和堆内存会出现在CPU缓存或者CPU寄存器中。下面的图进行了说明：</p>
+<img src="/Java-Memory-Model/java-memory-model-5.png" class="" title="java-memory-model">
+<p>当对象和变量存储在不同的内存区域时，会出现一些问题。主要的两个问题如下：</p>
+<ol>
+<li>共享变量的可见性(可见性，即一个线程能够及时的看到另一个线程对于共享变量的修改)</li>
+<li>竞态条件(即读取，检查，写入共享变量)</li>
+</ol>
+<p>下面会依次介绍这两个问题。</p>
+<h2 id="共享变量的可见性"><a href="#共享变量的可见性" class="headerlink" title="共享变量的可见性"></a>共享变量的可见性</h2><p>如果两个线程共享一个对象，但是没有采用合适的volatile关键字或者同步操作，那么当一个线程更新共享对象时，可能另一个线程并不能看到更新后的值。</p>
+<p>想象一下，一个共享对象最初是在主存中，一个CPU上的线程读取了此对象到CPU缓存中，之后对于这个共享对象进行了修改。只要CPU缓存没有刷新到主存中，那么运行在其他CPU上的线程是不能读取到修改后的共享变量的值的。这会造成其他CPU只能看到修改之间的值。</p>
+<p>下面的图说明了这种情况。在左边的CPU上运行的线程将共享对象读取到CPU缓存中，然后将它的count变量修改为2.由于没有将count的修改刷新到主存中，所以在右侧CPU上运行的线程不能看到这个修改。</p>
+<img src="/Java-Memory-Model/java-memory-model-6.png" class="" title="java-memory-model">
+<p>为了解决这个问题，我们可以使用Java中的<a href="http://tutorials.jenkov.com/java-concurrency/volatile.html">volatile</a>关键字.volatile关键字的作用是保证每次都是从主存中读取变量的值，同时如果修改了此变量，那么此变量会立刻写回到主存中。</p>
+<h2 id="竞态条件"><a href="#竞态条件" class="headerlink" title="竞态条件"></a>竞态条件</h2><p>如果两个线程或多个线程共享一个对象，那么当多余一个线程修改此变量时，竞态条件就可能会出现。</p>
+<p>想象一下，线程A将一个共享对象的count变量读取进CPU缓存，线程B也将count读取到另一个CPU缓存。现在线程A在count加上1，同时线程B也在count上加上1.现在变量被增加了两次，在每个CPU缓存中各一次。</p>
+<p>如果加1操作是顺序进行的，那么count的值会加上2，然后写回到主存中。</p>
+<p>但是，这两个操作是在没有正确同步的情况下同时进行的。尽管线程A或者B会将count修改后的值写回到主存，但是更新后的值始终比原来的值大1.</p>
+<p>下面的图说明了上面描述的竞态条件：</p>
+<img src="/Java-Memory-Model/java-memory-model-7.png" class="" title="java-memory-model">
+<p>为了解决这个问题，可以使用Java的同步块，即<a href="http://tutorials.jenkov.com/java-concurrency/synchronized.html">synchronized</a>关键字。同步块保证了在同步块中获取到的变量都是从主存中读取的，并且当线程离开同步块时，所有修改的变量会被刷新到主存中，而不管这个变量是否被volatile声明。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"># 并发</a>
+          
+            <a href="/tags/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" rel="tag"># 内存模型</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/%E7%94%A8%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%9B%BF%E6%8D%A2%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0.html" rel="next" title="用静态工厂方法替换构造函数">
+                <i class="fa fa-chevron-left"></i> 用静态工厂方法替换构造函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/java-synchronized-keyword.html" rel="prev" title="java synchronized keyword">
+                java synchronized keyword <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">Java内存模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E5%86%85%E5%AD%98%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">硬件内存架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E7%A1%AC%E4%BB%B6%E5%86%85%E5%AD%98%E6%9E%B6%E6%9E%84%E4%B9%8B%E9%97%B4%E7%9A%84%E6%A1%A5%E6%8E%A5"><span class="nav-number">3.</span> <span class="nav-text">Java内存模型和硬件内存架构之间的桥接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F%E7%9A%84%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">3.1.</span> <span class="nav-text">共享变量的可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%9E%E6%80%81%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">竞态条件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

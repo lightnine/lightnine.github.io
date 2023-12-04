@@ -1,37 +1,825 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="线性回归算法,局部加权回归算法,岭回归算法,lasso回归算法," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="线性回归算法 注：本文所有代码和数据均在个人github下click me  回归算法一般是针对预测是连续的情况下，对于预测值是离散的，采用的算法是分类算法。线性回归算法包括很多种变形，这里提到的线性回归算法是其中的几种典型算法。在实际应用中，我们采用线性算法可以预测商品的价格，预测房子的房价等等，虽然线性回归算法比较简单，但是在实际中还是有很多的使用的。  在机器学习中，我们要紧盯三件事情。第一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性回归算法">
+<meta property="og:url" content="https://lightnine/github.io/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="线性回归算法 注：本文所有代码和数据均在个人github下click me  回归算法一般是针对预测是连续的情况下，对于预测值是离散的，采用的算法是分类算法。线性回归算法包括很多种变形，这里提到的线性回归算法是其中的几种典型算法。在实际应用中，我们采用线性算法可以预测商品的价格，预测房子的房价等等，虽然线性回归算法比较简单，但是在实际中还是有很多的使用的。  在机器学习中，我们要紧盯三件事情。第一">
+<meta property="og:locale">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.PNG">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0.PNG">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83.PNG">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0.PNG">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%AF%B9%E6%95%B0%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0.PNG">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%B5%8B%E8%AF%95.png">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%B1%80%E9%83%A8%E5%8A%A0%E6%9D%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.PNG">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%B1%80%E9%83%A8%E5%8A%A0%E6%9D%83%E5%9B%9E%E5%BD%92%E6%8B%9F%E5%90%88.png">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/k%E5%80%BC%E7%9A%84%E5%BD%B1%E5%93%8D.PNG">
+<meta property="og:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%B2%AD%E5%9B%9E%E5%BD%92.png">
+<meta property="article:published_time" content="2018-09-05T15:41:13.000Z">
+<meta property="article:modified_time" content="2023-12-04T03:11:40.911Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="线性回归算法">
+<meta property="article:tag" content="局部加权回归算法">
+<meta property="article:tag" content="岭回归算法">
+<meta property="article:tag" content="lasso回归算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lightnine/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/线性回归算法.html"/>
+
+
+
+
+
+  <title>线性回归算法 | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">线性回归算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T23:41:13+08:00">
+                2018-09-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="线性回归算法"><a href="#线性回归算法" class="headerlink" title="线性回归算法"></a>线性回归算法</h1><blockquote>
+<p>注：本文所有代码和数据均在个人github下<a href="https://github.com/lightnine/machine-learning/blob/master/src/regression/regression.py">click me</a></p>
+</blockquote>
+<p>回归算法一般是针对预测是连续的情况下，对于预测值是离散的，采用的算法是分类算法。线性回归算法包括很多种变形，这里提到的线性回归算法是其中的几种典型算法。在实际应用中，我们采用线性算法可以预测商品的价格，预测房子的房价等等，虽然线性回归算法比较简单，但是在实际中还是有很多的使用的。</p>
+<blockquote>
+<p>在机器学习中，我们要紧盯三件事情。第一，算法的损失函数；第二，采用什么求值算法求损失函数的最小值；第三，算法的评价指标</p>
+</blockquote>
+<h2 id="一般线性回归算法"><a href="#一般线性回归算法" class="headerlink" title="一般线性回归算法"></a>一般线性回归算法</h2><p>一般的线性回归又叫做最小二乘算法，最小二乘是因为算法的损失函数是最小二乘的，损失函数如下：</p>
+<script type="math/tex; mode=display">J(\theta)={\frac 12}\sum\limits_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^2 \tag {1.1}</script><p>其中$h_\theta(x^{(i)})$是算法针对数据的预测值，而$y^{(i)}$是数据的真实值，$m$表示训练数据的条数，而${\frac 12}$是为了此公式求导方便而加入的。而$\theta$是算法的参数，在这里就是线性回归的权重值。通过此公式我们可以得到，线性回归算法的损失函数就是针对每个样本计算预测值和真实值得差，然后将差求平方，之后将全体样本的差平方相加即得到损失函数。<br>针对损失函数，我们有两种算法可以求取损失函数的最小值。</p>
+<h3 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h3><p>梯度下降算法的一般形式：</p>
+<script type="math/tex; mode=display">\theta_j: = \theta_j - \alpha{\frac \partial  {\partial\theta_j}}J(\theta) \tag {1.2}</script><p>这里写的是梯度下降算法的标量形式。这个公式描述了梯度下降算法是如何更新算法的参数的，其中$\alpha$是参数的更新步长。可以看到这里的关键是如何求取损失函数关于参数j的偏导数。<br>将损失函数带入到梯度下降算法,即公式$(1.2)$中，并且求导，可以得到下式：</p>
+<script type="math/tex; mode=display">\theta_j:= \theta_j + \alpha{\sum_{i=1}^m (y^{(i)} - h_\theta(x^{(i)}))x_j^{(i)}} \tag {1.3}</script><p>我们重复的使用公式$(1.3)$直到达到收敛条件，即可以求得线性回归算法中的参数值。<br>从公式中，可以看到用真实值和预测值之间的差值来更新参数值，这种方式或者思想在很多的机器学习算法中可以看到，包括深度学习的后向传播算法。同时，可以看到每一次的迭代都要使用整个数据集。这种方式叫做批量梯度下降算法。还有一种方式可以求取$\theta$值，叫做随机梯度下降算法，算法如下：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.PNG" class="" title="随机梯度下降算法"><br>从中我们可以看到，随机梯度下降算法每次采用一个训练样本取更新所有的参数值，注意那里的(for every j)。当训练样本很多时，相比于批量梯度下降算法，随机梯度下降算法能够更快的更新算法的参数值，并且能够更快的逼近损失函数的最小值。</p>
+<h3 id="代数解"><a href="#代数解" class="headerlink" title="代数解"></a>代数解</h3><p>我们将损失函数用向量表示，如下所示：</p>
+<script type="math/tex; mode=display">J(\theta) = {\frac 12}(X\theta - \vec{y})^T(X\theta - \vec{y}) \tag{1.4}</script><p>公式中的$X$表示训练数据的矩阵。因为损失函数是凸二次函数，所以只有一个最小值，所以导数为0的点就是损失函数的最小值。<br>具体的推导过程如下(主要利用了矩阵的迹运算)：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0.PNG" class="" title="推导过程"><br>令导数等于0，从而得到：</p>
+<script type="math/tex; mode=display">\theta = (X^TX)^{(-1)}X^T\vec{y} \tag{1.5}</script><h3 id="回归模型的概率解释"><a href="#回归模型的概率解释" class="headerlink" title="回归模型的概率解释"></a>回归模型的概率解释</h3><p>大家想过没有，为什么在线性回归模型里面选择最小二乘作为损失函数？接下来从概率的角度来解释选择最小二乘作为损失函数的原因。<br>首先，假设目标变量和输入数据存入如下的关系：</p>
+<script type="math/tex; mode=display">y^{(i)} = \theta^Tx^{(i)} + \epsilon^{(i)} \tag{1.6}</script><p>这里的$\epsilon^{(i)}$是误差项，包括模型未考虑到影响目标变量的因素和随机噪声。<br>接下来假设，误差项相互独立同分布，并且服从高斯分布(即正态分布)</p>
+<blockquote>
+<p>为什么要假设误差项服从高斯分布? 第一是因为采用高斯分布，在数学上处理会比较简单；第二是因为根据中心极限定理，独立的随机变量的和，其总的影响接近高斯分布</p>
+</blockquote>
+<p>误差项的概率密度函数为：</p>
+<script type="math/tex; mode=display">p(\epsilon^{(i)}) = {\frac 1{\sqrt{2\pi}}}exp(-{\frac {(\epsilon^{(i)})^2} {2\sigma^2}}) \tag {1.7}</script><p>根据公式$(1.6)$和公式$(1.7)$,我们可以得出如下结论：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83.PNG" class="" title="概率分布"><br>在公式中，$\theta$不是随机变量，而是实际存在的值，虽然我们不知道真实值是多少。$p(y^{(i)}|x^{(i)};\theta)$的含义是给定$x^{(i)}$,参数设定为$\theta$时,<script type="math/tex">y^{(i)}</script>的概率密度。注意公式中用的分号。<br>数据的概率是由$p(\vec{y} | X;\theta)$给出的，而总的概率可以看成是在固定$\theta$时，关于$\vec{y}$的函数。换个角度，我们想要将这个函数明确的看成是关于$\theta$的函数，所以我们将其称作似然函数，从而我们得到关于$\theta$的似然函数：</p>
+<blockquote>
+<p>似然(likelihood)和概率(probability)实际上是一个东西，但是似然函数是对参数$\theta$定义的，为了加以区分，使用了似然这一术语。我们可以说参数的似然，数据的概率，但不能说数据的似然，参数的概率。</p>
+</blockquote>
+<script type="math/tex; mode=display">L(\theta) = L(\theta;X,\vec{y}) = p(\vec{y}|X;\theta)</script><p>极大似然估计就是选择$\theta$,使参数的似然函数最大化，也就是选择参数使得已有样本的出现概率最大。<br>因为$L(\theta)$是严格单调递增的，并且对数函数也是递增的，所以取对数，得到的$\theta$跟不取对象是一样的。<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0.PNG" class="" title="似然函数"><br>对数似然函数$\mathcal {l}(\theta)$:<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%AF%B9%E6%95%B0%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0.PNG" class="" title="对数似然函数"><br>最大化似然函数，就是最大化对数似然函数，即最小化</p>
+<script type="math/tex; mode=display">{\frac 12}{\sum\limits_{i=1}^{m}}(y^{(i)} - \theta^Tx^{(i)})^2</script><p>这个式子刚好是线性回归算法中采用的损失函数。总结一下，最小二乘回归模型刚好就是在假设了误差独立同服从正态分布后，得到的最大似然估计。同时注意到，正态分布中的方差$\sigma^2$的取值对模型并没有影响。</p>
+<h3 id="编程实现"><a href="#编程实现" class="headerlink" title="编程实现"></a>编程实现</h3><h4 id="代数解实现线性回归算法"><a href="#代数解实现线性回归算法" class="headerlink" title="代数解实现线性回归算法"></a>代数解实现线性回归算法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">standard_regression</span>(<span class="params">x_arr, y_arr</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    这里直接采用代数解直接求取权重大小.这里有个条件是xTx的逆必须存在,</span></span><br><span class="line"><span class="string">    如果不存在,则直接返回</span></span><br><span class="line"><span class="string">    :param x_arr:</span></span><br><span class="line"><span class="string">    :param y_arr:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    x_mat = np.mat(x_arr)</span><br><span class="line">    y_mat = np.mat(y_arr).T</span><br><span class="line">    xTx = x_mat.T * x_mat</span><br><span class="line">    <span class="keyword">if</span> np.linalg.det(xTx) == <span class="number">0.0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;矩阵是奇异的,逆不存在&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    ws = xTx.I * (x_mat.T * y_mat)</span><br><span class="line">    <span class="keyword">return</span> ws</span><br></pre></td></tr></table></figure>
+<p>根据<code>standard_regression</code>函数可以直接求取算法的权重。然后根据权重就可以求得数据的预测结果，这里选择的数据在<a href="https://github.com/lightnine/machine-learning/blob/master/src/regression/data/ex0.txt">点我</a><br>画出的图像如下：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%B5%8B%E8%AF%95.png" class="" title="测试"><br>直线为拟合直线，散点是真实值。</p>
+<h4 id="随机梯度下降实现线性回归"><a href="#随机梯度下降实现线性回归" class="headerlink" title="随机梯度下降实现线性回归"></a>随机梯度下降实现线性回归</h4><p>由于代码篇幅比较长，所以可以直接上我的github上面看。<a href="https://github.com/lightnine/machine-learning/blob/master/src/regression/regression_sgd.py">代码</a></p>
+<h2 id="局部加权线性回归算法"><a href="#局部加权线性回归算法" class="headerlink" title="局部加权线性回归算法"></a>局部加权线性回归算法</h2><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%B1%80%E9%83%A8%E5%8A%A0%E6%9D%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92.PNG" class="" title="局部加权线性回归">
+<p>每个点都对应一个不同的$\theta$，利用$\theta$计算预测值。<br>下面我们用刚才介绍的局部加权线性回归来拟合一下这个模型，简单回顾一下过程：<br>1.用高斯核函数计算出第ｉ个样本处，其它所有样本点的权重Ｗ<br>2.用权重ｗ对第ｉ个样本作加权线性回归，得到回归方程，即拟合的直线方程<br>3.用刚才得到的经验回归直线计算出$x^i$处的估计值$y^i$<br>4.重复一至三步，得到每个样本点的估计值</p>
+<p>同时,从计算公式中，可以看到对于每个点的预测值，需要利用所有的数据样本进行计算。如果数据量比较大，计算量就会是一个大问题。<br>相比于上面提到线性回归算法(<strong>参数算法</strong>)，局部加权线性回归算法是<strong>非参数算法</strong>。</p>
+<h3 id="参数算法vs非参数算法"><a href="#参数算法vs非参数算法" class="headerlink" title="参数算法vs非参数算法"></a>参数算法vs非参数算法</h3><p>引用<a href="https://zhuanlan.zhihu.com/p/26012348">地址</a></p>
+<blockquote>
+<p>参数算法：<br>如果我们对所要学习的问题有足够的认识，具备一定的先验知识，此时我们一般会假定要学习的目标函数f(x)或分布P(y|x)的具体形式。然后，通过训练数据集，基于ERM、SRM、MLE、MAP等学习策略，可以估计出f(x)或P(y|x)中含有的未知参数。一旦未知参数估计完毕，训练数据一般来说，就失去其作用了，因为这些估计出来的参数就是训练数据的浓缩。通过这种方式建立起来的模型就是参数模型。参数模型的一个很重要的特点是，如果对于模型的假设正确，那么只需要很少的训练数据就可以从假设空间中学出一个很好的模型。但是，如果模型的假设错误，那么无论训练的数据量有多大，甚至趋于无穷大，学出的模型都会与实际模型出现不可磨灭的偏差。感知机、逻辑斯特回归、高斯判别分析、朴素贝叶斯、线性支持向量机都属于参数模型。对于神经网络来说，当固定了隐层的数目以及每一层神经元的个数，它也属于参数模型。但由于隐层数目与每一层神经元个数的不确定性，很多时候，神经网络都被归类为半参数模型。<br>非参数算法：<br>当我们对所要学习的问题知之甚少，此时我们一般不会对潜在的模型做过多的假设。在面对预测任务的时候，我们通常会用上所有的训练数据。例如简单的核密度估计(KDE)的表达式中，就带有所有训练数据的信息。通过这种方式建立的模型就是非参数模型。非参数模型的一个很重要的特点就是：let the data speak for itself. 正因为如此，非参数模型的存储开销、计算开销都会比参数模型大的多。但是，由于不存在模型的错误假定问题，可以证明，当训练数据量趋于无穷大的时候，非参数模型可以逼近任意复杂的真实模型。这正是非参数模型诱人的一点。另外需要说明的一点是，非参数模型之所以叫做非参数，并不是因为模型中没有参数。实际上，非参数模型中一般会含有一个或多个超参数，外加无穷多个普通的参数。k近邻就是典型的非参数模型。</p>
+</blockquote>
+<p>总结就是所谓参数学习算法它有固定的明确的参数，参数 一旦确定，就不会改变了，我们不需要在保留训练集中的训练样本。而非参数学习算法，每进行一次预测，就需要重新学习一组 ， 是变化的，所以需要一直保留训练样本。</p>
+<h3 id="实际使用"><a href="#实际使用" class="headerlink" title="实际使用"></a>实际使用</h3><p>这里采用的数据跟线性回归算法采用的相同。选取不同的k值，得到的拟合曲线如下图：<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%B1%80%E9%83%A8%E5%8A%A0%E6%9D%83%E5%9B%9E%E5%BD%92%E6%8B%9F%E5%90%88.png" class="" title="不同k值对于拟合曲线的影响"><br>从图中可以看到，当k值较小时，对于训练数据有很好的拟合效果；当k值较大时(比如取1)，对于训练数据拟合的效果不是很好。当然这都是针对训练数据，在实际使用中，我们更关注的是对于测试数据的效果如何。在实际中，我们可以将数据进行十倍交叉验证，选择最合适的k值。<br>从高斯公式中，我们从两个方面看。首先，我们固定k值，那么距离$x^{(i)}$较远的样本，其对应的权重相对较小；距离$x^{(i)}$较近的样本，其对应的权重相对较大，当x取$x^{(i)}$时，对应的权重为1。而如果我们固定x(即只看某一特定样本点)，k取值较大时，此样本点对应的权重相对较大；k取值较小时，此样本点对应的权重相对较大。所以k可以控制算法选择$x^{(i)}$点附近有多少样本参与计算。<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/k%E5%80%BC%E7%9A%84%E5%BD%B1%E5%93%8D.PNG" class="" title="k值的影响"><br>最上面的图是样本点，剩下三幅图都是针对样本点x=0.5,根据不同的k值，画出的x附近样本的权重变化。可以看到，当k取0.5时，当计算x=0.5时的预测值时，几乎所有的样本点都包括了；而当k=0.01时，仅仅取了x=0.5附近的点参与计算。如果k值取无穷大，那么w对于所有的点的权重都是1，那么局部加权线性回归就变成了普通的线性回归算法。</p>
+<h2 id="岭回归算法-Ridge-Regression"><a href="#岭回归算法-Ridge-Regression" class="headerlink" title="岭回归算法(Ridge Regression)"></a>岭回归算法(Ridge Regression)</h2><p>上面介绍的线性回归算法里面可以看到需要计算$X^TX$的逆，那么如果逆不存在呢？首先思考第一个问题，什么情况下，$X^TX$的逆不存在呢？</p>
+<ol>
+<li>X本身存在相关关系，即非满秩矩阵。比如其中两列是具有线性关系</li>
+<li>如果特征列多余样本数量，那么$X^TX$也是非满秩的。</li>
+</ol>
+<p>对于逆不存在的情况下，我们需要将原来的线性回归算法进行处理，使原先无法求逆的$X^TX$变成非奇异的。可以通过缩减的方式来处理这类问题，比如岭回归算法和LASSO算法。同时由于能够调整算法中权重的大小，能够防止线性回归算法的过拟合问题。</p>
+<h3 id="岭回归算法损失函数"><a href="#岭回归算法损失函数" class="headerlink" title="岭回归算法损失函数"></a>岭回归算法损失函数</h3><script type="math/tex; mode=display">f(w) = {\sum\limits_{i=1}^m{(y_i - x_i^Tw})^2} + \lambda{\sum\limits_{i=1}^n{w_i^2}}</script><p>通过改变$\lambda$的值，可以使得算法的方差和偏差之间达到平衡，增加$\lambda$,模型的方差减小而偏差增加。<br>对损失函数求取一阶导数，并另导数等于0，求得权重如下式：</p>
+<script type="math/tex; mode=display">\hat{w} = (X^TX + \lambda{I})^{(-1)}X^TY</script><p>在岭回归算法中$\lambda$的选择对于算法有很大的影响。下图展示了不同的$\lambda$的取值对于权重的影响，因为数据有八个特征，所以这里有八个权重。当$\lambda$较小时，权重的值跟采用常规的线性回归差不多；而当$\lambda$较大时，权重的值都会被调解的较小。<br><img src="/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/%E5%B2%AD%E5%9B%9E%E5%BD%92.png" class="" title="lambda值与权重的关系"><br>为了找到合适的$\lambda$值，我们在实践中往往会采用交叉测试来找到合适的$\lambda$值。</p>
+<h2 id="lasso回归算法-Least-Absolute-Shrinkage-and-Selection-Operator"><a href="#lasso回归算法-Least-Absolute-Shrinkage-and-Selection-Operator" class="headerlink" title="lasso回归算法(Least Absolute Shrinkage and Selection Operator)"></a>lasso回归算法(Least Absolute Shrinkage and Selection Operator)</h2><p>从岭回归算法中，我们可以看到，算法防止过拟合主要是在损失函数中添加惩罚项。在岭回归中，惩罚项如下所示:</p>
+<script type="math/tex; mode=display">{\sum\limits_{k=1}^n{w_k^2}} <= \lambda</script><p>而在lasso回归算法中，惩罚项变成下式：</p>
+<script type="math/tex; mode=display">{\sum\limits_{k=1}^n{|w_k|}} <= \lambda</script><p>即将权重的平方和小于$\lambda$，替换为权重的绝对值和小于$\lambda$.进行了这个变化后，能够将权重缩小到0，而岭回归中无法将权重值缩小到0，只能接近0.</p>
+<h3 id="lasso回归算法损失函数"><a href="#lasso回归算法损失函数" class="headerlink" title="lasso回归算法损失函数"></a>lasso回归算法损失函数</h3><script type="math/tex; mode=display">f(w) = {\sum\limits_{i=1}^m{(y_i - x_i^Tw})^2} + \lambda{\sum\limits_{i=1}^n{|w_i|}}</script><blockquote>
+<p>我们也可以结合岭回归算法和lasso的损失函数，构建新的损失函数。这就是弹性网络(ElasticNet)</p>
+</blockquote>
+<h3 id="逐步向前回归"><a href="#逐步向前回归" class="headerlink" title="逐步向前回归"></a>逐步向前回归</h3><p>LASSO计算复杂度相对较高，本部分稍微介绍一下逐步向前回归，他属于一种贪心算法，给定初始系数向量，然后不断迭代遍历每个系数，增加或减小一个很小的数，看看代价函数是否变小，如果变小就保留，如果变大就舍弃，然后不断迭代直到回归系数达到稳定。代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">run_stage</span>():</span><br><span class="line">    x_arr, y_arr = load_data_set(<span class="string">&#x27;./data/abalone.txt&#x27;</span>)</span><br><span class="line">    all_w_001 = stage_wise(x_arr, y_arr, <span class="number">0.001</span>, <span class="number">5000</span>)</span><br><span class="line">    <span class="built_in">print</span>(all_w_001)</span><br><span class="line">    all_w_01 = stage_wise(x_arr, y_arr, <span class="number">0.01</span>, <span class="number">200</span>)</span><br><span class="line">    <span class="built_in">print</span>(all_w_01)</span><br><span class="line">  </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">stage_wise</span>(<span class="params">x_arr, y_arr, eps=<span class="number">0.01</span>, num_iter=<span class="number">100</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    forward stagewise regression算法（前向梯度算法）</span></span><br><span class="line"><span class="string">    是一种近似的 lasso算法</span></span><br><span class="line"><span class="string">    :param x_arr:</span></span><br><span class="line"><span class="string">    :param y_arr:</span></span><br><span class="line"><span class="string">    :param eps:每次特征权重的变化步长</span></span><br><span class="line"><span class="string">    :param num_iter: 迭代次数</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    x_mat = np.mat(x_arr)</span><br><span class="line">    y_mat = np.mat(y_arr).T</span><br><span class="line">    y_mean = np.mean(y_mat, <span class="number">0</span>)</span><br><span class="line">    y_mat = y_mat - y_mean</span><br><span class="line">    x_mean = np.mean(x_mat, <span class="number">0</span>)</span><br><span class="line">    x_var = np.var(x_mat, <span class="number">0</span>)</span><br><span class="line">    x_mat = (x_mat - x_mean) / x_var</span><br><span class="line">    m, n = np.shape(x_mat)</span><br><span class="line">    ws = np.zeros((n, <span class="number">1</span>))</span><br><span class="line">    ws_best = ws.copy()</span><br><span class="line">    return_mat = np.zeros((num_iter, n))  <span class="comment"># 保存每次迭代最好的权重值</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_iter):</span><br><span class="line">        <span class="comment"># print(ws.T)</span></span><br><span class="line">        lowest_error = np.inf</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">for</span> sign <span class="keyword">in</span> [-<span class="number">1</span>, <span class="number">1</span>]:</span><br><span class="line">                ws_test = ws.copy()</span><br><span class="line">                ws_test[j] += eps * sign</span><br><span class="line">                y_test = x_mat * ws_test</span><br><span class="line">                rss_err = rss_error(y_mat.A, y_test.A)  <span class="comment"># 将矩阵转为数组</span></span><br><span class="line">                <span class="keyword">if</span> rss_err &lt; lowest_error:</span><br><span class="line">                    lowest_error = rss_err</span><br><span class="line">                    ws_best = ws_test</span><br><span class="line">        ws = ws_best.copy()</span><br><span class="line">        return_mat[i, :] = ws.T</span><br><span class="line">    <span class="keyword">return</span> return_mat</span><br></pre></td></tr></table></figure>
+<p>逐步回归算法的主要有点在于他可以帮助人们理解现有的模型并作出改进。当构建了一个模型后，可以运行逐步回归算法找出重要的特征，即使停止那些不重要特征的收集。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上面提到的这些线性回归算法，我们应该怎么选择呢？一般来说有一点正则项的表现更好，因此通常你应该避免使用简单的线性回归。岭回归是一个很好的首选项，但是如果你的特征仅有少数是真正有用的，你应该选择Lasso和弹性网络。就像我们讨论的那样，它两能够将无用特征的权重降为零。一般来说，弹性网络的表现要比Lasso好，因为当特征数量比样例的数量大的时候，或者特征之间有很强的相关性时，Lasso可能会表现的不规律。</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
+<li>《吴恩达cs229 课程讲义》</li>
+<li>《机器学习实战》</li>
+<li><a href="https://segmentfault.com/a/1190000015172330">机器学习实战_线性回归&amp;逻辑回归（二）</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/" rel="tag"># 线性回归算法</a>
+          
+            <a href="/tags/%E5%B1%80%E9%83%A8%E5%8A%A0%E6%9D%83%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/" rel="tag"># 局部加权回归算法</a>
+          
+            <a href="/tags/%E5%B2%AD%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/" rel="tag"># 岭回归算法</a>
+          
+            <a href="/tags/lasso%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95/" rel="tag"># lasso回归算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/linux%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C%E6%94%B6%E8%8E%B7.html" rel="next" title="linux鸟哥私房菜收获">
+                <i class="fa fa-chevron-left"></i> linux鸟哥私房菜收获
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/python%E7%9F%A5%E8%AF%86%E7%82%B9.html" rel="prev" title="python知识点">
+                python知识点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">线性回归算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">一般线性回归算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">梯度下降算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E6%95%B0%E8%A7%A3"><span class="nav-number">1.1.2.</span> <span class="nav-text">代数解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%A6%82%E7%8E%87%E8%A7%A3%E9%87%8A"><span class="nav-number">1.1.3.</span> <span class="nav-text">回归模型的概率解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.4.</span> <span class="nav-text">编程实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E6%95%B0%E8%A7%A3%E5%AE%9E%E7%8E%B0%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">代数解实现线性回归算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E5%AE%9E%E7%8E%B0%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">随机梯度下降实现线性回归</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E5%8A%A0%E6%9D%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">局部加权线性回归算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E7%AE%97%E6%B3%95vs%E9%9D%9E%E5%8F%82%E6%95%B0%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.1.</span> <span class="nav-text">参数算法vs非参数算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">实际使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B2%AD%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95-Ridge-Regression"><span class="nav-number">1.3.</span> <span class="nav-text">岭回归算法(Ridge Regression)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B2%AD%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.1.</span> <span class="nav-text">岭回归算法损失函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lasso%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95-Least-Absolute-Shrinkage-and-Selection-Operator"><span class="nav-number">1.4.</span> <span class="nav-text">lasso回归算法(Least Absolute Shrinkage and Selection Operator)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lasso%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.1.</span> <span class="nav-text">lasso回归算法损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%90%E6%AD%A5%E5%90%91%E5%89%8D%E5%9B%9E%E5%BD%92"><span class="nav-number">1.4.2.</span> <span class="nav-text">逐步向前回归</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-number">1.6.</span> <span class="nav-text">参考文档</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

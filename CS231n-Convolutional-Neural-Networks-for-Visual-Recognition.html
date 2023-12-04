@@ -1,37 +1,789 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CNN," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="这是一篇翻译文章,但是也不全是,主要是读了文章之后,用自己的话将其复述出来来源: CS231n Convolutional Neural Networks for Visual Recognition  CNN卷积神经网络跟一般的神经网络是非常相似的.它们都由神经元组成,并且这些神经元上都有需要学习的权重和偏置项.每个神经元接收输入,执行点积,然后可选择的将输出进行非线性运算.整个网络表示了一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS231n Convolutional Neural Networks for Visual Recognition">
+<meta property="og:url" content="https://lightnine/github.io/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="这是一篇翻译文章,但是也不全是,主要是读了文章之后,用自己的话将其复述出来来源: CS231n Convolutional Neural Networks for Visual Recognition  CNN卷积神经网络跟一般的神经网络是非常相似的.它们都由神经元组成,并且这些神经元上都有需要学习的权重和偏置项.每个神经元接收输入,执行点积,然后可选择的将输出进行非线性运算.整个网络表示了一个">
+<meta property="og:locale">
+<meta property="og:image" content="https://lightnine/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/neural_net2.jpeg">
+<meta property="og:image" content="https://lightnine/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/cnn.jpeg">
+<meta property="og:image" content="https://lightnine/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/convnet.jpeg">
+<meta property="og:image" content="https://lightnine/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/depthcol.jpeg">
+<meta property="og:image" content="https://lightnine/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/neuron_model.jpeg">
+<meta property="og:image" content="https://lightnine/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/stride.jpeg">
+<meta property="article:published_time" content="2018-06-09T16:42:03.000Z">
+<meta property="article:modified_time" content="2018-06-09T16:42:03.000Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="CNN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lightnine/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/neural_net2.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition.html"/>
+
+
+
+
+
+  <title>CS231n Convolutional Neural Networks for Visual Recognition | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CS231n Convolutional Neural Networks for Visual Recognition</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-10T00:42:03+08:00">
+                2018-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>这是一篇翻译文章,但是也不全是,主要是读了文章之后,用自己的话将其复述出来<br>来源: <a href="https://cs231n.github.io/convolutional-networks/">CS231n Convolutional Neural Networks for Visual Recognition</a></p>
+</blockquote>
+<h1 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h1><p>卷积神经网络跟一般的神经网络是非常相似的.它们都由神经元组成,并且这些神经元上都有需要学习的权重和偏置项.每个神经元接收输入,执行点积,然后可选择的将输出进行非线性运算.整个网络表示了一个可微的得分函数:即从原始的图像像素到对应的类.两者都有一个损失函数(例如:SVM/Softmax),并且在一般神经网络中用到的技术也能应用到CNN中.<br>两者的区别在哪里呢?ConvNet网络假设输入是图像,所以我们能够将某些属性编码到网络结构中.这使得前馈函数更有效率并且能极大的减少网络中的参数.</p>
+<h1 id="CNN结构概览"><a href="#CNN结构概览" class="headerlink" title="CNN结构概览"></a>CNN结构概览</h1><p><em>回顾</em>:在一般的神经网络中,神经网络接收一个输入(一个向量),然后经过一系列的隐藏层进行转换.每个隐藏层是由一组神经元组成,每个神经元都与前一层的所有神经元相连,属于同一层的神经元完全独立并且不共享任何连接.最后一层是输出层,在分类问题中,它代表了类的得分.<br>一般的神经网络不能很好的扩展到完整的图像.在CIFAR-10中,一副图像的大小是32$\times$32$\times$3,所以隐藏层中的一个神经元上将会有32$\times$32$\times$3=3072个权重.参数的数量仍然可以接受,但是全连接结构不能扩展到更大的图像上了.例如,如果图像的大小为200$\times$200$\times$3,那么一个神经元将需要200$\times$200$\times$3=120000个权重.可见,全连接神经网络需要的参数将会非常多.这会导致过拟合.<br>卷积神经网络充分利用了输入是图像的事实,并且用一个更加合理的方式约束了神经网络的结构.特别的,与一般的神经网络不同,卷积神经网络各层由三维排列的神经元组成:宽度,高度,深度(注意,这里的深度指的是激活的第三维,而不是整个神经网络的深度).例如,在CIFAR-10中的输入图像的维度是32$\times$32$\times$3.我们很快会看到,当前层的神经元仅仅连接前一层中的部分神经元.此外,对于CIFAR-10最终的输出层的维度是1$\times$1$\times$10,因为ConvNet最后会将整个图像转换为一个类得分向量,下面是可视化:<br><div class="group-picture"><div class="group-picture-container"><div class="group-picture-row"><div class="group-picture-column"  style="width: 100%;"><img src="/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/neural_net2.jpeg" alt="常规神经网络"></div></div><div class="group-picture-row"><div class="group-picture-column"  style="width: 100%;"><img src="/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/cnn.jpeg" alt="ConvNet"></div></div></div></div><br>上图表示一个三层的神经网络,下图表示卷积神经网络.</p>
+<blockquote>
+<p>A ConvNet is made up of Layers. Every Layer has a simple API: It transforms an input 3D volume to an output 3D volume with some differentiable function that may or may not have parameters.</p>
+</blockquote>
+<h1 id="ConvNet-层"><a href="#ConvNet-层" class="headerlink" title="ConvNet 层"></a>ConvNet 层</h1><p>就像我们上面描述的,一个简单的ConvNet是一系列层组成,ConvNet的每层通过一个可微的函数将输入转化到输出.ConvNet主要由卷积层,池化层和全连接层组成.下面是一个针对CIFAR-10的简单例子:</p>
+<ul>
+<li>INPUT(32$\times$32$\times$3):输入是原始图像的像素,一副图像的宽是32,长是32,并且有三个颜色通道R,G,B</li>
+<li>卷积层:当前层的神经元只连接前一层的部分神经元.如果我们使用12个过滤器,则经过卷积层后的维度是[32$\times$32$\times$12]</li>
+<li>RELU:对于输入采用ReLu激活函数,并不会改变输入维度,如果前一个维度是[32$\times$32$\times$12],则经过ReLu之后仍然是[32$\times$32$\times$12]</li>
+<li>POOL:池化层会在空间维度上执行下采样,这会导致维度变化,[16$\times$16$\times$12],但是注意最后一维没有改变</li>
+<li><p>FC(全连接层):这是一个全连接的结构,最后的输出是[1$\times$1$\times$10].<br>卷积神经网络就是将原始的像素图像经过一层一层的计算,最后得到最终的分类得分.注意有些层需要参数,而有些层不需要参数.CONV/FC层不仅仅对于输入进行激活,同时需要将权重和偏置作用在输入上.而RELU/POOL只是一个固定的函数,并没有参数.<br>总结:</p>
+</li>
+<li><p>卷积神经网络就是一系列层组成,将输入图像体积转换为输出体积(体积表面了维度)</p>
+</li>
+<li>卷积神经网路包括完全不同的层(e.g. CONV/FC/RELU/POOl)</li>
+<li>每一层通过一个可微的函数将3D volume的输入转换为3D volume的输出</li>
+<li>有些层需要参数,有些不需要(e.g. CONV/FC 需要, RELU/POOlL不需要)</li>
+<li>有些层需要额外的超参数,有些不需要(e.g. CONV/FC/POOL需要,RELU不需要)</li>
+</ul>
+<img src="/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/convnet.jpeg" class="" title="卷积神经网络结构图">
+<p>因为无法很难画出3D的部分,所以这里每一层只展示了深度部分的一片.最后给出了得分最高的五个标签.这里展示的是一个很小的 VGG网络.<a href="http://cs231n.stanford.edu/">查看详细展示</a></p>
+<h2 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h2><p>卷积层是卷积神经网络的核心部分,并且涉及了大量的计算.卷积层使用过滤器对于原图像进行卷积,过滤器每次只能针对整副图像的一部分进行计算,所以我们需要移动过滤器,遍历整个图像.这里过滤器的大小又叫做神经元的接收域.<br><em>Example 1</em>:假设输入为[32$\times$32$\times$3],过滤器大小为5$\times$5,那么卷积层中的某个神经元需要的参数为5$\times$5$\times$3 + 1=76.为什么需要这么多的参数呢?针对颜色通道R,当前过滤器对应的局部区域的点是5$\times$5=25个,有三个通道,所有总的参数为75,另外再加一个偏置项,所有一个神经元总共需要76个参数.注意这里的深度为3,这是因为输入的深度是3.</p>
+<h2 id="Example-2-假设输入为-16-times-16-times-20-过滤器大小为3-times-3-那么卷积层中每个神经元都需要3-3-20-1-180个参数"><a href="#Example-2-假设输入为-16-times-16-times-20-过滤器大小为3-times-3-那么卷积层中每个神经元都需要3-3-20-1-180个参数" class="headerlink" title="Example 2:假设输入为[16$\times$16$\times$20],过滤器大小为3$\times$3,那么卷积层中每个神经元都需要3*3*20 + 1=180个参数."></a><em>Example 2</em>:假设输入为[16$\times$16$\times$20],过滤器大小为3$\times$3,那么卷积层中每个神经元都需要3*3*20 + 1=180个参数.</h2><div class="group-picture"><div class="group-picture-container"><div class="group-picture-row"><div class="group-picture-column"  style="width: 100%;"><img src="/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/depthcol.jpeg" class="" title="卷积层"></div></div><div class="group-picture-row"><div class="group-picture-column"  style="width: 100%;"><img src="/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/neuron_model.jpeg" class="" title="神经元"></div></div></div></div>
+<p>第一张图展示了卷积层,可以看到一个神经元连接了原图像的局部区域,但是连接了所有的深度(这是是三个颜色通道).这里展示了五个神经元,这五个神经元都连接到了图像的同一个局域上.第二张图展示了神经元的计算.<br><strong>Spatial arrangement</strong> 前面我们仅仅讨论了卷积层中的每个神经元如何连接到前一层,我们还没有讨论在卷积层的输出中有多少个神经元.深度,步长,0值填充这些超参数控制着卷积层的输出的大小</p>
+<ol>
+<li>卷积层输出的深度等于过滤器的数量,而每个过滤器就是去寻找输入到卷积层数据的不同之处.如果输入是原始图像,那么过滤器就是去寻找不同方向的边,颜色等.</li>
+<li>步长是过滤器移动的长度,一般常用的是1和2</li>
+<li>0值填充就是在卷积层的输入的边界上填充0值,使用0值填充使得我们能够控制经过卷积层之后的空间大小.<br>下面的公式可以用来计算卷积层输出的空间大小<script type="math/tex; mode=display">(W - F + 2P)/S + 1</script>其中W(输入数据的大小),F(卷积层神经元的接收域大小),S(步长),P(零值填充的宽度).例如输入为7$\times$7,过滤器为3$\times$3,步长为1,不填充,则得出输出为5$\times$5.当步长变为2时,那么输出变为3$\times$3.</li>
+</ol>
+<hr>
+<img src="/CS231n-Convolutional-Neural-Networks-for-Visual-Recognition/stride.jpeg" class="" title="空间排列">
+<p>这里的输入只有一个x轴,输入为[1,2,-1,1,-3],过滤器大小为3,采用零值填充.所以W=5,F=3,P=1.图片最右侧是过滤器的权重,偏置为0.左图:步长为1,最后得到的输出的尺寸为5;右图:步长为2,最后得到的输出尺寸为3.所有黄色的神经元共享相同的参数</p>
+<hr>
+<p><em>Use of zero-padding</em>.当步长为1(即S=1),设置$P=(F-1)/2$,这样卷积层的输入跟输出将会有相同大小的空间.<br><em>Constraints on strides</em>.</p>
+<h2 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h2><h2 id="Normalization-Layer"><a href="#Normalization-Layer" class="headerlink" title="Normalization Layer"></a>Normalization Layer</h2><h2 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h2><h2 id="全连接层转变为卷积层"><a href="#全连接层转变为卷积层" class="headerlink" title="全连接层转变为卷积层"></a>全连接层转变为卷积层</h2><h1 id="ConvNet-结构"><a href="#ConvNet-结构" class="headerlink" title="ConvNet 结构"></a>ConvNet 结构</h1><h2 id="层模式"><a href="#层模式" class="headerlink" title="层模式"></a>层模式</h2><h2 id="层大小模式"><a href="#层大小模式" class="headerlink" title="层大小模式"></a>层大小模式</h2><h2 id="常用CNN"><a href="#常用CNN" class="headerlink" title="常用CNN"></a>常用CNN</h2><h2 id="计算考虑"><a href="#计算考虑" class="headerlink" title="计算考虑"></a>计算考虑</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CNN/" rel="tag"># CNN</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hexo%E6%90%AD%E5%BB%BAgithub%E5%8D%9A%E5%AE%A2%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%9B%B4%E6%96%B0.html" rel="next" title="hexo搭建github博客多设备更新">
+                <i class="fa fa-chevron-left"></i> hexo搭建github博客多设备更新
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Refactor-improving-the-Design-of-Existing-Code.html" rel="prev" title="Refactor-improving the Design of Existing Code">
+                Refactor-improving the Design of Existing Code <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CNN"><span class="nav-number">1.</span> <span class="nav-text">CNN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CNN%E7%BB%93%E6%9E%84%E6%A6%82%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">CNN结构概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ConvNet-%E5%B1%82"><span class="nav-number">3.</span> <span class="nav-text">ConvNet 层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E5%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">卷积层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-2-%E5%81%87%E8%AE%BE%E8%BE%93%E5%85%A5%E4%B8%BA-16-times-16-times-20-%E8%BF%87%E6%BB%A4%E5%99%A8%E5%A4%A7%E5%B0%8F%E4%B8%BA3-times-3-%E9%82%A3%E4%B9%88%E5%8D%B7%E7%A7%AF%E5%B1%82%E4%B8%AD%E6%AF%8F%E4%B8%AA%E7%A5%9E%E7%BB%8F%E5%85%83%E9%83%BD%E9%9C%80%E8%A6%813-3-20-1-180%E4%B8%AA%E5%8F%82%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">Example 2:假设输入为[16$\times$16$\times$20],过滤器大小为3$\times$3,那么卷积层中每个神经元都需要3*3*20 + 1&#x3D;180个参数.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%A0%E5%8C%96%E5%B1%82"><span class="nav-number">3.3.</span> <span class="nav-text">池化层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Normalization-Layer"><span class="nav-number">3.4.</span> <span class="nav-text">Normalization Layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E8%BF%9E%E6%8E%A5%E5%B1%82"><span class="nav-number">3.5.</span> <span class="nav-text">全连接层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E8%BF%9E%E6%8E%A5%E5%B1%82%E8%BD%AC%E5%8F%98%E4%B8%BA%E5%8D%B7%E7%A7%AF%E5%B1%82"><span class="nav-number">3.6.</span> <span class="nav-text">全连接层转变为卷积层</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ConvNet-%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">ConvNet 结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%82%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">层模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%82%E5%A4%A7%E5%B0%8F%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">层大小模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8CNN"><span class="nav-number">4.3.</span> <span class="nav-text">常用CNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E8%80%83%E8%99%91"><span class="nav-number">4.4.</span> <span class="nav-text">计算考虑</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

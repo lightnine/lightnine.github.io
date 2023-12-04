@@ -1,23 +1,2218 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
 
-{% block page_class %}
-  {% if is_home() %}page-home{% endif -%}
-{% endblock %}
 
-{% block content %}
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="有困难就是一个字&quot;干&quot;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="个人博客">
+<meta property="og:url" content="https://lightnine/github.io/page/2/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="有困难就是一个字&quot;干&quot;">
+<meta property="og:locale">
+<meta property="article:author" content="liang">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/page/2/"/>
+
+
+
+
+
+  <title>个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
   <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/2019-plan-and-learn.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019-plan-and-learn.html" itemprop="url">2019-plan-and-learn</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-05T17:08:14+08:00">
+                2019-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/plan/" itemprop="url" rel="index">
+                    <span itemprop="name">plan</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="2019计划"><a href="#2019计划" class="headerlink" title="2019计划"></a>2019计划</h1><p>激励<a href="http://www.ituring.com.cn/article/9174">左耳朵耗子</a></p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>掌握tensorflow的使用</li>
+<li>掌握Python以及常用库(numpy,matplotlib,pandas)的使用</li>
+<li>掌握常用机器学习算法(SVM,AdaBoost,LightGBM)的使用以及理论</li>
+<li>掌握深度学习常用算法应用和理论</li>
+<li>掌握英语单词5000个,提高自己的英语发音</li>
+<li>spark大数据分析技术</li>
+<li>linux相关技术</li>
+<li>Java相关技术</li>
+</ol>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>今天看了一篇虎扑上面&lt;非CS专业转行机器学习/人工智能阶段性成功，分享一点个人经验吧&gt;的帖子，感触比较多，摘一点帖子里面的内容，为之后的学习提供一定的建议。<br>楼主的情况是没有人工智能基础的，为了找到人工智能的工作准备了两年时间。</p>
+<p>编程：掌握一门语言，要达到非常熟悉的阶段。<br>数据结构：掌握常用的数据结构，多做leetcode上面的编程题目，至少要刷一下easy和medium模式的题目，写的时候考虑test case<br>机器学习：</p>
+<pre><code>1. andrew ng的machine learning，仔细看课件和习题
+2. hands on machine learning with scikit-learn and tensorflow，并且在pythhon中实践还有课后习题
+3. bishop的pattern recognition and machine learning
+4. 李彦宏的机器学习和深度学习(自己加的)
+5. 李航的统计机器学习（自己加的）
+</code></pre><h2 id="Java相关技术"><a href="#Java相关技术" class="headerlink" title="Java相关技术"></a>Java相关技术</h2><p>参考了<a href="https://www.v2ex.com/t/546203">v2ex</a> 或者<a href="https://github.com/farmerjohngit/myblog">github</a><br>这里做了一个思维导图<br><img src="/2019-plan-and-learn/Java%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.PNG" class="" title="Java相关知识学习思维导图"><br>下面进行思维导图的一些解释。<strong>同时对这些技能点进行查漏补缺，同时也会在之后的过程中添加更多的技能点</strong></p>
+<h3 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h3><p>集合主要是java.util包下的非线程安全和线程安全集合</p>
+<h4 id="非线程安全"><a href="#非线程安全" class="headerlink" title="非线程安全"></a>非线程安全</h4><ol>
+<li>List： ArrayList与LinkedList的实现和区别</li>
+<li>Map：<ul>
+<li>HashMap:了解其数据结构，源码，hash冲突如何解决(链表和红黑树)，扩容时机，扩容时避免rehash优化</li>
+<li>LinkedHashMap:了解基本原理，哪两种有序，如何实现LRU</li>
+<li>TreeMap：了解数据结构，了解其key对象为什么必须要实现Compare接口，如何用它实现一致性哈希</li>
+</ul>
+</li>
+<li>Set：基本上是由map实现，简单看看就好</li>
+</ol>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>hashmap 如何解决 hash 冲突，为什么 hashmap 中的链表需要转成红黑树？</li>
+<li>hashmap 什么时候会触发扩容？</li>
+<li>jdk1.8 之前并发操作 hashmap 时为什么会有死循环的问题？</li>
+<li>hashmap 扩容时每个 entry 需要再计算一次 hash 吗？</li>
+<li>hashmap 的数组长度为什么要保证是 2 的幂？</li>
+<li>如何用 LinkedHashMap 实现 LRU ？</li>
+<li>如何用 TreeMap 实现一致性 hash ？</li>
+</ul>
+<h4 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h4><ol>
+<li>Collection.synchronized:了解其实现原理</li>
+<li>CopyOnWriteArrayList：了解写时复制机制，了解其适用场景，思考为什么没有ConcurrentArrayList</li>
+<li>ConcurrentHashMap：了解实现原理，扩容时做的优化，与HashTable的对比</li>
+<li>BlockingQueue：了解 LinkedBlockingQueue、ArrayBlockingQueue、DelayQueue、SynchronousQueue</li>
+</ol>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>ConcurrentHashMap 是如何在保证并发安全的同时提高性能？</li>
+<li>ConcurrentHashMap 是如何让多线程同时参与扩容？</li>
+<li>LinkedBlockingQueue、DelayQueue 是如何实现的？</li>
+<li>CopyOnWriteArrayList 是如何保证线程安全的？</li>
+</ul>
+<h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><ol>
+<li>synchronized：了解偏向锁、轻量级锁、重量级锁的概念以及升级机制、以及和 ReentrantLock 的区别</li>
+<li>CAS：了解 AtomicInteger 实现原理、CAS 适用场景、如何实现乐观锁</li>
+<li>AQS：了解 AQS 内部实现、及依靠 AQS 的同步类比如 ReentrantLock、Semaphore、CountDownLatch、CyclicBarrier 等的实现</li>
+<li>ThreadLocal：了解 ThreadLocal 使用场景和内部实现</li>
+<li>ThreadPoolExecutor：了解线程池的工作原理以及几个重要参数的设置</li>
+</ol>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>synchronized 与 ReentrantLock 的区别？</li>
+<li>乐观锁和悲观锁的区别？</li>
+<li>如何实现一个乐观锁？</li>
+<li>AQS 是如何唤醒下一个线程的？</li>
+<li>ReentrantLock 如何实现公平和非公平锁是如何实现？</li>
+<li>CountDownLatch 和 CyclicBarrier 的区别？各自适用于什么场景？</li>
+<li>适用 ThreadLocal 时要注意什么？比如说内存泄漏?</li>
+<li>说一说往线程池里提交一个任务会发生什么？</li>
+<li>线程池的几个参数如何设置？</li>
+<li>线程池的非核心线程什么时候会被释放？</li>
+<li>如何排查死锁？</li>
+</ul>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>了解 Java 中的软引用、弱引用、虚引用的适用场景以及释放机制</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>软引用什么时候会被释放</li>
+<li>弱引用什么时候会被释放</li>
+</ul>
+<h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p>了解双亲委派机制</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>双亲委派机制的作用？</li>
+<li>Tomcat 的 classloader 结构</li>
+<li>如何自己实现一个 classloader 打破双亲委派</li>
+</ul>
+<h3 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h3><p>了解 BIO 和 NIO 的区别、了解多路复用机制</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>同步阻塞、同步非阻塞、异步的区别？</li>
+<li>select、poll、eopll 的区别？</li>
+<li>java NIO 与 BIO 的区别？</li>
+<li>refactor 线程模型是什么?</li>
+</ul>
+<h3 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h3><p>了解GC和内存区域</p>
+<ol>
+<li>垃圾回收基本原理、几种常见的垃圾回收器的特性、重点了解 CMS （或 G1 ）以及一些重要的参数</li>
+<li>能说清 jvm 的内存划分</li>
+</ol>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>CMS GC 回收分为哪几个阶段？分别做了什么事情？</li>
+<li>CMS 有哪些重要参数？</li>
+<li>Concurrent Model Failure 和 ParNew promotion failed 什么情况下会发生？</li>
+<li>CMS 的优缺点？</li>
+<li>有做过哪些 GC 调优？</li>
+<li>为什么要划分成年轻代和老年代？</li>
+<li>年轻代为什么被划分成 eden、survivor 区域？</li>
+<li>年轻代为什么采用的是复制算法？</li>
+<li>老年代为什么采用的是标记清除、标记整理算法</li>
+<li>什么情况下使用堆外内存？要注意些什么？</li>
+<li>堆外内存如何被回收？</li>
+<li>jvm 内存区域划分是怎样的？</li>
+</ul>
+<h3 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h3><p>bean 的生命周期、循环依赖问题、spring cloud （如项目中有用过）、AOP 的实现、spring 事务传播</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>java 动态代理和 cglib 动态代理的区别（经常结合 spring 一起问所以就放这里了）</li>
+<li>spring 中 bean 的生命周期是怎样的？</li>
+<li>属性注入和构造器注入哪种会有循环依赖的问题？</li>
+</ul>
+<h3 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h3><p>事务隔离级别、锁、索引的数据结构、聚簇索引和非聚簇索引、最左匹配原则、查询优化（ explain 等命令）</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>Mysql(innondb 下同) 有哪几种事务隔离级别？</li>
+<li>不同事务隔离级别分别会加哪些锁？</li>
+<li>mysql 的行锁、表锁、间隙锁、意向锁分别是做什么的？</li>
+<li>说说什么是最左匹配？</li>
+<li>如何优化慢查询？</li>
+<li>mysql 索引为什么用的是 b+ tree 而不是 b tree、红黑树</li>
+<li>分库分表如何选择分表键</li>
+<li>分库分表的情况下，查询时一般是如何做排序的？</li>
+</ul>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>准备一下leetcode上的算法（easy，medium）</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/tensorboard%E4%BB%8B%E7%BB%8D.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/tensorboard%E4%BB%8B%E7%BB%8D.html" itemprop="url">tensorboard介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-26T11:23:15+08:00">
+                2018-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tensorflow/" itemprop="url" rel="index">
+                    <span itemprop="name">tensorflow</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近因为工作需要，看了下tensorboard的使用方式，这里做了简单的学习记录。使用的tensorflow版本是<strong>1.10.0</strong>,tensorboard的版本也是一样。</p>
+<h1 id="tensorboard介绍"><a href="#tensorboard介绍" class="headerlink" title="tensorboard介绍"></a>tensorboard介绍</h1><p>tensorboard主要是为了查看tensorflow程序，将程序进行图示化，可以用来查看程序的运行情况，也可以用来debug程序。</p>
+<h2 id="tensorflow写tensorboard日志"><a href="#tensorflow写tensorboard日志" class="headerlink" title="tensorflow写tensorboard日志"></a>tensorflow写tensorboard日志</h2><p>在程序中主要使用<code>tf.summary.FileWriter</code>来将需要记录的事件日志记录到硬盘中。这个函数主要由三个参数需要注意的，如果想要查看详细的内容，可以去源码中查找具体的使用方式。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">logdir:指定日志写入的具体目录</span></span><br><span class="line"><span class="string">graph:指定记录的tensorflow图</span></span><br><span class="line"><span class="string">filename_suffix:事件日志文件的后缀</span></span><br></pre></td></tr></table></figure>
+<h2 id="tensorboard启动"><a href="#tensorboard启动" class="headerlink" title="tensorboard启动"></a>tensorboard启动</h2><p>tensorboard的启动是在命令行中，输入<code>tensorboard --logdir=/path/to/log</code>命令启动，然后打开ip+port在浏览器中进行查看。查看tensorboard的参数信息，可以运行<code>tensorboard --help</code>来进行查看。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">--inspect:</span> <span class="string">用来查看事件日志信息，并不启动tensorboard</span></span><br><span class="line"><span class="string">--logdir：用来指定事件日志的存储目录</span></span><br></pre></td></tr></table></figure>
+<p>tensorboard主要是扫描logdir指定目录下的内容，扫描文件名带有<em>.tfevents.</em>的文件进行展示。如果logdir下有多个目录，则在浏览器中可以分别进行浏览。如果有多个相同的文件，则会显示时间戳距离最近的文件。文件名中带有时间戳。例如：<strong>events.out.tfevents.1545795299.DESKTOP-123</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E6%AC%A7%E6%B4%B2%E5%9B%9B%E5%9B%BD%E8%A1%8C.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/%E6%AC%A7%E6%B4%B2%E5%9B%9B%E5%9B%BD%E8%A1%8C.html" itemprop="url">欧洲四国行</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T20:36:16+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%AC%A7%E6%B4%B2/" itemprop="url" rel="index">
+                    <span itemprop="name">欧洲</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%AC%A7%E6%B4%B2/%E6%97%85%E8%A1%8C/" itemprop="url" rel="index">
+                    <span itemprop="name">旅行</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今年九月份去了一趟欧洲,总共去了有十五天的样子。去了比利时,西班牙(巴萨罗那),葡萄牙(里斯本),法国(巴黎)四个国家。除了比利时，其他的三个国家都是只去了一个城市。</p>
+<h1 id="比利时"><a href="#比利时" class="headerlink" title="比利时"></a>比利时</h1><p>比利时是我到达欧洲的第一站,第一天主要是在布鲁塞尔市内玩。去了市中心的大广场，雨果笔下世界上最美丽的广场。第一眼看到此广场，给我很大的震撼，整个广场四周全部是欧式建筑，有巴洛克式，也有哥特式。建筑上面的人物雕塑也非常精美。置身其中，你能感觉到建筑帮助我直达它所在的那个年代，像我展示着那个时代的辉煌。而且这种建筑不单单只是作为居住或者商业的功能，它的美感也是其重要的组成部分。第二天去了比利时的古城-布鲁日，还有靠近海边的城市奥斯坦德。早上早早出发，乘坐火车前往布鲁日，到了地方，渐渐的天空中开始飘起雨。可能因为前一天看了布鲁塞尔的大广场，来到布鲁日，虽然建筑很好看，但是并没有给我很大的震撼了。现在回想起来，也就能记得当时主要是沿布鲁日古城区转了转，并没有特别深的印象了。因为准备工作做得不足，本来想要去奥斯坦德看下北海的，但是到了地方之后，发现太冷了，也就没有转，下了火车就又回去了，也是一个遗憾吧。<br>来比利时之前，并不是怎么了解这个国家。来了之后发现国家虽然小，但是有名的东西还是很多的。首先是啤酒。可能说到啤酒，大家想到的一个就是德国。但是来了比利时之后，才发现比利时啤酒才真的是啤酒的王国。首先不像德国啤酒种类较为较为单一，这里的啤酒种类非常丰富，据说有四五百种。而且大街上酒吧也非常密集。假如超市里面只有六个货架，那么光酒就能占三个货架，哈哈。来到此地，怎么能不尝尝呢？去超市买了七八种啤酒，还有一瓶产自法国勃艮第的红酒。三天时间全部被我喝完了，这里的啤酒真的名不虚传，味道真不错，比国内的啤酒强太多了。哎，现在想喝也很难喝到了。说到啤酒，为啥比利时这么多呢？据说因为比利时地势较为低，水不好喝，比较涩口，所以采用本地的水和啤酒花酿做了啤酒。原来比利时人是将啤酒作为水的替代品了。虽然啤酒种类很多，但是这里有一种啤酒很难喝到。它就是修道院啤酒。虽然价格不是很贵，但是真的很难买到，而且被评价为最好喝的啤酒。首先，全球能够生产修道院啤酒只有七个修道院，荷兰有一家，比利时占了剩下六家，三家在比利时的荷语区，三家在比利时的法语区。并且每年生产的啤酒就那么多，不会有多的。这些啤酒都是修道院里面的修士酿造的。修士除了平时进行宗教的学习，剩下很多的时间都在潜心专研如何酿造好喝的啤酒。比利时除了啤酒以外，还有它的巧克力也是全球闻名。路边的巧克力店很多。还有炸薯条。</p>
+<h1 id="巴塞罗那"><a href="#巴塞罗那" class="headerlink" title="巴塞罗那"></a>巴塞罗那</h1><h1 id="里斯本"><a href="#里斯本" class="headerlink" title="里斯本"></a>里斯本</h1><h1 id="巴黎"><a href="#巴黎" class="headerlink" title="巴黎"></a>巴黎</h1>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/docker%E5%AE%89%E8%A3%85sshd%E4%BB%A5%E5%8F%8A%E4%BF%AE%E6%94%B9%E9%95%9C%E5%83%8F%E6%BA%90%E5%92%8C%E8%BD%AF%E4%BB%B6%E6%BA%90.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/docker%E5%AE%89%E8%A3%85sshd%E4%BB%A5%E5%8F%8A%E4%BF%AE%E6%94%B9%E9%95%9C%E5%83%8F%E6%BA%90%E5%92%8C%E8%BD%AF%E4%BB%B6%E6%BA%90.html" itemprop="url">docker安装sshd以及修改镜像源和软件源</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-20T16:26:08+08:00">
+                2018-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><p>因为最近公司需要在容器中跑深度学习任务，所以需要tensorflow的镜像。并且要求在要通过ssh进行容器的通信。这篇文章主要介绍如何在docker容器中安装软件，如何修改docker镜像源以及修改容器内部软件源地址。<br>宿主机环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">uname</span> -r : 3.10.0-862.11.6.el7.x86_64</span><br><span class="line"><span class="built_in">cat</span> /etc/redhat-release : CentOS Linux release 7.5.1804 (Core)</span><br><span class="line">docker version : 18.06.0-ce</span><br></pre></td></tr></table></figure>
+<p>镜像主要选择的是官方的tensorflow:1.12.0-py3版本,镜像里面使用的系统环境下面会介绍</p>
+<h2 id="修改docker镜像源"><a href="#修改docker镜像源" class="headerlink" title="修改docker镜像源"></a>修改docker镜像源</h2><p><a href="https://www.docker-cn.com/registry-mirror">!参考</a><br>由于docker 官方的镜像源在国外，导致下载速度很慢。所以第一步是修改docker镜像源地址。我这里采用永久修改docker镜像源地址。打开<code>/etc/docker/daemon.json</code>（如果没有此文件，则新建）,添加如下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;:</span> [<span class="string">&quot;https://registry.docker-cn.com&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后运行<code>docker pull registry.docker-cn.com/tensorflow/tensorflow:1.12.0-py3</code><br>即可以拉取镜像，而且可以看到速度提升很快</p>
+<h2 id="启动镜像"><a href="#启动镜像" class="headerlink" title="启动镜像"></a>启动镜像</h2><p>我们可以使用<code>docker images</code>查看本机有的镜像。针对上面拉取的tensorflow:1.12.0-py3镜像，我们执行下面命令启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it [image_name] /bin/bash</span><br></pre></td></tr></table></figure>
+<p>此时我们应该是在启动的容器中。我们可以查看容器具体的系统信息。因为tensorflow基础镜像是ubuntu，所以这里运行以下命令,因为容器中一般不会有vim命令，所以采用cat命令参看系统信息。注意下面的命令都是在容器中键入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">uname</span> -r</span><br><span class="line"><span class="built_in">cat</span> /etc/issue</span><br></pre></td></tr></table></figure>
+<p>查看得到系统信息为:Ubuntu 16.04.5 LTS</p>
+<h2 id="修改容器中软件源地址"><a href="#修改容器中软件源地址" class="headerlink" title="修改容器中软件源地址"></a>修改容器中软件源地址</h2><p>由于容器中软件源默认地址是国外的，这里换成国内的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt</span><br><span class="line"><span class="built_in">cp</span> sources.list sources.list.bak</span><br></pre></td></tr></table></figure>
+<p>这里使用阿里的镜像源，将sources.list里面的内容修改为如下内容:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial main main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial-updates</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial-backports</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial-security</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 预发布软件源，不建议启用</span></span><br><span class="line"><span class="comment"># deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse</span></span><br></pre></td></tr></table></figure>
+<h2 id="容器中安装软件"><a href="#容器中安装软件" class="headerlink" title="容器中安装软件"></a>容器中安装软件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">passwd</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install vim</span><br><span class="line">apt-get install openssh-sshd</span><br></pre></td></tr></table></figure>
+<p>修改root密码以及安装完上面vim和openssh-sshd两个软件后，修改openssh-sshd配置文件内容。打开<code>/etc/ssh/sshd_config</code>将<code>PermitRootLogin</code>后面添加yes，即允许以root用户登录。后面启动sshd命令可能会报错，具体问题可以自己上网上搜索</p>
+<h2 id="生成镜像"><a href="#生成镜像" class="headerlink" title="生成镜像"></a>生成镜像</h2><p>退出镜像，将容器提交为镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit [containerID] [image_name]</span><br></pre></td></tr></table></figure>
+<p>执行<code>docker images</code>可以看到生成的镜像。启动此镜像并开启sshd服务命令如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d  -p 50001:22 [images_name] /usr/sbin/sshd -D</span><br><span class="line">其中 -d表示已后台方式启动容器，-p挂载端口 ，/usr/sbin/sshd -D 是启动命令</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E9%9B%86%E6%88%90%E7%AE%97%E6%B3%95.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/%E9%9B%86%E6%88%90%E7%AE%97%E6%B3%95.html" itemprop="url">集成算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-01T20:17:34+08:00">
+                2018-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6.html" itemprop="url">读过的书</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-26T19:28:20+08:00">
+                2018-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B9%A6/" itemprop="url" rel="index">
+                    <span itemprop="name">书</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>本篇主要记录自己看过的书,督促自己平时多多的读书啊!</p>
+<h2 id="《假如我有时光机》-村上春树"><a href="#《假如我有时光机》-村上春树" class="headerlink" title="《假如我有时光机》-村上春树"></a>《假如我有时光机》-村上春树</h2><p><strong>2018-11-26</strong><br>这本书是村上春树写的,主要描写了作者在全球旅游去过的国家和城市。这是我第一次读村上春树的书，整本书看起来还是比较吸人眼球的，同时本书篇幅也不是很长。从作者的文笔中，可以感受到作者是一个待人应该很和善，同时也非常有礼貌的一个作者。通过阅读此书，不单单能够感受到作者去过的地方，也能够感受到别人在旅行中收到的感受。对于自己也是一种心理上面的成长。书中第一章写到了美国波士顿，特别是里面的查尔斯河，读完之后，有很强烈的冲动去美国玩了。应该是最近两三年的计划中。</p>
+<h2 id="《局外人》-加缪"><a href="#《局外人》-加缪" class="headerlink" title="《局外人》 -加缪"></a>《局外人》 -加缪</h2><p><strong>2018-11-27~2018-12-4</strong><br>这本书主要讲述了一个杀了人的罪犯，最后被判处死刑的故事。判处死刑的原因并不是因为他杀了一个人，而是因为他在母亲的葬礼上面没有哭，还有在服丧期间干了一些在社会上认为不应该做的事情。比如看滑稽电影，跟女友做爱以及主人公不信上帝等。这些与社会上不同的事情竟然导致法官判处主角死刑。我们跳脱出来来看整个事情，会发现整个法律在执行的过程中，会强烈的加上社会倾向，即社会上认为你这个人格格不入，会导致你在法律上处于一个非常不利的地步。这本书最震撼我的事书的最后，主角主动放弃了上诉的机会，面对自己的死亡。如果人人都说你做错了，那么到底是你真的做错了，还是这个世界错了呢？</p>
+<h2 id="《逻辑学导论》-欧文·M·柯丕-卡尔·科恩"><a href="#《逻辑学导论》-欧文·M·柯丕-卡尔·科恩" class="headerlink" title="《逻辑学导论》 -欧文·M·柯丕, 卡尔·科恩"></a>《逻辑学导论》 -欧文·M·柯丕, 卡尔·科恩</h2><p><strong>2018-12-5~</strong></p>
+<h2 id="《高效人士的七个习惯》"><a href="#《高效人士的七个习惯》" class="headerlink" title="《高效人士的七个习惯》"></a>《高效人士的七个习惯》</h2><p><strong>2018-12-29~</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E8%AF%BB%E8%BF%87%E7%9A%84%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/%E8%AF%BB%E8%BF%87%E7%9A%84%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D.html" itemprop="url">读过的技术书籍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-16T19:10:07+08:00">
+                2018-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B9%A6/" itemprop="url" rel="index">
+                    <span itemprop="name">书</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h1><p>都说书籍是人类进步的阶梯,现在这篇博客就是记录下我个人梯子的组成,主要是技术相关的.隔一段时间会更新一次,因为梯子一直在增长,哈哈.</p>
+<h2 id="Hands-On-Machine-Learning-with-Scikit-Learn-and-TensorFlow"><a href="#Hands-On-Machine-Learning-with-Scikit-Learn-and-TensorFlow" class="headerlink" title="Hands-On Machine Learning with Scikit-Learn and TensorFlow"></a>Hands-On Machine Learning with Scikit-Learn and TensorFlow</h2><p>这本书主要是通过scikit-learn工具包来讲解如何使用常用的机器学习算法以及机器学习算法在平常的工作中的应用流程.深度学习主要是通过tensorflow来进行讲解.</p>
+<h2 id="Andrew-Ng-斯坦福-cs229机器学习讲义"><a href="#Andrew-Ng-斯坦福-cs229机器学习讲义" class="headerlink" title="Andrew Ng 斯坦福 cs229机器学习讲义"></a>Andrew Ng 斯坦福 cs229机器学习讲义</h2><p>想要入门机器学习的同学,强烈建议学一学Andrew Ng的这么课,最好把里面的数学公式都自己推一遍,我自己推完这些数学公式之后,对于机器学习算法中原理有了很清晰的认识.</p>
+<h2 id="《mysql必知必会》"><a href="#《mysql必知必会》" class="headerlink" title="《mysql必知必会》"></a>《mysql必知必会》</h2><p>阅读时间：2019-4-7~2019-4-9<br>感想：这几天看完了mysql必知必会，其实基本上mysql的语法都会，只是为了能够看看还有什么地方自己不太知道的。总体来说，这本书对于初学者比较适合，按着里面的内容手敲一遍例子。掌握mysql的使用是没有问题的。</p>
+<h2 id="《图解tcp-ip-第五版》"><a href="#《图解tcp-ip-第五版》" class="headerlink" title="《图解tcp-ip 第五版》"></a>《图解tcp-ip 第五版》</h2><p>阅读时间：2019-4-9<br>感想：</p>
+<h2 id="《effective-java-第三版》-英文"><a href="#《effective-java-第三版》-英文" class="headerlink" title="《effective java 第三版》 英文"></a>《effective java 第三版》 英文</h2><p>阅读时间：2019-4-10<br>感想：</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%9F%A5%E8%AF%86.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%9F%A5%E8%AF%86.html" itemprop="url">统计学知识</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-02T09:32:48+08:00">
+                2018-11-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%BB%9F%E8%AE%A1%E5%AD%A6/" itemprop="url" rel="index">
+                    <span itemprop="name">统计学</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="统计学相关知识"><a href="#统计学相关知识" class="headerlink" title="统计学相关知识"></a>统计学相关知识</h1><p>在平常的机器学习应用中,我们首先要做的事情就是分析数据.分析数据有很多种方法,而且其中很多方法都是统计学中的内容.本篇blog主要记录我认为平常经常能够用到的统计学内容.</p>
+<h2 id="箱线图-box"><a href="#箱线图-box" class="headerlink" title="箱线图(box)"></a>箱线图(box)</h2><p>箱线图主要是用来分析数据中的异常值,在数据分析中非常有用.同时它也能够用来分析某一个特征跟预测值之间的关系,<a href="https://blog.csdn.net/clairliu/article/details/79217546">参考</a>.如下图所示<br><img src="/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%9F%A5%E8%AF%86/%E7%AE%B1%E7%BA%BF%E5%9B%BE.png" class="" title="箱线图"></p>
+<p>在python的seaborn包中画箱线图主要是调用<strong>boxplot</strong>函数,具体的使用方法可以查看相关文档.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line">sns.boxplot(x,y,data)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/svm%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/svm%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D.html" itemprop="url">svm原理介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-18T22:16:43+08:00">
+                2018-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h1><p>这篇博客主要介绍如何推导svm算法。写这篇博客主要是最近在学习svm算法，想着合上书，自己推导一遍算法的原理，发现还是有很多需要思考的地方。<br>其实一般推导机器学习算法，是有一个模式的。</p>
+<ol>
+<li>定义模型，这里模型理解为如何定义公式</li>
+<li>选择损失函数</li>
+<li>采用优化算法求损失函数的最小值</li>
+<li>推导完毕</li>
+</ol>
+<p>比如拿逻辑回归算法举例：</p>
+<ol>
+<li>定义模型，即选取sigmoid函数</li>
+<li>定义损失函数</li>
+<li>采用最大梯度下降算法求损失函数的最小值</li>
+<li>得到算法的w和b</li>
+</ol>
+<p>但是svm的推导基本上没有怎么提损失函数的内容，大家等会可以在这篇博客中看到如何推导svm算法</p>
+<h2 id="判别函数"><a href="#判别函数" class="headerlink" title="判别函数"></a>判别函数</h2><script type="math/tex; mode=display">h_{w,b}(x) = g(w^T + b)</script><p>上式是SVM的判别函数，其中函数g如下所示：</p>
+<script type="math/tex; mode=display">g(z)=\left\{
+\begin{array}{rcl}
+1       &      & {z \geq 0 }\\
+-1     &      & {z < 0 }
+\end{array} \right.</script><p>即$g(z)$的输出为1时，判别为正例；输出为-1时，判别为反例。</p>
+<h2 id="函数间隔和几何间隔-Functional-and-geometric-margins"><a href="#函数间隔和几何间隔-Functional-and-geometric-margins" class="headerlink" title="函数间隔和几何间隔(Functional and geometric margins)"></a>函数间隔和几何间隔(Functional and geometric margins)</h2><h3 id="函数间隔"><a href="#函数间隔" class="headerlink" title="函数间隔"></a>函数间隔</h3><p>对于某一个训练样本$(x^(i), y^(i))$定义函数间隔如下式：</p>
+<script type="math/tex; mode=display">\hat{\gamma}^{(i)} = y^{(i)}(w^T + b)</script><p>分析函数间隔公式,可以得出如下的结论.当$y^{(i)}=1$时,则$w^T+b&gt;0$,所以$g(z) = 1$;当$y^{(i)}=-1$时,则$w^T+b&lt;0$,所以$g(z) = -1$.所以函数间隔对于判别样本的类别是有作用的.<br>但是,当我们将$w,b$扩大两倍时,函数函数间隔扩大两倍,但是对于$g(z)$并没有什么变化.即下式成立</p>
+<script type="math/tex; mode=display">g(2w^T+2b) = g(w^T+b)</script><p>所以更大的函数间隔并不一定比小的函数间隔的置信度大.由此引出了几何间隔</p>
+<h3 id="几何间隔"><a href="#几何间隔" class="headerlink" title="几何间隔"></a>几何间隔</h3><p>针对几何间隔,我们考虑二维平面,如下图所示:<br><img src="/svm%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D/%E5%87%A0%E4%BD%95%E9%97%B4%E9%9A%94.png" class=""><br>图中的斜线是对应于参数$(w,b)$的决策分隔线.注意$w$是垂直于决策线的,即$w$是决策线的法向量.</p>
+<blockquote>
+<p>证明如下:<br>设$x_0,x_1$是直线$w^T+b=0$上不同的两个点,则有下式成立</p>
+<script type="math/tex; mode=display">\left\{
+\begin{array}{rcl}
+w^Tx_0 + b = 0       &      & \\
+w^Tx_1 + b = 0     &      &
+\end{array} \right.</script><p>两式相减的$w^T(x_0 - x_1) = 0$,而其中$x_0 - x_1$是直线$w^T+b=0$的方向向量,所以w是法向量.</p>
+</blockquote>
+<p>图中$\gamma^{(i)}$是A点对应的几何间隔.设A点为$x^{(i)}$,而向量$w/{\left|w\right|}$是法向量上的单位向量.因此得到B点为$x^{(i)} - \gamma^{(i)}\cdot w/{\left|w\right|}$,又因为B点在分离平面上,所以下式成立:</p>
+<script type="math/tex; mode=display">w^T(x^{(i)} - \gamma^{(i)}{\frac w {\left\|w\right\|}}) = 0</script><p>从而得到下式:</p>
+<script type="math/tex; mode=display">\gamma^{(i)} = {\frac {w^Tx^{(i)}+b} {\left\|w\right\|} }=({\frac w {\left\|w\right\|}})^Tx^{(i)} + {\frac b {\left\|w\right\|} }</script><p>如果A点在B点的另外一侧,则B点可以表示为下式:</p>
+<script type="math/tex; mode=display">x^{(i)} + \gamma^{(i)}\cdot w/{\left\|w\right\|}$$,带入分离超平面,得到几何间隔如下:
+$$\gamma^{(i)} = -{\frac {w^Tx^{(i)}+b} {\left\|w\right\|} }</script><p>综合两种情况,得到</p>
+<script type="math/tex; mode=display">\gamma^{(i)} =y^{(i)}(({\frac w {\left\|w\right\|}})^Tx^{(i)} + {\frac b {\left\|w\right\|} })</script><p>具体的公式推导过程中,并没有完全限制在二维平面上(虽然开始展示的图像是二维平面上的),所以对于高维平面也是得到上述公式.<br>几何间隔反应了样本到分离面的距离,直观上最小的几何间隔越大越好.并且几何间隔中的参数$w,b$可以随意的进行尺度变换而不影响几何间隔的大小(这是因为几何间隔的式子中除以了w的二范数).同时当$\left|w\right|=1$时,几何间隔就等于函数间隔.<br>定义</p>
+<script type="math/tex; mode=display">\hat{\gamma} = \min_{i=1,...,m}{\hat{\gamma}^{(i)}}</script><script type="math/tex; mode=display">{\gamma} = \min_{i=1,...,m}{\gamma}^{(i)}</script><p>即$\hat{\gamma}$和${\gamma}$分别是函数间隔和几何间隔的最小值.</p>
+<h2 id="最优间隔分类器"><a href="#最优间隔分类器" class="headerlink" title="最优间隔分类器"></a>最优间隔分类器</h2><p>通过上面的函数间隔和几何间隔,我们自然能够想到优化目标如下式所示:</p>
+<script type="math/tex; mode=display">\max_{\gamma,w,b} {\gamma} \\
+s.t.\quad   y^{(i)}(w^T + b) \geq \gamma, i=1,...,m \\
+\left\|w\right\|=1 \tag{1.1}</script><p>即在满足所有样本的几何间隔都大于最小几何间隔的情况下,求使得几何间隔最大的参数$w,b$<br>我们可以将上述优化公式转变成用函数间隔进行表达,如下式所示:</p>
+<script type="math/tex; mode=display">\max_{\gamma,w,b} {\frac {\hat\gamma} {\left\|w\right\|}}\\
+s.t.\quad   y^{(i)}(w^T + b) \geq \hat\gamma, i=1,...,m \tag{1.2}</script><blockquote>
+<p>上述两个优化问题为什么等价?因为$\gamma={\frac {\hat\gamma} {\left|w\right|}}$.针对优化公式(1.2),即求取几何间隔最大,同时在约束不等式两边同时除以$\left|w\right|$,即得所有的几何间隔都大于最小的几何间隔.这即等价于优化公式(1.1)</p>
+</blockquote>
+<p>由于参数$w,b$进行尺度变化,所以我们可以固定函数间隔等于1,即$\hat\gamma=1$<br>最终将优化公式化简为下式:</p>
+<script type="math/tex; mode=display">\min_{\gamma,w,b}{\frac 1 2}{\left\|w\right\|}^2 \\
+s.t.\quad y^{(i)}(w^T + b) \geq 1, i=1,...,m \tag{1.3}</script><p>针对这个优化公式,即满足不等式的条件下,求取二次函数的最小值,虽然可以采用优化算法求取此最优值.但是我们下面介绍拉格朗日对偶来进行求取,第一求取最优值会变得更加简单,第二能够使用核函数.</p>
+<h2 id="拉格朗日对偶-Lagrange-duality"><a href="#拉格朗日对偶-Lagrange-duality" class="headerlink" title="拉格朗日对偶(Lagrange duality)"></a>拉格朗日对偶(Lagrange duality)</h2><p>拉格朗日对偶主要是将优化公式转变为其对偶形式,具体的推导过程可以参考Andrew Ng cs229课程中的内容.</p>
+<h2 id="再次求解最优间隔分类器"><a href="#再次求解最优间隔分类器" class="headerlink" title="再次求解最优间隔分类器"></a>再次求解最优间隔分类器</h2><p>通过拉格朗日对偶,将SVM的优化目标转变为对偶形式,从而得到参数$w,b$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Gaussian-Discriminant-Analysis-and-Logistic-Regression.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Gaussian-Discriminant-Analysis-and-Logistic-Regression.html" itemprop="url">Gaussian Discriminant Analysis and Logistic Regression</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T11:22:36+08:00">
+                2018-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="高斯判别分析和逻辑回归算法的关系"><a href="#高斯判别分析和逻辑回归算法的关系" class="headerlink" title="高斯判别分析和逻辑回归算法的关系"></a>高斯判别分析和逻辑回归算法的关系</h1><p>最近一直在看Andrew Ng的cs229那门课的讲义，看到高斯判别分析模型和逻辑回归算法的关系那一部分，自己采用贝叶斯后验概率也证明了两者之间的关系，证明不难，本来打算记录一下的。在网上看到有个外国人写的更好，那我就把他写的直接翻译过来了。当然文章中也加入了在网上看到的其他资料和自己的一些思考。<br><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">原文</a></p>
+<h2 id="判别模型和生成模型"><a href="#判别模型和生成模型" class="headerlink" title="判别模型和生成模型"></a>判别模型和生成模型</h2><p>有很多方式可以对机器学习算法进行分类，比如：监督/非监督，回归/分类,等等。还有一种方式用判别模型(<strong>Discriminative model</strong>)和生成模型(<strong>Generative model</strong>)进行区分.本篇文章，我们将会讨论高斯判别分析(Gaussian Discriminant Analysis )模型和逻辑回归(Logistic Regression)之间的关系,这也体现了判别模型和生成模型之间的关系。<br>判别模型是求$p(y|x)$.在分类问题中，判别模型是直接寻找能够将不同类的数据分开的超平面或者称之为决策边界。有很多常用的机器学习算法属于判别模型，比如：逻辑回归，SVM，神经网络等等。另一方面，生成模型是求取$p(x|y)$和$p(y)$.这意味着，在分类问题中，生成模型给出了每个类的概率分布，给出了数据是如何生成的。也即生成(generative)这个词的意思.生成模型依赖贝叶斯公式计算后验概率$p(y|x)$.像朴素贝叶斯，高斯判别分析等都属于生成模型。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/discriminative_vs_generative.png" class="" title="Discriminative vs Generative"><br>在实际使用中，判别模型要比生成模型用的更多，原因很多。比如：判别模型更加灵活，更加鲁棒，当对模型做出错误的假设时，模型表现的也不是很敏感。而生成模型需要我们定义数据的先验概率，即数据分布，在很多时候这是非常有困难和挑战的。然后，生成模型也有它的优势，比如：相比于判别模型，生成模型对于数据有更多的先验信息。这导致如果我们对于数据的假设是正确的，那么生成模型在少量数据下也能够表现的更好。</p>
+<h2 id="GDA和逻辑回归"><a href="#GDA和逻辑回归" class="headerlink" title="GDA和逻辑回归"></a>GDA和逻辑回归</h2><p>接下来我将要证明，GDA(Gaussian Discriminant Analysis)如何最终推导出逻辑回归，从这个推导中也可以看出采用逻辑回归的道理。<br>对于二分类问题，GDA假设类别服从伯努利分布，数据服从多元高斯分布，如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%85%88%E9%AA%8C%E5%88%86%E5%B8%83.PNG" class="" title="先验分布"><br>具体的数学公式如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%88%86%E5%B8%83%E7%9A%84%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F.PNG" class="" title="分布的数学公式"><br>而采用GDA就是求取后验概率，我们可以证明如下等式成立：</p>
+<script type="math/tex; mode=display">p(y=1|x) = \frac{1}{1+exp(-\theta^Tx)}</script><p>在公式中可以看到，GDA关于类别1的后验概率就是逻辑回归的sigmoid函数，这里$\theta$就是关于参数$\phi,\mu_0,\mu_1,\sum$的函数<br>接下来进行证明：</p>
+<script type="math/tex; mode=display">
+p(y=1|x)
+=\frac{p(x|y=1)\times{p(y=1)}}{p(x)}
+=\frac{p(x|y=1)\times{p(y=1)}}{p(x|y=1)\times{p(y=1)} + p(x|y=1)\times{p(y=0)}}
+=\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}</script><p>我们接下来带入概率公式，计算$\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}$,计算过程如下，主要是涉及一些log和exp的转换：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E.PNG" class="" title="证明"><br>在公式的最后，我们令$x_0=1$,至此我们得到了$\theta^Tx$,即如下式：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E%E7%BB%93%E6%9E%9C.PNG" class="" title="证明结果"><br>$\theta$向量的值如下：</p>
+<script type="math/tex; mode=display">\theta=\left[
+ \begin{matrix}
+   log(\frac{1-\phi}{\phi}) - \frac{\mu_0^2 + \mu_1^2}{2\sum} \\
+   \frac{\mu_0 - \mu_1}{\sum}
+  \end{matrix}
+  \right]</script><h2 id="关系说明"><a href="#关系说明" class="headerlink" title="关系说明"></a>关系说明</h2><p>可以看出，从GDA可以推导出逻辑回归，但是反过来是不成立的。即如果$p(y|x)$是一个逻辑回归函数并不能推导出$p(x|y)$是一个多元的高斯分布。这说明GDA模型比逻辑回归模型具有更强的假设。事实上，如果$p(x|y)$是指数分布族(<strong>Exponential Family</strong>，比如高斯分布，泊松分布)中的一种，那么其后验概率就是逻辑回归。由此我们也得到一个为什么逻辑回归使用的更加广泛的原因，因为逻辑回归是一种非常通用，健壮的算法，适用于许多基本假设。另一方面，GDA以及一般的生成模型做出了更强的假设，因此对于非高斯或某些未定义分布数据来说并不理想。<br>特别的，当$p(x|y)$是高斯分布(类别之间具有相同的协方差)时，则GDA是渐进有效的(首先搞清楚什么叫有效性，有效性是指在所有的无偏估计方法里，某种方法的估计量的方差是最小的，则该种估计方法就是有效的，比如古典假定的OLS(最小二乘算法)估计。渐近有效是指该种估计方法在中小样本时可能不是最有效的，但随着样本数的增加，慢慢变得有效（没有其它无偏估计方法可以得到更小的方差），这就称为渐近有效，比如正态分布下线性模型的最大似然估计)。非正式地说，当训练集数目很大时，没有模型能显著地比GDA更好(即模型准确估计$p(y|x)$的程度).如果数据服从正态分布，则GDA要比逻辑回归表现的更好，更近一步，即使对于比较小的训练集，我们也总是认为GDA要表现的更好。<br>假设有一个一维训练集，包含一些正样本和负样本，如下图x轴的叉和圈，设叉为0，圈为1，用GDA对两类样本分别拟合高斯概率密度函数p(x|y=0)和p(x|y=1)，如下图的两个钟形曲线。沿x轴遍历样本，在x轴上方画出相应的p(y=1|x)。如选x轴靠左的点，那么它属于1的概率几乎为0，p(y=1|x)=0，两条钟形曲线交点处，属于0或1的概率相同，p(y=1|x)=0.5，x轴靠右的点，输出1的概率几乎为1，p(y=1|x)=1。最终发现，得到的曲线和sigmoid函数曲线很相似。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E5%92%8C%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92.png" class="" title="高斯分布和逻辑回归"><br>也就是说，当使用GDA模型时，p(x|y)属于高斯分布，计算p(y|x)时，几乎能得到和logistic回归中使用的sigmiod函数一样的函数，但实际上还是存在本质区别。</p>
+<p>在Andrew Ng的cs229采用两种方法可以推导出逻辑回归</p>
+<ol>
+<li>通过指数分布族来推导。</li>
+<li>通过生成学习假设先验概率分布的方式进行推导。</li>
+</ol>
+<h2 id="如何选择两种模型"><a href="#如何选择两种模型" class="headerlink" title="如何选择两种模型"></a>如何选择两种模型</h2><p>由上面的分析可以知道，GDA比逻辑回归有更多的前置假设。当数据服从或大致服从正态分布时，GDA会具有更高的拟合度，因为GDA利用了更多的信息构建模型。但是当数据不服从正态分布时，那么逻辑回归更有效，因为它做出更少的假设，构建的模型更加强壮，更加具有鲁棒性。生成学习还有另外的一个好处，就是可以使用比判别学习模型使用更少的数据构建出强壮的模型。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过推导，我们可以看到很多算法内在都是存在某种联系的，理解算法之间的关系对于我们理解算法以及选择什么算法都是有很多的帮助的。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
+<li><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">Gaussian Discriminant Analysis and Logistic Regression</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+  </nav>
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

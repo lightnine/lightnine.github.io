@@ -1,37 +1,766 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="比利时,巴塞罗那,里斯本,巴黎," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="今年九月份去了一趟欧洲,总共去了有十五天的样子。去了比利时,西班牙(巴萨罗那),葡萄牙(里斯本),法国(巴黎)四个国家。除了比利时，其他的三个国家都是只去了一个城市。 比利时比利时是我到达欧洲的第一站,第一天主要是在布鲁塞尔市内玩。去了市中心的大广场，雨果笔下世界上最美丽的广场。第一眼看到此广场，给我很大的震撼，整个广场四周全部是欧式建筑，有巴洛克式，也有哥特式。建筑上面的人物雕塑也非常精美。置身">
+<meta property="og:type" content="article">
+<meta property="og:title" content="欧洲四国行">
+<meta property="og:url" content="https://lightnine/github.io/%E6%AC%A7%E6%B4%B2%E5%9B%9B%E5%9B%BD%E8%A1%8C.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="今年九月份去了一趟欧洲,总共去了有十五天的样子。去了比利时,西班牙(巴萨罗那),葡萄牙(里斯本),法国(巴黎)四个国家。除了比利时，其他的三个国家都是只去了一个城市。 比利时比利时是我到达欧洲的第一站,第一天主要是在布鲁塞尔市内玩。去了市中心的大广场，雨果笔下世界上最美丽的广场。第一眼看到此广场，给我很大的震撼，整个广场四周全部是欧式建筑，有巴洛克式，也有哥特式。建筑上面的人物雕塑也非常精美。置身">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-12-22T12:36:16.000Z">
+<meta property="article:modified_time" content="2023-12-04T03:11:40.910Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="比利时">
+<meta property="article:tag" content="巴塞罗那">
+<meta property="article:tag" content="里斯本">
+<meta property="article:tag" content="巴黎">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/欧洲四国行.html"/>
+
+
+
+
+
+  <title>欧洲四国行 | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E6%AC%A7%E6%B4%B2%E5%9B%9B%E5%9B%BD%E8%A1%8C.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">欧洲四国行</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T20:36:16+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%AC%A7%E6%B4%B2/" itemprop="url" rel="index">
+                    <span itemprop="name">欧洲</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%AC%A7%E6%B4%B2/%E6%97%85%E8%A1%8C/" itemprop="url" rel="index">
+                    <span itemprop="name">旅行</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今年九月份去了一趟欧洲,总共去了有十五天的样子。去了比利时,西班牙(巴萨罗那),葡萄牙(里斯本),法国(巴黎)四个国家。除了比利时，其他的三个国家都是只去了一个城市。</p>
+<h1 id="比利时"><a href="#比利时" class="headerlink" title="比利时"></a>比利时</h1><p>比利时是我到达欧洲的第一站,第一天主要是在布鲁塞尔市内玩。去了市中心的大广场，雨果笔下世界上最美丽的广场。第一眼看到此广场，给我很大的震撼，整个广场四周全部是欧式建筑，有巴洛克式，也有哥特式。建筑上面的人物雕塑也非常精美。置身其中，你能感觉到建筑帮助我直达它所在的那个年代，像我展示着那个时代的辉煌。而且这种建筑不单单只是作为居住或者商业的功能，它的美感也是其重要的组成部分。第二天去了比利时的古城-布鲁日，还有靠近海边的城市奥斯坦德。早上早早出发，乘坐火车前往布鲁日，到了地方，渐渐的天空中开始飘起雨。可能因为前一天看了布鲁塞尔的大广场，来到布鲁日，虽然建筑很好看，但是并没有给我很大的震撼了。现在回想起来，也就能记得当时主要是沿布鲁日古城区转了转，并没有特别深的印象了。因为准备工作做得不足，本来想要去奥斯坦德看下北海的，但是到了地方之后，发现太冷了，也就没有转，下了火车就又回去了，也是一个遗憾吧。<br>来比利时之前，并不是怎么了解这个国家。来了之后发现国家虽然小，但是有名的东西还是很多的。首先是啤酒。可能说到啤酒，大家想到的一个就是德国。但是来了比利时之后，才发现比利时啤酒才真的是啤酒的王国。首先不像德国啤酒种类较为较为单一，这里的啤酒种类非常丰富，据说有四五百种。而且大街上酒吧也非常密集。假如超市里面只有六个货架，那么光酒就能占三个货架，哈哈。来到此地，怎么能不尝尝呢？去超市买了七八种啤酒，还有一瓶产自法国勃艮第的红酒。三天时间全部被我喝完了，这里的啤酒真的名不虚传，味道真不错，比国内的啤酒强太多了。哎，现在想喝也很难喝到了。说到啤酒，为啥比利时这么多呢？据说因为比利时地势较为低，水不好喝，比较涩口，所以采用本地的水和啤酒花酿做了啤酒。原来比利时人是将啤酒作为水的替代品了。虽然啤酒种类很多，但是这里有一种啤酒很难喝到。它就是修道院啤酒。虽然价格不是很贵，但是真的很难买到，而且被评价为最好喝的啤酒。首先，全球能够生产修道院啤酒只有七个修道院，荷兰有一家，比利时占了剩下六家，三家在比利时的荷语区，三家在比利时的法语区。并且每年生产的啤酒就那么多，不会有多的。这些啤酒都是修道院里面的修士酿造的。修士除了平时进行宗教的学习，剩下很多的时间都在潜心专研如何酿造好喝的啤酒。比利时除了啤酒以外，还有它的巧克力也是全球闻名。路边的巧克力店很多。还有炸薯条。</p>
+<h1 id="巴塞罗那"><a href="#巴塞罗那" class="headerlink" title="巴塞罗那"></a>巴塞罗那</h1><h1 id="里斯本"><a href="#里斯本" class="headerlink" title="里斯本"></a>里斯本</h1><h1 id="巴黎"><a href="#巴黎" class="headerlink" title="巴黎"></a>巴黎</h1>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%AF%94%E5%88%A9%E6%97%B6/" rel="tag"># 比利时</a>
+          
+            <a href="/tags/%E5%B7%B4%E5%A1%9E%E7%BD%97%E9%82%A3/" rel="tag"># 巴塞罗那</a>
+          
+            <a href="/tags/%E9%87%8C%E6%96%AF%E6%9C%AC/" rel="tag"># 里斯本</a>
+          
+            <a href="/tags/%E5%B7%B4%E9%BB%8E/" rel="tag"># 巴黎</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/docker%E5%AE%89%E8%A3%85sshd%E4%BB%A5%E5%8F%8A%E4%BF%AE%E6%94%B9%E9%95%9C%E5%83%8F%E6%BA%90%E5%92%8C%E8%BD%AF%E4%BB%B6%E6%BA%90.html" rel="next" title="docker安装sshd以及修改镜像源和软件源">
+                <i class="fa fa-chevron-left"></i> docker安装sshd以及修改镜像源和软件源
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/tensorboard%E4%BB%8B%E7%BB%8D.html" rel="prev" title="tensorboard介绍">
+                tensorboard介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AF%94%E5%88%A9%E6%97%B6"><span class="nav-number">1.</span> <span class="nav-text">比利时</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%B4%E5%A1%9E%E7%BD%97%E9%82%A3"><span class="nav-number">2.</span> <span class="nav-text">巴塞罗那</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8C%E6%96%AF%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text">里斯本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%B4%E9%BB%8E"><span class="nav-number">4.</span> <span class="nav-text">巴黎</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

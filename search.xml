@@ -1,6 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2019-plan-and-learn</title>
+    <url>/2019-plan-and-learn.html</url>
+    <content><![CDATA[<h1 id="2019计划"><a href="#2019计划" class="headerlink" title="2019计划"></a>2019计划</h1><p>激励<a href="http://www.ituring.com.cn/article/9174">左耳朵耗子</a></p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li>掌握tensorflow的使用</li>
+<li>掌握Python以及常用库(numpy,matplotlib,pandas)的使用</li>
+<li>掌握常用机器学习算法(SVM,AdaBoost,LightGBM)的使用以及理论</li>
+<li>掌握深度学习常用算法应用和理论</li>
+<li>掌握英语单词5000个,提高自己的英语发音</li>
+<li>spark大数据分析技术</li>
+<li>linux相关技术</li>
+<li>Java相关技术</li>
+</ol>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>今天看了一篇虎扑上面&lt;非CS专业转行机器学习/人工智能阶段性成功，分享一点个人经验吧&gt;的帖子，感触比较多，摘一点帖子里面的内容，为之后的学习提供一定的建议。<br>楼主的情况是没有人工智能基础的，为了找到人工智能的工作准备了两年时间。</p>
+<p>编程：掌握一门语言，要达到非常熟悉的阶段。<br>数据结构：掌握常用的数据结构，多做leetcode上面的编程题目，至少要刷一下easy和medium模式的题目，写的时候考虑test case<br>机器学习：</p>
+<pre><code>1. andrew ng的machine learning，仔细看课件和习题
+2. hands on machine learning with scikit-learn and tensorflow，并且在pythhon中实践还有课后习题
+3. bishop的pattern recognition and machine learning
+4. 李彦宏的机器学习和深度学习(自己加的)
+5. 李航的统计机器学习（自己加的）
+</code></pre><h2 id="Java相关技术"><a href="#Java相关技术" class="headerlink" title="Java相关技术"></a>Java相关技术</h2><p>参考了<a href="https://www.v2ex.com/t/546203">v2ex</a> 或者<a href="https://github.com/farmerjohngit/myblog">github</a><br>这里做了一个思维导图<br><img src="/2019-plan-and-learn/Java%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.PNG" class="" title="Java相关知识学习思维导图"><br>下面进行思维导图的一些解释。<strong>同时对这些技能点进行查漏补缺，同时也会在之后的过程中添加更多的技能点</strong></p>
+<h3 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h3><p>集合主要是java.util包下的非线程安全和线程安全集合</p>
+<h4 id="非线程安全"><a href="#非线程安全" class="headerlink" title="非线程安全"></a>非线程安全</h4><ol>
+<li>List： ArrayList与LinkedList的实现和区别</li>
+<li>Map：<ul>
+<li>HashMap:了解其数据结构，源码，hash冲突如何解决(链表和红黑树)，扩容时机，扩容时避免rehash优化</li>
+<li>LinkedHashMap:了解基本原理，哪两种有序，如何实现LRU</li>
+<li>TreeMap：了解数据结构，了解其key对象为什么必须要实现Compare接口，如何用它实现一致性哈希</li>
+</ul>
+</li>
+<li>Set：基本上是由map实现，简单看看就好</li>
+</ol>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>hashmap 如何解决 hash 冲突，为什么 hashmap 中的链表需要转成红黑树？</li>
+<li>hashmap 什么时候会触发扩容？</li>
+<li>jdk1.8 之前并发操作 hashmap 时为什么会有死循环的问题？</li>
+<li>hashmap 扩容时每个 entry 需要再计算一次 hash 吗？</li>
+<li>hashmap 的数组长度为什么要保证是 2 的幂？</li>
+<li>如何用 LinkedHashMap 实现 LRU ？</li>
+<li>如何用 TreeMap 实现一致性 hash ？</li>
+</ul>
+<h4 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h4><ol>
+<li>Collection.synchronized:了解其实现原理</li>
+<li>CopyOnWriteArrayList：了解写时复制机制，了解其适用场景，思考为什么没有ConcurrentArrayList</li>
+<li>ConcurrentHashMap：了解实现原理，扩容时做的优化，与HashTable的对比</li>
+<li>BlockingQueue：了解 LinkedBlockingQueue、ArrayBlockingQueue、DelayQueue、SynchronousQueue</li>
+</ol>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>ConcurrentHashMap 是如何在保证并发安全的同时提高性能？</li>
+<li>ConcurrentHashMap 是如何让多线程同时参与扩容？</li>
+<li>LinkedBlockingQueue、DelayQueue 是如何实现的？</li>
+<li>CopyOnWriteArrayList 是如何保证线程安全的？</li>
+</ul>
+<h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><ol>
+<li>synchronized：了解偏向锁、轻量级锁、重量级锁的概念以及升级机制、以及和 ReentrantLock 的区别</li>
+<li>CAS：了解 AtomicInteger 实现原理、CAS 适用场景、如何实现乐观锁</li>
+<li>AQS：了解 AQS 内部实现、及依靠 AQS 的同步类比如 ReentrantLock、Semaphore、CountDownLatch、CyclicBarrier 等的实现</li>
+<li>ThreadLocal：了解 ThreadLocal 使用场景和内部实现</li>
+<li>ThreadPoolExecutor：了解线程池的工作原理以及几个重要参数的设置</li>
+</ol>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>synchronized 与 ReentrantLock 的区别？</li>
+<li>乐观锁和悲观锁的区别？</li>
+<li>如何实现一个乐观锁？</li>
+<li>AQS 是如何唤醒下一个线程的？</li>
+<li>ReentrantLock 如何实现公平和非公平锁是如何实现？</li>
+<li>CountDownLatch 和 CyclicBarrier 的区别？各自适用于什么场景？</li>
+<li>适用 ThreadLocal 时要注意什么？比如说内存泄漏?</li>
+<li>说一说往线程池里提交一个任务会发生什么？</li>
+<li>线程池的几个参数如何设置？</li>
+<li>线程池的非核心线程什么时候会被释放？</li>
+<li>如何排查死锁？</li>
+</ul>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>了解 Java 中的软引用、弱引用、虚引用的适用场景以及释放机制</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>软引用什么时候会被释放</li>
+<li>弱引用什么时候会被释放</li>
+</ul>
+<h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p>了解双亲委派机制</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>双亲委派机制的作用？</li>
+<li>Tomcat 的 classloader 结构</li>
+<li>如何自己实现一个 classloader 打破双亲委派</li>
+</ul>
+<h3 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h3><p>了解 BIO 和 NIO 的区别、了解多路复用机制</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>同步阻塞、同步非阻塞、异步的区别？</li>
+<li>select、poll、eopll 的区别？</li>
+<li>java NIO 与 BIO 的区别？</li>
+<li>refactor 线程模型是什么?</li>
+</ul>
+<h3 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h3><p>了解GC和内存区域</p>
+<ol>
+<li>垃圾回收基本原理、几种常见的垃圾回收器的特性、重点了解 CMS （或 G1 ）以及一些重要的参数</li>
+<li>能说清 jvm 的内存划分</li>
+</ol>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>CMS GC 回收分为哪几个阶段？分别做了什么事情？</li>
+<li>CMS 有哪些重要参数？</li>
+<li>Concurrent Model Failure 和 ParNew promotion failed 什么情况下会发生？</li>
+<li>CMS 的优缺点？</li>
+<li>有做过哪些 GC 调优？</li>
+<li>为什么要划分成年轻代和老年代？</li>
+<li>年轻代为什么被划分成 eden、survivor 区域？</li>
+<li>年轻代为什么采用的是复制算法？</li>
+<li>老年代为什么采用的是标记清除、标记整理算法</li>
+<li>什么情况下使用堆外内存？要注意些什么？</li>
+<li>堆外内存如何被回收？</li>
+<li>jvm 内存区域划分是怎样的？</li>
+</ul>
+<h3 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h3><p>bean 的生命周期、循环依赖问题、spring cloud （如项目中有用过）、AOP 的实现、spring 事务传播</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>java 动态代理和 cglib 动态代理的区别（经常结合 spring 一起问所以就放这里了）</li>
+<li>spring 中 bean 的生命周期是怎样的？</li>
+<li>属性注入和构造器注入哪种会有循环依赖的问题？</li>
+</ul>
+<h3 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h3><p>事务隔离级别、锁、索引的数据结构、聚簇索引和非聚簇索引、最左匹配原则、查询优化（ explain 等命令）</p>
+<p><strong>常见问题</strong></p>
+<ul>
+<li>Mysql(innondb 下同) 有哪几种事务隔离级别？</li>
+<li>不同事务隔离级别分别会加哪些锁？</li>
+<li>mysql 的行锁、表锁、间隙锁、意向锁分别是做什么的？</li>
+<li>说说什么是最左匹配？</li>
+<li>如何优化慢查询？</li>
+<li>mysql 索引为什么用的是 b+ tree 而不是 b tree、红黑树</li>
+<li>分库分表如何选择分表键</li>
+<li>分库分表的情况下，查询时一般是如何做排序的？</li>
+</ul>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>准备一下leetcode上的算法（easy，medium）</p>
+]]></content>
+      <categories>
+        <category>plan</category>
+      </categories>
+      <tags>
+        <tag>2019</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BIO NIO AIO详解</title>
     <url>/BIO-NIO-AIO%E8%AF%A6%E8%A7%A3.html</url>
     <content><![CDATA[<h1 id="Java-BIO-NIO-AIO详解"><a href="#Java-BIO-NIO-AIO详解" class="headerlink" title="Java BIO NIO AIO详解"></a>Java BIO NIO AIO详解</h1><h2 id="同步，异步，阻塞，非阻塞"><a href="#同步，异步，阻塞，非阻塞" class="headerlink" title="同步，异步，阻塞，非阻塞"></a>同步，异步，阻塞，非阻塞</h2><p>这几个概念理解起来确实比较困难，特别是同步和阻塞，异步和非阻塞。首先要明确的一个概念是同步和异步主要是关注的是消息通信机制，所以同步和异步主要是关注客户端和服务端两个方面的消息如何通信。而阻塞和非阻塞主要是等待调用结果时的状态，所以关注的主要是当前线程在等待结果时能够做什么，如果在等待结果时当前线程能够做其他的事，则线程是非阻塞的；如果只能等待返回结果，则当前线程是阻塞的。下面举个例子来具体说明一下：<br>比如你跟书店老板打电话，确认是否书店中有哈利波特这本书。书店老板电话没有挂断，说你等一下，我现在查一下，你一直在等待，此时就是一种同步通信。而如果老板说我晚点电话通知你，然后挂断电话，此时就是异步通信。<br>让我们在换一个视角，还是打电话确定是否有哈利波特这本书这件事情。在打电话的过程中，你什么都没有干，只是一直在等待，那么此时你就是处于阻塞状态。而如果此时你正在看电视，此时你就是非阻塞状态，但是需要不定时的检查一下电话那边有没有回复。</p>
@@ -30,47 +176,6 @@
         <tag>IO</tag>
         <tag>BIO</tag>
         <tag>NIO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Gaussian Discriminant Analysis and Logistic Regression</title>
-    <url>/Gaussian-Discriminant-Analysis-and-Logistic-Regression.html</url>
-    <content><![CDATA[<h1 id="高斯判别分析和逻辑回归算法的关系"><a href="#高斯判别分析和逻辑回归算法的关系" class="headerlink" title="高斯判别分析和逻辑回归算法的关系"></a>高斯判别分析和逻辑回归算法的关系</h1><p>最近一直在看Andrew Ng的cs229那门课的讲义，看到高斯判别分析模型和逻辑回归算法的关系那一部分，自己采用贝叶斯后验概率也证明了两者之间的关系，证明不难，本来打算记录一下的。在网上看到有个外国人写的更好，那我就把他写的直接翻译过来了。当然文章中也加入了在网上看到的其他资料和自己的一些思考。<br><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">原文</a></p>
-<h2 id="判别模型和生成模型"><a href="#判别模型和生成模型" class="headerlink" title="判别模型和生成模型"></a>判别模型和生成模型</h2><p>有很多方式可以对机器学习算法进行分类，比如：监督/非监督，回归/分类,等等。还有一种方式用判别模型(<strong>Discriminative model</strong>)和生成模型(<strong>Generative model</strong>)进行区分.本篇文章，我们将会讨论高斯判别分析(Gaussian Discriminant Analysis )模型和逻辑回归(Logistic Regression)之间的关系,这也体现了判别模型和生成模型之间的关系。<br>判别模型是求$p(y|x)$.在分类问题中，判别模型是直接寻找能够将不同类的数据分开的超平面或者称之为决策边界。有很多常用的机器学习算法属于判别模型，比如：逻辑回归，SVM，神经网络等等。另一方面，生成模型是求取$p(x|y)$和$p(y)$.这意味着，在分类问题中，生成模型给出了每个类的概率分布，给出了数据是如何生成的。也即生成(generative)这个词的意思.生成模型依赖贝叶斯公式计算后验概率$p(y|x)$.像朴素贝叶斯，高斯判别分析等都属于生成模型。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/discriminative_vs_generative.png" class="" title="Discriminative vs Generative"><br>在实际使用中，判别模型要比生成模型用的更多，原因很多。比如：判别模型更加灵活，更加鲁棒，当对模型做出错误的假设时，模型表现的也不是很敏感。而生成模型需要我们定义数据的先验概率，即数据分布，在很多时候这是非常有困难和挑战的。然后，生成模型也有它的优势，比如：相比于判别模型，生成模型对于数据有更多的先验信息。这导致如果我们对于数据的假设是正确的，那么生成模型在少量数据下也能够表现的更好。</p>
-<h2 id="GDA和逻辑回归"><a href="#GDA和逻辑回归" class="headerlink" title="GDA和逻辑回归"></a>GDA和逻辑回归</h2><p>接下来我将要证明，GDA(Gaussian Discriminant Analysis)如何最终推导出逻辑回归，从这个推导中也可以看出采用逻辑回归的道理。<br>对于二分类问题，GDA假设类别服从伯努利分布，数据服从多元高斯分布，如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%85%88%E9%AA%8C%E5%88%86%E5%B8%83.PNG" class="" title="先验分布"><br>具体的数学公式如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%88%86%E5%B8%83%E7%9A%84%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F.PNG" class="" title="分布的数学公式"><br>而采用GDA就是求取后验概率，我们可以证明如下等式成立：</p>
-<script type="math/tex; mode=display">p(y=1|x) = \frac{1}{1+exp(-\theta^Tx)}</script><p>在公式中可以看到，GDA关于类别1的后验概率就是逻辑回归的sigmoid函数，这里$\theta$就是关于参数$\phi,\mu_0,\mu_1,\sum$的函数<br>接下来进行证明：</p>
-<script type="math/tex; mode=display">
-p(y=1|x)
-=\frac{p(x|y=1)\times{p(y=1)}}{p(x)}
-=\frac{p(x|y=1)\times{p(y=1)}}{p(x|y=1)\times{p(y=1)} + p(x|y=1)\times{p(y=0)}}
-=\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}</script><p>我们接下来带入概率公式，计算$\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}$,计算过程如下，主要是涉及一些log和exp的转换：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E.PNG" class="" title="证明"><br>在公式的最后，我们令$x_0=1$,至此我们得到了$\theta^Tx$,即如下式：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E%E7%BB%93%E6%9E%9C.PNG" class="" title="证明结果"><br>$\theta$向量的值如下：</p>
-<script type="math/tex; mode=display">\theta=\left[
- \begin{matrix}
-   log(\frac{1-\phi}{\phi}) - \frac{\mu_0^2 + \mu_1^2}{2\sum} \\
-   \frac{\mu_0 - \mu_1}{\sum}
-  \end{matrix}
-  \right]</script><h2 id="关系说明"><a href="#关系说明" class="headerlink" title="关系说明"></a>关系说明</h2><p>可以看出，从GDA可以推导出逻辑回归，但是反过来是不成立的。即如果$p(y|x)$是一个逻辑回归函数并不能推导出$p(x|y)$是一个多元的高斯分布。这说明GDA模型比逻辑回归模型具有更强的假设。事实上，如果$p(x|y)$是指数分布族(<strong>Exponential Family</strong>，比如高斯分布，泊松分布)中的一种，那么其后验概率就是逻辑回归。由此我们也得到一个为什么逻辑回归使用的更加广泛的原因，因为逻辑回归是一种非常通用，健壮的算法，适用于许多基本假设。另一方面，GDA以及一般的生成模型做出了更强的假设，因此对于非高斯或某些未定义分布数据来说并不理想。<br>特别的，当$p(x|y)$是高斯分布(类别之间具有相同的协方差)时，则GDA是渐进有效的(首先搞清楚什么叫有效性，有效性是指在所有的无偏估计方法里，某种方法的估计量的方差是最小的，则该种估计方法就是有效的，比如古典假定的OLS(最小二乘算法)估计。渐近有效是指该种估计方法在中小样本时可能不是最有效的，但随着样本数的增加，慢慢变得有效（没有其它无偏估计方法可以得到更小的方差），这就称为渐近有效，比如正态分布下线性模型的最大似然估计)。非正式地说，当训练集数目很大时，没有模型能显著地比GDA更好(即模型准确估计$p(y|x)$的程度).如果数据服从正态分布，则GDA要比逻辑回归表现的更好，更近一步，即使对于比较小的训练集，我们也总是认为GDA要表现的更好。<br>假设有一个一维训练集，包含一些正样本和负样本，如下图x轴的叉和圈，设叉为0，圈为1，用GDA对两类样本分别拟合高斯概率密度函数p(x|y=0)和p(x|y=1)，如下图的两个钟形曲线。沿x轴遍历样本，在x轴上方画出相应的p(y=1|x)。如选x轴靠左的点，那么它属于1的概率几乎为0，p(y=1|x)=0，两条钟形曲线交点处，属于0或1的概率相同，p(y=1|x)=0.5，x轴靠右的点，输出1的概率几乎为1，p(y=1|x)=1。最终发现，得到的曲线和sigmoid函数曲线很相似。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E5%92%8C%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92.png" class="" title="高斯分布和逻辑回归"><br>也就是说，当使用GDA模型时，p(x|y)属于高斯分布，计算p(y|x)时，几乎能得到和logistic回归中使用的sigmiod函数一样的函数，但实际上还是存在本质区别。</p>
-<p>在Andrew Ng的cs229采用两种方法可以推导出逻辑回归</p>
-<ol>
-<li>通过指数分布族来推导。</li>
-<li>通过生成学习假设先验概率分布的方式进行推导。</li>
-</ol>
-<h2 id="如何选择两种模型"><a href="#如何选择两种模型" class="headerlink" title="如何选择两种模型"></a>如何选择两种模型</h2><p>由上面的分析可以知道，GDA比逻辑回归有更多的前置假设。当数据服从或大致服从正态分布时，GDA会具有更高的拟合度，因为GDA利用了更多的信息构建模型。但是当数据不服从正态分布时，那么逻辑回归更有效，因为它做出更少的假设，构建的模型更加强壮，更加具有鲁棒性。生成学习还有另外的一个好处，就是可以使用比判别学习模型使用更少的数据构建出强壮的模型。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过推导，我们可以看到很多算法内在都是存在某种联系的，理解算法之间的关系对于我们理解算法以及选择什么算法都是有很多的帮助的。</p>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
-<li><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">Gaussian Discriminant Analysis and Logistic Regression</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>Logistic Regression</tag>
-        <tag>Gaussian Discriminant Analysis</tag>
-        <tag>Discriminative model</tag>
-        <tag>Machine Learning</tag>
-        <tag>Generative model</tag>
-        <tag>Statistics</tag>
       </tags>
   </entry>
   <entry>
@@ -120,6 +225,47 @@ p(y=1|x)
       </categories>
       <tags>
         <tag>CNN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Gaussian Discriminant Analysis and Logistic Regression</title>
+    <url>/Gaussian-Discriminant-Analysis-and-Logistic-Regression.html</url>
+    <content><![CDATA[<h1 id="高斯判别分析和逻辑回归算法的关系"><a href="#高斯判别分析和逻辑回归算法的关系" class="headerlink" title="高斯判别分析和逻辑回归算法的关系"></a>高斯判别分析和逻辑回归算法的关系</h1><p>最近一直在看Andrew Ng的cs229那门课的讲义，看到高斯判别分析模型和逻辑回归算法的关系那一部分，自己采用贝叶斯后验概率也证明了两者之间的关系，证明不难，本来打算记录一下的。在网上看到有个外国人写的更好，那我就把他写的直接翻译过来了。当然文章中也加入了在网上看到的其他资料和自己的一些思考。<br><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">原文</a></p>
+<h2 id="判别模型和生成模型"><a href="#判别模型和生成模型" class="headerlink" title="判别模型和生成模型"></a>判别模型和生成模型</h2><p>有很多方式可以对机器学习算法进行分类，比如：监督/非监督，回归/分类,等等。还有一种方式用判别模型(<strong>Discriminative model</strong>)和生成模型(<strong>Generative model</strong>)进行区分.本篇文章，我们将会讨论高斯判别分析(Gaussian Discriminant Analysis )模型和逻辑回归(Logistic Regression)之间的关系,这也体现了判别模型和生成模型之间的关系。<br>判别模型是求$p(y|x)$.在分类问题中，判别模型是直接寻找能够将不同类的数据分开的超平面或者称之为决策边界。有很多常用的机器学习算法属于判别模型，比如：逻辑回归，SVM，神经网络等等。另一方面，生成模型是求取$p(x|y)$和$p(y)$.这意味着，在分类问题中，生成模型给出了每个类的概率分布，给出了数据是如何生成的。也即生成(generative)这个词的意思.生成模型依赖贝叶斯公式计算后验概率$p(y|x)$.像朴素贝叶斯，高斯判别分析等都属于生成模型。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/discriminative_vs_generative.png" class="" title="Discriminative vs Generative"><br>在实际使用中，判别模型要比生成模型用的更多，原因很多。比如：判别模型更加灵活，更加鲁棒，当对模型做出错误的假设时，模型表现的也不是很敏感。而生成模型需要我们定义数据的先验概率，即数据分布，在很多时候这是非常有困难和挑战的。然后，生成模型也有它的优势，比如：相比于判别模型，生成模型对于数据有更多的先验信息。这导致如果我们对于数据的假设是正确的，那么生成模型在少量数据下也能够表现的更好。</p>
+<h2 id="GDA和逻辑回归"><a href="#GDA和逻辑回归" class="headerlink" title="GDA和逻辑回归"></a>GDA和逻辑回归</h2><p>接下来我将要证明，GDA(Gaussian Discriminant Analysis)如何最终推导出逻辑回归，从这个推导中也可以看出采用逻辑回归的道理。<br>对于二分类问题，GDA假设类别服从伯努利分布，数据服从多元高斯分布，如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%85%88%E9%AA%8C%E5%88%86%E5%B8%83.PNG" class="" title="先验分布"><br>具体的数学公式如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%88%86%E5%B8%83%E7%9A%84%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F.PNG" class="" title="分布的数学公式"><br>而采用GDA就是求取后验概率，我们可以证明如下等式成立：</p>
+<script type="math/tex; mode=display">p(y=1|x) = \frac{1}{1+exp(-\theta^Tx)}</script><p>在公式中可以看到，GDA关于类别1的后验概率就是逻辑回归的sigmoid函数，这里$\theta$就是关于参数$\phi,\mu_0,\mu_1,\sum$的函数<br>接下来进行证明：</p>
+<script type="math/tex; mode=display">
+p(y=1|x)
+=\frac{p(x|y=1)\times{p(y=1)}}{p(x)}
+=\frac{p(x|y=1)\times{p(y=1)}}{p(x|y=1)\times{p(y=1)} + p(x|y=1)\times{p(y=0)}}
+=\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}</script><p>我们接下来带入概率公式，计算$\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}$,计算过程如下，主要是涉及一些log和exp的转换：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E.PNG" class="" title="证明"><br>在公式的最后，我们令$x_0=1$,至此我们得到了$\theta^Tx$,即如下式：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E%E7%BB%93%E6%9E%9C.PNG" class="" title="证明结果"><br>$\theta$向量的值如下：</p>
+<script type="math/tex; mode=display">\theta=\left[
+ \begin{matrix}
+   log(\frac{1-\phi}{\phi}) - \frac{\mu_0^2 + \mu_1^2}{2\sum} \\
+   \frac{\mu_0 - \mu_1}{\sum}
+  \end{matrix}
+  \right]</script><h2 id="关系说明"><a href="#关系说明" class="headerlink" title="关系说明"></a>关系说明</h2><p>可以看出，从GDA可以推导出逻辑回归，但是反过来是不成立的。即如果$p(y|x)$是一个逻辑回归函数并不能推导出$p(x|y)$是一个多元的高斯分布。这说明GDA模型比逻辑回归模型具有更强的假设。事实上，如果$p(x|y)$是指数分布族(<strong>Exponential Family</strong>，比如高斯分布，泊松分布)中的一种，那么其后验概率就是逻辑回归。由此我们也得到一个为什么逻辑回归使用的更加广泛的原因，因为逻辑回归是一种非常通用，健壮的算法，适用于许多基本假设。另一方面，GDA以及一般的生成模型做出了更强的假设，因此对于非高斯或某些未定义分布数据来说并不理想。<br>特别的，当$p(x|y)$是高斯分布(类别之间具有相同的协方差)时，则GDA是渐进有效的(首先搞清楚什么叫有效性，有效性是指在所有的无偏估计方法里，某种方法的估计量的方差是最小的，则该种估计方法就是有效的，比如古典假定的OLS(最小二乘算法)估计。渐近有效是指该种估计方法在中小样本时可能不是最有效的，但随着样本数的增加，慢慢变得有效（没有其它无偏估计方法可以得到更小的方差），这就称为渐近有效，比如正态分布下线性模型的最大似然估计)。非正式地说，当训练集数目很大时，没有模型能显著地比GDA更好(即模型准确估计$p(y|x)$的程度).如果数据服从正态分布，则GDA要比逻辑回归表现的更好，更近一步，即使对于比较小的训练集，我们也总是认为GDA要表现的更好。<br>假设有一个一维训练集，包含一些正样本和负样本，如下图x轴的叉和圈，设叉为0，圈为1，用GDA对两类样本分别拟合高斯概率密度函数p(x|y=0)和p(x|y=1)，如下图的两个钟形曲线。沿x轴遍历样本，在x轴上方画出相应的p(y=1|x)。如选x轴靠左的点，那么它属于1的概率几乎为0，p(y=1|x)=0，两条钟形曲线交点处，属于0或1的概率相同，p(y=1|x)=0.5，x轴靠右的点，输出1的概率几乎为1，p(y=1|x)=1。最终发现，得到的曲线和sigmoid函数曲线很相似。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E5%92%8C%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92.png" class="" title="高斯分布和逻辑回归"><br>也就是说，当使用GDA模型时，p(x|y)属于高斯分布，计算p(y|x)时，几乎能得到和logistic回归中使用的sigmiod函数一样的函数，但实际上还是存在本质区别。</p>
+<p>在Andrew Ng的cs229采用两种方法可以推导出逻辑回归</p>
+<ol>
+<li>通过指数分布族来推导。</li>
+<li>通过生成学习假设先验概率分布的方式进行推导。</li>
+</ol>
+<h2 id="如何选择两种模型"><a href="#如何选择两种模型" class="headerlink" title="如何选择两种模型"></a>如何选择两种模型</h2><p>由上面的分析可以知道，GDA比逻辑回归有更多的前置假设。当数据服从或大致服从正态分布时，GDA会具有更高的拟合度，因为GDA利用了更多的信息构建模型。但是当数据不服从正态分布时，那么逻辑回归更有效，因为它做出更少的假设，构建的模型更加强壮，更加具有鲁棒性。生成学习还有另外的一个好处，就是可以使用比判别学习模型使用更少的数据构建出强壮的模型。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过推导，我们可以看到很多算法内在都是存在某种联系的，理解算法之间的关系对于我们理解算法以及选择什么算法都是有很多的帮助的。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
+<li><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">Gaussian Discriminant Analysis and Logistic Regression</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>Logistic Regression</tag>
+        <tag>Gaussian Discriminant Analysis</tag>
+        <tag>Discriminative model</tag>
+        <tag>Machine Learning</tag>
+        <tag>Generative model</tag>
+        <tag>Statistics</tag>
       </tags>
   </entry>
   <entry>
@@ -300,6 +446,34 @@ p(y=1|x)
       </tags>
   </entry>
   <entry>
+    <title>Understanding LSTM Networks</title>
+    <url>/Understanding-LSTM-Networks.html</url>
+    <content><![CDATA[<p>这是一篇译文,<a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">原文地址</a>.如果英文可以,建议直接看英文.</p>
+<h1 id="循环神经网络-Recurrent-Neural-Networks"><a href="#循环神经网络-Recurrent-Neural-Networks" class="headerlink" title="循环神经网络(Recurrent Neural Networks)"></a>循环神经网络(Recurrent Neural Networks)</h1><p>在我们思考时,我们不会从头开始,肯定会在思考时加入之前的知识.就如同当你在阅读当前的博客时,你读的每个单词都是基于前面的单词.你不会扔掉所有的东西,然后在从头开始.你的想法有持久性.<br>传统的神经网络不能使用之前信息.假设你使用传统神经网络来将一部电影中的正在发生的事件分类,怎么使用当前事件之前的信息是很困难的.<br>循环神经网络解决了这个问题,在其中有循环,允许信息能够保持.<br><img src="/Understanding-LSTM-Networks/RNN-rolled.png" class="" title="Recurrent Neural Networks have loops."><br>这个图看起来有点奇怪,我们可以将其展开,如下图所示<br><img src="/Understanding-LSTM-Networks/RNN-unrolled.png" class="" title="An unrolled recurrent neural network"><br>从图中可以看出,RNN使用了前一时刻的状态来预测当前的状态<br>RNN在很多领域都取得了成功,比如:语音识别,自然语言处理,翻译,图像字幕等等.这里Andrej Karpathy的<a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">blog</a>,里面列举了RNN一些应用.<br>本文主要介绍LSTM模型,LSTM模型是RNN的一种变种,在很多领域的表现都要比一般的RNN模型更好</p>
+<h1 id="长期依赖存在的问题-The-Problem-of-Long-Term-Dependencies"><a href="#长期依赖存在的问题-The-Problem-of-Long-Term-Dependencies" class="headerlink" title="长期依赖存在的问题(The Problem of Long-Term Dependencies)"></a>长期依赖存在的问题(The Problem of Long-Term Dependencies)</h1><p>加入我们要基于之前的单词预测下一个单词,如”the clouds are in the <em>sky</em>“,我们要预测最后一个单词sky.在这个例子中,我们不需要更多的上下文,很明显最后一个单词是sky.RNN针对这种情况有很好的表现.<br><img src="/Understanding-LSTM-Networks/RNN-shorttermdepdencies.png" class=""><br>但是在有些情况下,我们需要更多的上下文.例如,我们要预测”I grew up in France… I speak fluent <em>French</em>.”中的最后一个单词French.从最近的信息,比如speak fluent等,可以推测最后一个单词是一种语言.但是如果要知道具体的语言,我们需要更多的上下文.预测点和其对应的相关信息之间的差距很大是由很大可能的.<br>但是,不幸的是随着差距增加,RNN不可能学会如何连接这种信息<br><img src="/Understanding-LSTM-Networks/RNN-longtermdependencies.png" class=""><br>从图中可以看出$h_{t+1}$不能很好地利用$X_0$和$X_1$的信息.理论上,RNN能够学习到长期依赖,但是在实践中,要想在RNN中使用这些长期依赖很困难.幸运的是LSTM模型解决了这个问题.</p>
+<h1 id="LSTM网络-LSTM-Networks"><a href="#LSTM网络-LSTM-Networks" class="headerlink" title="LSTM网络(LSTM Networks)"></a>LSTM网络(LSTM Networks)</h1><p>LSTM全称Long Short Term Memory,长短期记忆网络.LSTM的设计就是为了避免长依赖问题,记忆长周期的信息是LSTM的默认行为.<br>所有的递归神经网络都具有重复模块的链式结构.在标准的RNN中,重复模块是一个非常简单的结构,例如单层tanh<br><img src="/Understanding-LSTM-Networks/LSTM3-SimpleRNN.png" class="" title="The repeating module in a standard RNN contains a single layer."><br>LSTM也有这种链式结构,但是重复的模块有一个不同的结构,在其中一个模块中,包含一个四层的神经网络,并且这四层以一种特别方式进行交互.<br><img src="/Understanding-LSTM-Networks/LSTM3-chain.png" class="" title="The repeating module in an LSTM contains four interacting layers."><br>图中的示例如下<br><img src="/Understanding-LSTM-Networks/LSTM2-notation.png" class=""><br>接下来我会详细介绍其中涉及的内容.</p>
+<h1 id="LSTMs中的核心思想-The-Core-Idea-Behind-LSTMs"><a href="#LSTMs中的核心思想-The-Core-Idea-Behind-LSTMs" class="headerlink" title="LSTMs中的核心思想(The Core Idea Behind LSTMs)"></a>LSTMs中的核心思想(The Core Idea Behind LSTMs)</h1><p>LSTMs中的核心是单元状态,在图中就是最上面的那条水平线.单元状态就像是一条输送带.单元状态沿着整个链流动,对其只有一些线性作用,信息的流动很容易.<br><img src="/Understanding-LSTM-Networks/LSTM3-C-line.png" class=""><br>LSTM能够移除或者添加信息到单元状态,并且由成为门的结构来控制.门可以选择性的让信息通过或不通过,它是由sigmoid神经网络层和点积操作组成.<br><img src="/Understanding-LSTM-Networks/LSTM3-gate.png" class=""><br>sigmoid层的输出范围0-1,描述了可以通过多少的信息.输出为0意味着什么都不通过,输出为1意味着都能通过.从LSTM的结构中,我们可以看到LSTM的一个重复模块包括三个这样的门.</p>
+<h1 id="一步一步认识LSTM"><a href="#一步一步认识LSTM" class="headerlink" title="一步一步认识LSTM"></a>一步一步认识LSTM</h1><p>LSTM的第一步就是决定从单元状态中丢弃哪些信息.这个决定是由一个称为”遗忘门(forget gate layer)”单层sigmoid层组成.它接收$h<em>{t-1}$和$x_t$作为输入,输出0到1之间的数字.对于前一个单元状态$C</em>{t-1}$,当遗忘门的输出为1时,表示完全保留$C<em>{t-1}$;当遗忘门的输出为0时,表示完全舍弃$C</em>{t-1}$.<br>我们在回到之前根据之前的内容来预测下一个单词这个问题.在这样的问题中,单元状态可能包括当前对象的性别,所以可以使用正确的代词.但是当遇到一个新的对象时,我们就想要忘记老对象的性别.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-f.png" class=""></p>
+<blockquote>
+<p>图中的$W<em>f \cdot [h</em>{t-1},x<em>t]$,大家看起来有些不清楚.个人认为比较合适的写法如下<br>$\sigma(W_fx_t + U_r h</em>{t-1} + b_f)$.大家可以参考下<a href="http://blog.echen.me/2017/05/30/exploring-lstms/">英文博客</a>,<a href="https://www.jiqizhixin.com/articles/2017-07-24-2">中文博客</a></p>
+</blockquote>
+<p>接下来这一步就是决定新信息中的哪些部分需要保存在单元状态中.这包括两个部分,第一部分是sigmoid层(input gate layer),决定更新的值.第二部分是一个tanh层,用来创建一个新的候选值.在下一步中,我们将会把这两个结合起来用来给单元状态做更新.在语言模型的例子中,这一步就代表我们将新对象的性别加入单元状态中,用来代替我们需要忘记的老对象性别.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-i.png" class=""><br>现在要把旧的单元状态$C_{t-1}$更新为$C_t$.上一步已经决定了更新的内容.我们把旧的单元状态乘以$f_t$,表示我们需要忘记的内容.然后将结果加上$i_t*\tilde{C_t}$,这表示将候选值进行缩放或者延伸.在语言模型的例子中,这表示我们从旧对象的性别中去除信息,然后加上新的信息.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-C.png" class=""><br>最终,我们需要决定输出的内容.输出内容基于单元状态,但是需要一些处理.首先,我们使用一个sigmoid层来决定单元状态的哪部分需要输出.然后,我们将单元状态经过tanh(将值限定在-1到1之间),在乘以sigmoid gate的输出.所以我们仅仅输出了我们决定的.<br>对于语言模型例子,因为网络之前看到了主语,所以接下来它可能想要输出的信息是关于动词的.例如,网络会根据主语的单数或复数来决定接下来动词的形式.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-o.png" class=""></p>
+<h1 id="长短期记忆模型的其他形式-Variants-on-Long-Short-Term-Memory"><a href="#长短期记忆模型的其他形式-Variants-on-Long-Short-Term-Memory" class="headerlink" title="长短期记忆模型的其他形式(Variants on Long Short Term Memory)"></a>长短期记忆模型的其他形式(Variants on Long Short Term Memory)</h1><p>上面提到的是LSTM的一般形式.但是还有好多LSTM的一些变形,虽然变化不大.其中一个流行的LSTM变形是由<a href="ftp://ftp.idsia.ch/pub/juergen/TimeCount-IJCNN2000.pdf">Gers &amp; Schmidhuber (2000)</a>提出.此模型添加了”peephole connections”,这意味着让门看到了单元状态.<br><img src="/Understanding-LSTM-Networks/LSTM3-var-peepholes.png" class=""><br>从图中可以看到模型对于所有的gate都添加了peepholes,但是有很多文章只添加了一些peepholes,而另一些则没有.</p>
+<p>LSTM另一种变形是将input gate和forget gate进行耦合.这种网络不会单独的决定哪些内容需要忘记,哪些新的信息需要添加,而是一起做这些决定.当我们将要输入内容时,我们仅仅忘记;当我们忘记旧的内容时,我们仅仅输入一些新的值.模型的结构如下<br><img src="/Understanding-LSTM-Networks/LSTM3-var-tied.png" class=""></p>
+<p>一种引入注意的LSTM变形是GRU(Gated Recurrent Unit),它将forget gate和input gate结合为一个单独的”update gate”.它同样融合了单元状态和隐藏状态以及一些其他的改变.GRU模型要比标准的LSTM模型简单,并且越来越流行.<br><img src="/Understanding-LSTM-Networks/LSTM3-var-GRU.png" class=""><br>这里仅仅列举了一些LSTM变形,还有很多其他的LSTM变形.比如Depth Gated RNNs by <a href="http://arxiv.org/pdf/1508.03790v2.pdf">Yao, et al. (2015)</a>.同时在解决长期依赖问题上,也有跟LSTM完全不同的方法,比如Clockwork RNNs by <a href="http://arxiv.org/pdf/1402.3511v1.pdf">Koutnik, et al. (2014)</a>.<br><a href="http://arxiv.org/pdf/1503.04069.pdf">Greff, et al. (2015)</a>对这些变形做了一个对比.<a href="http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf">Jozefowicz, et al. (2015)</a>测试很多的RNN结构,发现在一些特定的任务上比LSTM模型表现的更好的模型.</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">colah博客</a><br><a href="http://blog.echen.me/2017/05/30/exploring-lstms/">echen博客</a></p>
+<blockquote>
+<p>echen博客中公式介绍的较为详细</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>deep learning</category>
+      </categories>
+      <tags>
+        <tag>RNN</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Thread Signaling</title>
     <url>/Thread-Signaling.html</url>
     <content><![CDATA[<h1 id="线程信号量及wait，notify方法"><a href="#线程信号量及wait，notify方法" class="headerlink" title="线程信号量及wait，notify方法"></a>线程信号量及wait，notify方法</h1><p>本篇主要介绍线程之间如何进行信号的通知。同时介绍wait，notify底层的一些实现。</p>
@@ -426,178 +600,42 @@ public final native void wait(long timeout) throws InterruptedException;
       </tags>
   </entry>
   <entry>
-    <title>2019-plan-and-learn</title>
-    <url>/2019-plan-and-learn.html</url>
-    <content><![CDATA[<h1 id="2019计划"><a href="#2019计划" class="headerlink" title="2019计划"></a>2019计划</h1><p>激励<a href="http://www.ituring.com.cn/article/9174">左耳朵耗子</a></p>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
-<li>掌握tensorflow的使用</li>
-<li>掌握Python以及常用库(numpy,matplotlib,pandas)的使用</li>
-<li>掌握常用机器学习算法(SVM,AdaBoost,LightGBM)的使用以及理论</li>
-<li>掌握深度学习常用算法应用和理论</li>
-<li>掌握英语单词5000个,提高自己的英语发音</li>
-<li>spark大数据分析技术</li>
-<li>linux相关技术</li>
-<li>Java相关技术</li>
-</ol>
-<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>今天看了一篇虎扑上面&lt;非CS专业转行机器学习/人工智能阶段性成功，分享一点个人经验吧&gt;的帖子，感触比较多，摘一点帖子里面的内容，为之后的学习提供一定的建议。<br>楼主的情况是没有人工智能基础的，为了找到人工智能的工作准备了两年时间。</p>
-<p>编程：掌握一门语言，要达到非常熟悉的阶段。<br>数据结构：掌握常用的数据结构，多做leetcode上面的编程题目，至少要刷一下easy和medium模式的题目，写的时候考虑test case<br>机器学习：</p>
-<pre><code>1. andrew ng的machine learning，仔细看课件和习题
-2. hands on machine learning with scikit-learn and tensorflow，并且在pythhon中实践还有课后习题
-3. bishop的pattern recognition and machine learning
-4. 李彦宏的机器学习和深度学习(自己加的)
-5. 李航的统计机器学习（自己加的）
-</code></pre><h2 id="Java相关技术"><a href="#Java相关技术" class="headerlink" title="Java相关技术"></a>Java相关技术</h2><p>参考了<a href="https://www.v2ex.com/t/546203">v2ex</a> 或者<a href="https://github.com/farmerjohngit/myblog">github</a><br>这里做了一个思维导图<br><img src="/2019-plan-and-learn/Java%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.PNG" class="" title="Java相关知识学习思维导图"><br>下面进行思维导图的一些解释。<strong>同时对这些技能点进行查漏补缺，同时也会在之后的过程中添加更多的技能点</strong></p>
-<h3 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h3><p>集合主要是java.util包下的非线程安全和线程安全集合</p>
-<h4 id="非线程安全"><a href="#非线程安全" class="headerlink" title="非线程安全"></a>非线程安全</h4><ol>
-<li>List： ArrayList与LinkedList的实现和区别</li>
-<li>Map：<ul>
-<li>HashMap:了解其数据结构，源码，hash冲突如何解决(链表和红黑树)，扩容时机，扩容时避免rehash优化</li>
-<li>LinkedHashMap:了解基本原理，哪两种有序，如何实现LRU</li>
-<li>TreeMap：了解数据结构，了解其key对象为什么必须要实现Compare接口，如何用它实现一致性哈希</li>
-</ul>
-</li>
-<li>Set：基本上是由map实现，简单看看就好</li>
-</ol>
-<p><strong>常见问题</strong></p>
-<ul>
-<li>hashmap 如何解决 hash 冲突，为什么 hashmap 中的链表需要转成红黑树？</li>
-<li>hashmap 什么时候会触发扩容？</li>
-<li>jdk1.8 之前并发操作 hashmap 时为什么会有死循环的问题？</li>
-<li>hashmap 扩容时每个 entry 需要再计算一次 hash 吗？</li>
-<li>hashmap 的数组长度为什么要保证是 2 的幂？</li>
-<li>如何用 LinkedHashMap 实现 LRU ？</li>
-<li>如何用 TreeMap 实现一致性 hash ？</li>
-</ul>
-<h4 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h4><ol>
-<li>Collection.synchronized:了解其实现原理</li>
-<li>CopyOnWriteArrayList：了解写时复制机制，了解其适用场景，思考为什么没有ConcurrentArrayList</li>
-<li>ConcurrentHashMap：了解实现原理，扩容时做的优化，与HashTable的对比</li>
-<li>BlockingQueue：了解 LinkedBlockingQueue、ArrayBlockingQueue、DelayQueue、SynchronousQueue</li>
-</ol>
-<p><strong>常见问题</strong></p>
-<ul>
-<li>ConcurrentHashMap 是如何在保证并发安全的同时提高性能？</li>
-<li>ConcurrentHashMap 是如何让多线程同时参与扩容？</li>
-<li>LinkedBlockingQueue、DelayQueue 是如何实现的？</li>
-<li>CopyOnWriteArrayList 是如何保证线程安全的？</li>
-</ul>
-<h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><ol>
-<li>synchronized：了解偏向锁、轻量级锁、重量级锁的概念以及升级机制、以及和 ReentrantLock 的区别</li>
-<li>CAS：了解 AtomicInteger 实现原理、CAS 适用场景、如何实现乐观锁</li>
-<li>AQS：了解 AQS 内部实现、及依靠 AQS 的同步类比如 ReentrantLock、Semaphore、CountDownLatch、CyclicBarrier 等的实现</li>
-<li>ThreadLocal：了解 ThreadLocal 使用场景和内部实现</li>
-<li>ThreadPoolExecutor：了解线程池的工作原理以及几个重要参数的设置</li>
-</ol>
-<p><strong>常见问题</strong></p>
-<ul>
-<li>synchronized 与 ReentrantLock 的区别？</li>
-<li>乐观锁和悲观锁的区别？</li>
-<li>如何实现一个乐观锁？</li>
-<li>AQS 是如何唤醒下一个线程的？</li>
-<li>ReentrantLock 如何实现公平和非公平锁是如何实现？</li>
-<li>CountDownLatch 和 CyclicBarrier 的区别？各自适用于什么场景？</li>
-<li>适用 ThreadLocal 时要注意什么？比如说内存泄漏?</li>
-<li>说一说往线程池里提交一个任务会发生什么？</li>
-<li>线程池的几个参数如何设置？</li>
-<li>线程池的非核心线程什么时候会被释放？</li>
-<li>如何排查死锁？</li>
-</ul>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>了解 Java 中的软引用、弱引用、虚引用的适用场景以及释放机制</p>
-<p><strong>常见问题</strong></p>
-<ul>
-<li>软引用什么时候会被释放</li>
-<li>弱引用什么时候会被释放</li>
-</ul>
-<h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p>了解双亲委派机制</p>
-<p><strong>常见问题</strong></p>
-<ul>
-<li>双亲委派机制的作用？</li>
-<li>Tomcat 的 classloader 结构</li>
-<li>如何自己实现一个 classloader 打破双亲委派</li>
-</ul>
-<h3 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h3><p>了解 BIO 和 NIO 的区别、了解多路复用机制</p>
-<p><strong>常见问题</strong></p>
-<ul>
-<li>同步阻塞、同步非阻塞、异步的区别？</li>
-<li>select、poll、eopll 的区别？</li>
-<li>java NIO 与 BIO 的区别？</li>
-<li>refactor 线程模型是什么?</li>
-</ul>
-<h3 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h3><p>了解GC和内存区域</p>
-<ol>
-<li>垃圾回收基本原理、几种常见的垃圾回收器的特性、重点了解 CMS （或 G1 ）以及一些重要的参数</li>
-<li>能说清 jvm 的内存划分</li>
-</ol>
-<p><strong>常见问题</strong></p>
-<ul>
-<li>CMS GC 回收分为哪几个阶段？分别做了什么事情？</li>
-<li>CMS 有哪些重要参数？</li>
-<li>Concurrent Model Failure 和 ParNew promotion failed 什么情况下会发生？</li>
-<li>CMS 的优缺点？</li>
-<li>有做过哪些 GC 调优？</li>
-<li>为什么要划分成年轻代和老年代？</li>
-<li>年轻代为什么被划分成 eden、survivor 区域？</li>
-<li>年轻代为什么采用的是复制算法？</li>
-<li>老年代为什么采用的是标记清除、标记整理算法</li>
-<li>什么情况下使用堆外内存？要注意些什么？</li>
-<li>堆外内存如何被回收？</li>
-<li>jvm 内存区域划分是怎样的？</li>
-</ul>
-<h3 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h3><p>bean 的生命周期、循环依赖问题、spring cloud （如项目中有用过）、AOP 的实现、spring 事务传播</p>
-<p><strong>常见问题</strong></p>
-<ul>
-<li>java 动态代理和 cglib 动态代理的区别（经常结合 spring 一起问所以就放这里了）</li>
-<li>spring 中 bean 的生命周期是怎样的？</li>
-<li>属性注入和构造器注入哪种会有循环依赖的问题？</li>
-</ul>
-<h3 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h3><p>事务隔离级别、锁、索引的数据结构、聚簇索引和非聚簇索引、最左匹配原则、查询优化（ explain 等命令）</p>
-<p><strong>常见问题</strong></p>
-<ul>
-<li>Mysql(innondb 下同) 有哪几种事务隔离级别？</li>
-<li>不同事务隔离级别分别会加哪些锁？</li>
-<li>mysql 的行锁、表锁、间隙锁、意向锁分别是做什么的？</li>
-<li>说说什么是最左匹配？</li>
-<li>如何优化慢查询？</li>
-<li>mysql 索引为什么用的是 b+ tree 而不是 b tree、红黑树</li>
-<li>分库分表如何选择分表键</li>
-<li>分库分表的情况下，查询时一般是如何做排序的？</li>
-</ul>
-<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>准备一下leetcode上的算法（easy，medium）</p>
-]]></content>
+    <title>docker安装sshd以及修改镜像源和软件源</title>
+    <url>/docker%E5%AE%89%E8%A3%85sshd%E4%BB%A5%E5%8F%8A%E4%BF%AE%E6%94%B9%E9%95%9C%E5%83%8F%E6%BA%90%E5%92%8C%E8%BD%AF%E4%BB%B6%E6%BA%90.html</url>
+    <content><![CDATA[<h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><p>因为最近公司需要在容器中跑深度学习任务，所以需要tensorflow的镜像。并且要求在要通过ssh进行容器的通信。这篇文章主要介绍如何在docker容器中安装软件，如何修改docker镜像源以及修改容器内部软件源地址。<br>宿主机环境：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">uname</span> -r : 3.10.0-862.11.6.el7.x86_64</span><br><span class="line"><span class="built_in">cat</span> /etc/redhat-release : CentOS Linux release 7.5.1804 (Core)</span><br><span class="line">docker version : 18.06.0-ce</span><br></pre></td></tr></table></figure>
+<p>镜像主要选择的是官方的tensorflow:1.12.0-py3版本,镜像里面使用的系统环境下面会介绍</p>
+<h2 id="修改docker镜像源"><a href="#修改docker镜像源" class="headerlink" title="修改docker镜像源"></a>修改docker镜像源</h2><p><a href="https://www.docker-cn.com/registry-mirror">!参考</a><br>由于docker 官方的镜像源在国外，导致下载速度很慢。所以第一步是修改docker镜像源地址。我这里采用永久修改docker镜像源地址。打开<code>/etc/docker/daemon.json</code>（如果没有此文件，则新建）,添加如下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;:</span> [<span class="string">&quot;https://registry.docker-cn.com&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后运行<code>docker pull registry.docker-cn.com/tensorflow/tensorflow:1.12.0-py3</code><br>即可以拉取镜像，而且可以看到速度提升很快</p>
+<h2 id="启动镜像"><a href="#启动镜像" class="headerlink" title="启动镜像"></a>启动镜像</h2><p>我们可以使用<code>docker images</code>查看本机有的镜像。针对上面拉取的tensorflow:1.12.0-py3镜像，我们执行下面命令启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -it [image_name] /bin/bash</span><br></pre></td></tr></table></figure>
+<p>此时我们应该是在启动的容器中。我们可以查看容器具体的系统信息。因为tensorflow基础镜像是ubuntu，所以这里运行以下命令,因为容器中一般不会有vim命令，所以采用cat命令参看系统信息。注意下面的命令都是在容器中键入</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">uname</span> -r</span><br><span class="line"><span class="built_in">cat</span> /etc/issue</span><br></pre></td></tr></table></figure>
+<p>查看得到系统信息为:Ubuntu 16.04.5 LTS</p>
+<h2 id="修改容器中软件源地址"><a href="#修改容器中软件源地址" class="headerlink" title="修改容器中软件源地址"></a>修改容器中软件源地址</h2><p>由于容器中软件源默认地址是国外的，这里换成国内的。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt</span><br><span class="line"><span class="built_in">cp</span> sources.list sources.list.bak</span><br></pre></td></tr></table></figure>
+<p>这里使用阿里的镜像源，将sources.list里面的内容修改为如下内容:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial main main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial-updates</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial-backports</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial-security</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 预发布软件源，不建议启用</span></span><br><span class="line"><span class="comment"># deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse</span></span><br></pre></td></tr></table></figure>
+<h2 id="容器中安装软件"><a href="#容器中安装软件" class="headerlink" title="容器中安装软件"></a>容器中安装软件</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">passwd</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install vim</span><br><span class="line">apt-get install openssh-sshd</span><br></pre></td></tr></table></figure>
+<p>修改root密码以及安装完上面vim和openssh-sshd两个软件后，修改openssh-sshd配置文件内容。打开<code>/etc/ssh/sshd_config</code>将<code>PermitRootLogin</code>后面添加yes，即允许以root用户登录。后面启动sshd命令可能会报错，具体问题可以自己上网上搜索</p>
+<h2 id="生成镜像"><a href="#生成镜像" class="headerlink" title="生成镜像"></a>生成镜像</h2><p>退出镜像，将容器提交为镜像</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker commit [containerID] [image_name]</span><br></pre></td></tr></table></figure>
+<p>执行<code>docker images</code>可以看到生成的镜像。启动此镜像并开启sshd服务命令如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d  -p 50001:22 [images_name] /usr/sbin/sshd -D</span><br><span class="line">其中 -d表示已后台方式启动容器，-p挂载端口 ，/usr/sbin/sshd -D 是启动命令</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>plan</category>
+        <category>docker</category>
       </categories>
       <tags>
-        <tag>2019</tag>
+        <tag>镜像源</tag>
+        <tag>软件源</tag>
       </tags>
   </entry>
   <entry>
-    <title>Understanding LSTM Networks</title>
-    <url>/Understanding-LSTM-Networks.html</url>
-    <content><![CDATA[<p>这是一篇译文,<a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">原文地址</a>.如果英文可以,建议直接看英文.</p>
-<h1 id="循环神经网络-Recurrent-Neural-Networks"><a href="#循环神经网络-Recurrent-Neural-Networks" class="headerlink" title="循环神经网络(Recurrent Neural Networks)"></a>循环神经网络(Recurrent Neural Networks)</h1><p>在我们思考时,我们不会从头开始,肯定会在思考时加入之前的知识.就如同当你在阅读当前的博客时,你读的每个单词都是基于前面的单词.你不会扔掉所有的东西,然后在从头开始.你的想法有持久性.<br>传统的神经网络不能使用之前信息.假设你使用传统神经网络来将一部电影中的正在发生的事件分类,怎么使用当前事件之前的信息是很困难的.<br>循环神经网络解决了这个问题,在其中有循环,允许信息能够保持.<br><img src="/Understanding-LSTM-Networks/RNN-rolled.png" class="" title="Recurrent Neural Networks have loops."><br>这个图看起来有点奇怪,我们可以将其展开,如下图所示<br><img src="/Understanding-LSTM-Networks/RNN-unrolled.png" class="" title="An unrolled recurrent neural network"><br>从图中可以看出,RNN使用了前一时刻的状态来预测当前的状态<br>RNN在很多领域都取得了成功,比如:语音识别,自然语言处理,翻译,图像字幕等等.这里Andrej Karpathy的<a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">blog</a>,里面列举了RNN一些应用.<br>本文主要介绍LSTM模型,LSTM模型是RNN的一种变种,在很多领域的表现都要比一般的RNN模型更好</p>
-<h1 id="长期依赖存在的问题-The-Problem-of-Long-Term-Dependencies"><a href="#长期依赖存在的问题-The-Problem-of-Long-Term-Dependencies" class="headerlink" title="长期依赖存在的问题(The Problem of Long-Term Dependencies)"></a>长期依赖存在的问题(The Problem of Long-Term Dependencies)</h1><p>加入我们要基于之前的单词预测下一个单词,如”the clouds are in the <em>sky</em>“,我们要预测最后一个单词sky.在这个例子中,我们不需要更多的上下文,很明显最后一个单词是sky.RNN针对这种情况有很好的表现.<br><img src="/Understanding-LSTM-Networks/RNN-shorttermdepdencies.png" class=""><br>但是在有些情况下,我们需要更多的上下文.例如,我们要预测”I grew up in France… I speak fluent <em>French</em>.”中的最后一个单词French.从最近的信息,比如speak fluent等,可以推测最后一个单词是一种语言.但是如果要知道具体的语言,我们需要更多的上下文.预测点和其对应的相关信息之间的差距很大是由很大可能的.<br>但是,不幸的是随着差距增加,RNN不可能学会如何连接这种信息<br><img src="/Understanding-LSTM-Networks/RNN-longtermdependencies.png" class=""><br>从图中可以看出$h_{t+1}$不能很好地利用$X_0$和$X_1$的信息.理论上,RNN能够学习到长期依赖,但是在实践中,要想在RNN中使用这些长期依赖很困难.幸运的是LSTM模型解决了这个问题.</p>
-<h1 id="LSTM网络-LSTM-Networks"><a href="#LSTM网络-LSTM-Networks" class="headerlink" title="LSTM网络(LSTM Networks)"></a>LSTM网络(LSTM Networks)</h1><p>LSTM全称Long Short Term Memory,长短期记忆网络.LSTM的设计就是为了避免长依赖问题,记忆长周期的信息是LSTM的默认行为.<br>所有的递归神经网络都具有重复模块的链式结构.在标准的RNN中,重复模块是一个非常简单的结构,例如单层tanh<br><img src="/Understanding-LSTM-Networks/LSTM3-SimpleRNN.png" class="" title="The repeating module in a standard RNN contains a single layer."><br>LSTM也有这种链式结构,但是重复的模块有一个不同的结构,在其中一个模块中,包含一个四层的神经网络,并且这四层以一种特别方式进行交互.<br><img src="/Understanding-LSTM-Networks/LSTM3-chain.png" class="" title="The repeating module in an LSTM contains four interacting layers."><br>图中的示例如下<br><img src="/Understanding-LSTM-Networks/LSTM2-notation.png" class=""><br>接下来我会详细介绍其中涉及的内容.</p>
-<h1 id="LSTMs中的核心思想-The-Core-Idea-Behind-LSTMs"><a href="#LSTMs中的核心思想-The-Core-Idea-Behind-LSTMs" class="headerlink" title="LSTMs中的核心思想(The Core Idea Behind LSTMs)"></a>LSTMs中的核心思想(The Core Idea Behind LSTMs)</h1><p>LSTMs中的核心是单元状态,在图中就是最上面的那条水平线.单元状态就像是一条输送带.单元状态沿着整个链流动,对其只有一些线性作用,信息的流动很容易.<br><img src="/Understanding-LSTM-Networks/LSTM3-C-line.png" class=""><br>LSTM能够移除或者添加信息到单元状态,并且由成为门的结构来控制.门可以选择性的让信息通过或不通过,它是由sigmoid神经网络层和点积操作组成.<br><img src="/Understanding-LSTM-Networks/LSTM3-gate.png" class=""><br>sigmoid层的输出范围0-1,描述了可以通过多少的信息.输出为0意味着什么都不通过,输出为1意味着都能通过.从LSTM的结构中,我们可以看到LSTM的一个重复模块包括三个这样的门.</p>
-<h1 id="一步一步认识LSTM"><a href="#一步一步认识LSTM" class="headerlink" title="一步一步认识LSTM"></a>一步一步认识LSTM</h1><p>LSTM的第一步就是决定从单元状态中丢弃哪些信息.这个决定是由一个称为”遗忘门(forget gate layer)”单层sigmoid层组成.它接收$h<em>{t-1}$和$x_t$作为输入,输出0到1之间的数字.对于前一个单元状态$C</em>{t-1}$,当遗忘门的输出为1时,表示完全保留$C<em>{t-1}$;当遗忘门的输出为0时,表示完全舍弃$C</em>{t-1}$.<br>我们在回到之前根据之前的内容来预测下一个单词这个问题.在这样的问题中,单元状态可能包括当前对象的性别,所以可以使用正确的代词.但是当遇到一个新的对象时,我们就想要忘记老对象的性别.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-f.png" class=""></p>
-<blockquote>
-<p>图中的$W<em>f \cdot [h</em>{t-1},x<em>t]$,大家看起来有些不清楚.个人认为比较合适的写法如下<br>$\sigma(W_fx_t + U_r h</em>{t-1} + b_f)$.大家可以参考下<a href="http://blog.echen.me/2017/05/30/exploring-lstms/">英文博客</a>,<a href="https://www.jiqizhixin.com/articles/2017-07-24-2">中文博客</a></p>
-</blockquote>
-<p>接下来这一步就是决定新信息中的哪些部分需要保存在单元状态中.这包括两个部分,第一部分是sigmoid层(input gate layer),决定更新的值.第二部分是一个tanh层,用来创建一个新的候选值.在下一步中,我们将会把这两个结合起来用来给单元状态做更新.在语言模型的例子中,这一步就代表我们将新对象的性别加入单元状态中,用来代替我们需要忘记的老对象性别.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-i.png" class=""><br>现在要把旧的单元状态$C_{t-1}$更新为$C_t$.上一步已经决定了更新的内容.我们把旧的单元状态乘以$f_t$,表示我们需要忘记的内容.然后将结果加上$i_t*\tilde{C_t}$,这表示将候选值进行缩放或者延伸.在语言模型的例子中,这表示我们从旧对象的性别中去除信息,然后加上新的信息.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-C.png" class=""><br>最终,我们需要决定输出的内容.输出内容基于单元状态,但是需要一些处理.首先,我们使用一个sigmoid层来决定单元状态的哪部分需要输出.然后,我们将单元状态经过tanh(将值限定在-1到1之间),在乘以sigmoid gate的输出.所以我们仅仅输出了我们决定的.<br>对于语言模型例子,因为网络之前看到了主语,所以接下来它可能想要输出的信息是关于动词的.例如,网络会根据主语的单数或复数来决定接下来动词的形式.<br><img src="/Understanding-LSTM-Networks/LSTM3-focus-o.png" class=""></p>
-<h1 id="长短期记忆模型的其他形式-Variants-on-Long-Short-Term-Memory"><a href="#长短期记忆模型的其他形式-Variants-on-Long-Short-Term-Memory" class="headerlink" title="长短期记忆模型的其他形式(Variants on Long Short Term Memory)"></a>长短期记忆模型的其他形式(Variants on Long Short Term Memory)</h1><p>上面提到的是LSTM的一般形式.但是还有好多LSTM的一些变形,虽然变化不大.其中一个流行的LSTM变形是由<a href="ftp://ftp.idsia.ch/pub/juergen/TimeCount-IJCNN2000.pdf">Gers &amp; Schmidhuber (2000)</a>提出.此模型添加了”peephole connections”,这意味着让门看到了单元状态.<br><img src="/Understanding-LSTM-Networks/LSTM3-var-peepholes.png" class=""><br>从图中可以看到模型对于所有的gate都添加了peepholes,但是有很多文章只添加了一些peepholes,而另一些则没有.</p>
-<p>LSTM另一种变形是将input gate和forget gate进行耦合.这种网络不会单独的决定哪些内容需要忘记,哪些新的信息需要添加,而是一起做这些决定.当我们将要输入内容时,我们仅仅忘记;当我们忘记旧的内容时,我们仅仅输入一些新的值.模型的结构如下<br><img src="/Understanding-LSTM-Networks/LSTM3-var-tied.png" class=""></p>
-<p>一种引入注意的LSTM变形是GRU(Gated Recurrent Unit),它将forget gate和input gate结合为一个单独的”update gate”.它同样融合了单元状态和隐藏状态以及一些其他的改变.GRU模型要比标准的LSTM模型简单,并且越来越流行.<br><img src="/Understanding-LSTM-Networks/LSTM3-var-GRU.png" class=""><br>这里仅仅列举了一些LSTM变形,还有很多其他的LSTM变形.比如Depth Gated RNNs by <a href="http://arxiv.org/pdf/1508.03790v2.pdf">Yao, et al. (2015)</a>.同时在解决长期依赖问题上,也有跟LSTM完全不同的方法,比如Clockwork RNNs by <a href="http://arxiv.org/pdf/1402.3511v1.pdf">Koutnik, et al. (2014)</a>.<br><a href="http://arxiv.org/pdf/1503.04069.pdf">Greff, et al. (2015)</a>对这些变形做了一个对比.<a href="http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf">Jozefowicz, et al. (2015)</a>测试很多的RNN结构,发现在一些特定的任务上比LSTM模型表现的更好的模型.</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">colah博客</a><br><a href="http://blog.echen.me/2017/05/30/exploring-lstms/">echen博客</a></p>
-<blockquote>
-<p>echen博客中公式介绍的较为详细</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>deep learning</category>
-      </categories>
-      <tags>
-        <tag>RNN</tag>
-      </tags>
+    <title>effective java third edition notes</title>
+    <url>/effective-java-third-edition-notes.html</url>
+    <content><![CDATA[<h1 id="effective-java-third-edition-notes"><a href="#effective-java-third-edition-notes" class="headerlink" title="effective java third edition notes"></a>effective java third edition notes</h1><p>记录阅读《effective java》得一些收获</p>
+<h2 id="第二章-创建和销毁对象"><a href="#第二章-创建和销毁对象" class="headerlink" title="第二章 创建和销毁对象"></a>第二章 创建和销毁对象</h2>]]></content>
   </entry>
   <entry>
     <title>docker与tensorflow结合使用</title>
@@ -632,12 +670,6 @@ public final native void wait(long timeout) throws InterruptedException;
         <tag>docker</tag>
         <tag>tensorflow</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>effective java third edition notes</title>
-    <url>/effective-java-third-edition-notes.html</url>
-    <content><![CDATA[<h1 id="effective-java-third-edition-notes"><a href="#effective-java-third-edition-notes" class="headerlink" title="effective java third edition notes"></a>effective java third edition notes</h1><p>记录阅读《effective java》得一些收获</p>
-<h2 id="第二章-创建和销毁对象"><a href="#第二章-创建和销毁对象" class="headerlink" title="第二章 创建和销毁对象"></a>第二章 创建和销毁对象</h2>]]></content>
   </entry>
   <entry>
     <title>docker常用命令</title>
@@ -681,38 +713,6 @@ public final native void wait(long timeout) throws InterruptedException;
       </tags>
   </entry>
   <entry>
-    <title>docker安装sshd以及修改镜像源和软件源</title>
-    <url>/docker%E5%AE%89%E8%A3%85sshd%E4%BB%A5%E5%8F%8A%E4%BF%AE%E6%94%B9%E9%95%9C%E5%83%8F%E6%BA%90%E5%92%8C%E8%BD%AF%E4%BB%B6%E6%BA%90.html</url>
-    <content><![CDATA[<h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><p>因为最近公司需要在容器中跑深度学习任务，所以需要tensorflow的镜像。并且要求在要通过ssh进行容器的通信。这篇文章主要介绍如何在docker容器中安装软件，如何修改docker镜像源以及修改容器内部软件源地址。<br>宿主机环境：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">uname</span> -r : 3.10.0-862.11.6.el7.x86_64</span><br><span class="line"><span class="built_in">cat</span> /etc/redhat-release : CentOS Linux release 7.5.1804 (Core)</span><br><span class="line">docker version : 18.06.0-ce</span><br></pre></td></tr></table></figure>
-<p>镜像主要选择的是官方的tensorflow:1.12.0-py3版本,镜像里面使用的系统环境下面会介绍</p>
-<h2 id="修改docker镜像源"><a href="#修改docker镜像源" class="headerlink" title="修改docker镜像源"></a>修改docker镜像源</h2><p><a href="https://www.docker-cn.com/registry-mirror">!参考</a><br>由于docker 官方的镜像源在国外，导致下载速度很慢。所以第一步是修改docker镜像源地址。我这里采用永久修改docker镜像源地址。打开<code>/etc/docker/daemon.json</code>（如果没有此文件，则新建）,添加如下内容：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;:</span> [<span class="string">&quot;https://registry.docker-cn.com&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后运行<code>docker pull registry.docker-cn.com/tensorflow/tensorflow:1.12.0-py3</code><br>即可以拉取镜像，而且可以看到速度提升很快</p>
-<h2 id="启动镜像"><a href="#启动镜像" class="headerlink" title="启动镜像"></a>启动镜像</h2><p>我们可以使用<code>docker images</code>查看本机有的镜像。针对上面拉取的tensorflow:1.12.0-py3镜像，我们执行下面命令启动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -it [image_name] /bin/bash</span><br></pre></td></tr></table></figure>
-<p>此时我们应该是在启动的容器中。我们可以查看容器具体的系统信息。因为tensorflow基础镜像是ubuntu，所以这里运行以下命令,因为容器中一般不会有vim命令，所以采用cat命令参看系统信息。注意下面的命令都是在容器中键入</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">uname</span> -r</span><br><span class="line"><span class="built_in">cat</span> /etc/issue</span><br></pre></td></tr></table></figure>
-<p>查看得到系统信息为:Ubuntu 16.04.5 LTS</p>
-<h2 id="修改容器中软件源地址"><a href="#修改容器中软件源地址" class="headerlink" title="修改容器中软件源地址"></a>修改容器中软件源地址</h2><p>由于容器中软件源默认地址是国外的，这里换成国内的。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt</span><br><span class="line"><span class="built_in">cp</span> sources.list sources.list.bak</span><br></pre></td></tr></table></figure>
-<p>这里使用阿里的镜像源，将sources.list里面的内容修改为如下内容:</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial main main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial-updates</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial-backports</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb</span> <span class="string">http://mirrors.aliyun.com/ubuntu/</span> <span class="string">xenial-security</span> <span class="string">main</span> <span class="string">restricted</span> <span class="string">universe</span> <span class="string">multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 预发布软件源，不建议启用</span></span><br><span class="line"><span class="comment"># deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse</span></span><br><span class="line"><span class="comment"># deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse</span></span><br></pre></td></tr></table></figure>
-<h2 id="容器中安装软件"><a href="#容器中安装软件" class="headerlink" title="容器中安装软件"></a>容器中安装软件</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">passwd</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install vim</span><br><span class="line">apt-get install openssh-sshd</span><br></pre></td></tr></table></figure>
-<p>修改root密码以及安装完上面vim和openssh-sshd两个软件后，修改openssh-sshd配置文件内容。打开<code>/etc/ssh/sshd_config</code>将<code>PermitRootLogin</code>后面添加yes，即允许以root用户登录。后面启动sshd命令可能会报错，具体问题可以自己上网上搜索</p>
-<h2 id="生成镜像"><a href="#生成镜像" class="headerlink" title="生成镜像"></a>生成镜像</h2><p>退出镜像，将容器提交为镜像</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker commit [containerID] [image_name]</span><br></pre></td></tr></table></figure>
-<p>执行<code>docker images</code>可以看到生成的镜像。启动此镜像并开启sshd服务命令如下</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d  -p 50001:22 [images_name] /usr/sbin/sshd -D</span><br><span class="line">其中 -d表示已后台方式启动容器，-p挂载端口 ，/usr/sbin/sshd -D 是启动命令</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>docker</category>
-      </categories>
-      <tags>
-        <tag>镜像源</tag>
-        <tag>软件源</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>java synchronized keyword</title>
     <url>/java-synchronized-keyword.html</url>
     <content><![CDATA[<h1 id="java-synchronized关键字"><a href="#java-synchronized关键字" class="headerlink" title="java synchronized关键字"></a>java synchronized关键字</h1><p>在平常进行java并发程序的开发过程中，synchronized关键字的出现频率很高。但是synchronized底层是如何实现的，synchronized都有哪些具体的用法。本篇将会在下面进行详细讲解。<br>synchronized关键字主要是用来进行同步操作。synchronized关键字修饰的内容，每次都只能有一个线程进入，如果其他线程想要进入相同的代码块，那么必须等前一个线程释放代码块对应的锁，其他的线程才能进入此代码块。但是同一个线程能够多次进入一个相同的同步块，也就是synchronized具有可重入锁的特性。<br>总的来说，在java中，主要在三个地方使用synchronized关键字</p>
@@ -750,6 +750,66 @@ public final native void wait(long timeout) throws InterruptedException;
       </tags>
   </entry>
   <entry>
+    <title>java-zero-copy</title>
+    <url>/java-zero-copy.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>jupyter notebook使用</title>
+    <url>/jupyter-notebook%E4%BD%BF%E7%94%A8.html</url>
+    <content><![CDATA[<h1 id="jupyter-notebook"><a href="#jupyter-notebook" class="headerlink" title="jupyter notebook"></a>jupyter notebook</h1><p>Jupyter notebook, 前身是 IPython notebook, 它是一个非常灵活的工具，有助于帮助你构建很多可读的分析，你可以在里面同时保留代码，图片，评论，公式和绘制的图像。<br>这篇文章主要是记录下jupyter notebook使用过程中一些常用的内容和技巧，包括一些magic使用</p>
+<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>windows上，<strong>Ctrl + Shift + P</strong>可以调出快捷键的帮助信息，所有的快捷键都能够看到。掌握快捷键能够帮助我们更好的使用jupyter notebook</p>
+<h2 id="Jupyter-Magic-Commands"><a href="#Jupyter-Magic-Commands" class="headerlink" title="Jupyter Magic Commands"></a>Jupyter Magic Commands</h2><ol>
+<li>%matplotlib inline</li>
+</ol>
+<p>如果想在jupyter中画图，可以添加如下代码，则图像就能够进行显示</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+<p>2. Timing</p>
+<p>对于计时有两个十分有用的魔法命令：%%time 和 %timeit. 如果你有些代码运行地十分缓慢，而你想确定是否问题出在这里，这两个命令将会非常方便。</p>
+<p><strong>%%time</strong> 将会给出cell的代码运行一次所花费的时间。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%%time</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line">    time.sleep(<span class="number">0.01</span>)<span class="comment"># sleep for 0.01 seconds</span></span><br></pre></td></tr></table></figure>
+<p><strong>%timeit</strong> 使用Python的timeit模块，它将会执行一个语句100，000次(默认情况下)，然后给出运行最快3次的平均值。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line">%timeit numpy.random.normal(size=<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="运行文件"><a href="#运行文件" class="headerlink" title="运行文件"></a>运行文件</h2>]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>jupyter</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pip以及conda镜像源修改及命令使用</title>
+    <url>/pip%E4%BB%A5%E5%8F%8Aconda%E9%95%9C%E5%83%8F%E6%BA%90%E4%BF%AE%E6%94%B9%E5%8F%8A%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8.html</url>
+    <content><![CDATA[<h1 id="Python包的安装"><a href="#Python包的安装" class="headerlink" title="Python包的安装"></a>Python包的安装</h1><p>在国内环境下，因为网络原因，所以Python下很多包安装不了或者安装的速度很慢。这里主要介绍下如何修改conda以及pip对应的镜像源。</p>
+<h2 id="pip"><a href="#pip" class="headerlink" title="pip"></a>pip</h2><p>pip主要是用来管理python包的工具，类似于Maven工具。</p>
+<h3 id="临时修改pip安装源"><a href="#临时修改pip安装源" class="headerlink" title="临时修改pip安装源"></a>临时修改pip安装源</h3><p>比如我们要安装gevent包，我们可以输入一下命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple gevent</span><br></pre></td></tr></table></figure>
+<p>这样就会从清华这边的镜像去安装gevent库.其中<code>-i</code>参数指定了使用清华的pip源</p>
+<p>有时候可能需要添加受信源，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install packagename -i http://pypi.douban.com/simple --trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure>
+<p>其中<code>--trusted-host</code> 参数是指设置为受信源，否则在安全性较高的连接下是连接不上的</p>
+<h3 id="永久修改"><a href="#永久修改" class="headerlink" title="永久修改"></a>永久修改</h3><p>在用户根目录(~，而非系统根目录 / )下添加配置~/.pip/pip.conf目录添加可信源，如果目录文件不存在，可直接创建。写入如下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line">[<span class="string">global</span>]</span><br><span class="line"><span class="string">index-url=http://pypi.douban.com/simple</span></span><br><span class="line"><span class="string">trusted-host</span> <span class="string">=</span> <span class="string">pypi.douban.com</span> </span><br></pre></td></tr></table></figure>
+<p>这里添加的是豆瓣源，也可以添加清华源</p>
+<h2 id="conda使用及源修改"><a href="#conda使用及源修改" class="headerlink" title="conda使用及源修改"></a>conda使用及源修改</h2><p>conda是Anaconda中用来安装python包的工具。在Anaconda中将镜像分为两类，一类是官方的python包，放在anaconda中；另一类是第三方的python包，放在conda-forge中。</p>
+<p>采用conda 安装python包时，可以使用以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/linux-64 joblib</span><br></pre></td></tr></table></figure>
+<p>其中参数<code>-c</code>指定了镜像源的通道，这里实在anaconda官方中安装joblib</p>
+<p>或者</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/linux-64 jieba</span><br></pre></td></tr></table></figure>
+<p>这里是在conda-forge中安装jieba第三方的Python包</p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>pip</tag>
+        <tag>conda</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo搭建github博客多设备更新</title>
     <url>/hexo%E6%90%AD%E5%BB%BAgithub%E5%8D%9A%E5%AE%A2%E5%A4%9A%E8%AE%BE%E5%A4%87%E6%9B%B4%E6%96%B0.html</url>
     <content><![CDATA[<p>前段时间由于电脑重新安装了系统,导致自己的博客文件丢失,而github上面的只有发布后的文件,没有博客的源文件。想要恢复到源文件至今还没有找到解决方法,好在原来的博客内容不多,丢失了也无所谓了。但是以后要是换电脑了,这种问题怎么解决呢?今天介绍一个解决方案。<br>其实方法很简单,首先应该有两个分支,一个分支用来保存发布后的内容,一个分支用来保存源文件.这里用master分支保存发布后的内容,hexo分支保存源文件内容.</p>
@@ -782,31 +842,6 @@ public final native void wait(long timeout) throws InterruptedException;
       </categories>
       <tags>
         <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>jupyter notebook使用</title>
-    <url>/jupyter-notebook%E4%BD%BF%E7%94%A8.html</url>
-    <content><![CDATA[<h1 id="jupyter-notebook"><a href="#jupyter-notebook" class="headerlink" title="jupyter notebook"></a>jupyter notebook</h1><p>Jupyter notebook, 前身是 IPython notebook, 它是一个非常灵活的工具，有助于帮助你构建很多可读的分析，你可以在里面同时保留代码，图片，评论，公式和绘制的图像。<br>这篇文章主要是记录下jupyter notebook使用过程中一些常用的内容和技巧，包括一些magic使用</p>
-<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>windows上，<strong>Ctrl + Shift + P</strong>可以调出快捷键的帮助信息，所有的快捷键都能够看到。掌握快捷键能够帮助我们更好的使用jupyter notebook</p>
-<h2 id="Jupyter-Magic-Commands"><a href="#Jupyter-Magic-Commands" class="headerlink" title="Jupyter Magic Commands"></a>Jupyter Magic Commands</h2><ol>
-<li>%matplotlib inline</li>
-</ol>
-<p>如果想在jupyter中画图，可以添加如下代码，则图像就能够进行显示</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
-<p>2. Timing</p>
-<p>对于计时有两个十分有用的魔法命令：%%time 和 %timeit. 如果你有些代码运行地十分缓慢，而你想确定是否问题出在这里，这两个命令将会非常方便。</p>
-<p><strong>%%time</strong> 将会给出cell的代码运行一次所花费的时间。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%%time</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line">    time.sleep(<span class="number">0.01</span>)<span class="comment"># sleep for 0.01 seconds</span></span><br></pre></td></tr></table></figure>
-<p><strong>%timeit</strong> 使用Python的timeit模块，它将会执行一个语句100，000次(默认情况下)，然后给出运行最快3次的平均值。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line">%timeit numpy.random.normal(size=<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="运行文件"><a href="#运行文件" class="headerlink" title="运行文件"></a>运行文件</h2>]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>jupyter</tag>
-        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -851,36 +886,6 @@ public final native void wait(long timeout) throws InterruptedException;
       <tags>
         <tag>linux</tag>
         <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>pip以及conda镜像源修改及命令使用</title>
-    <url>/pip%E4%BB%A5%E5%8F%8Aconda%E9%95%9C%E5%83%8F%E6%BA%90%E4%BF%AE%E6%94%B9%E5%8F%8A%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8.html</url>
-    <content><![CDATA[<h1 id="Python包的安装"><a href="#Python包的安装" class="headerlink" title="Python包的安装"></a>Python包的安装</h1><p>在国内环境下，因为网络原因，所以Python下很多包安装不了或者安装的速度很慢。这里主要介绍下如何修改conda以及pip对应的镜像源。</p>
-<h2 id="pip"><a href="#pip" class="headerlink" title="pip"></a>pip</h2><p>pip主要是用来管理python包的工具，类似于Maven工具。</p>
-<h3 id="临时修改pip安装源"><a href="#临时修改pip安装源" class="headerlink" title="临时修改pip安装源"></a>临时修改pip安装源</h3><p>比如我们要安装gevent包，我们可以输入一下命令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple gevent</span><br></pre></td></tr></table></figure>
-<p>这样就会从清华这边的镜像去安装gevent库.其中<code>-i</code>参数指定了使用清华的pip源</p>
-<p>有时候可能需要添加受信源，命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install packagename -i http://pypi.douban.com/simple --trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure>
-<p>其中<code>--trusted-host</code> 参数是指设置为受信源，否则在安全性较高的连接下是连接不上的</p>
-<h3 id="永久修改"><a href="#永久修改" class="headerlink" title="永久修改"></a>永久修改</h3><p>在用户根目录(~，而非系统根目录 / )下添加配置~/.pip/pip.conf目录添加可信源，如果目录文件不存在，可直接创建。写入如下内容：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line">[<span class="string">global</span>]</span><br><span class="line"><span class="string">index-url=http://pypi.douban.com/simple</span></span><br><span class="line"><span class="string">trusted-host</span> <span class="string">=</span> <span class="string">pypi.douban.com</span> </span><br></pre></td></tr></table></figure>
-<p>这里添加的是豆瓣源，也可以添加清华源</p>
-<h2 id="conda使用及源修改"><a href="#conda使用及源修改" class="headerlink" title="conda使用及源修改"></a>conda使用及源修改</h2><p>conda是Anaconda中用来安装python包的工具。在Anaconda中将镜像分为两类，一类是官方的python包，放在anaconda中；另一类是第三方的python包，放在conda-forge中。</p>
-<p>采用conda 安装python包时，可以使用以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/linux-64 joblib</span><br></pre></td></tr></table></figure>
-<p>其中参数<code>-c</code>指定了镜像源的通道，这里实在anaconda官方中安装joblib</p>
-<p>或者</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/linux-64 jieba</span><br></pre></td></tr></table></figure>
-<p>这里是在conda-forge中安装jieba第三方的Python包</p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>pip</tag>
-        <tag>conda</tag>
       </tags>
   </entry>
   <entry>
@@ -955,6 +960,24 @@ public final native void wait(long timeout) throws InterruptedException;
       </categories>
   </entry>
   <entry>
+    <title>tensorboard介绍</title>
+    <url>/tensorboard%E4%BB%8B%E7%BB%8D.html</url>
+    <content><![CDATA[<p>最近因为工作需要，看了下tensorboard的使用方式，这里做了简单的学习记录。使用的tensorflow版本是<strong>1.10.0</strong>,tensorboard的版本也是一样。</p>
+<h1 id="tensorboard介绍"><a href="#tensorboard介绍" class="headerlink" title="tensorboard介绍"></a>tensorboard介绍</h1><p>tensorboard主要是为了查看tensorflow程序，将程序进行图示化，可以用来查看程序的运行情况，也可以用来debug程序。</p>
+<h2 id="tensorflow写tensorboard日志"><a href="#tensorflow写tensorboard日志" class="headerlink" title="tensorflow写tensorboard日志"></a>tensorflow写tensorboard日志</h2><p>在程序中主要使用<code>tf.summary.FileWriter</code>来将需要记录的事件日志记录到硬盘中。这个函数主要由三个参数需要注意的，如果想要查看详细的内容，可以去源码中查找具体的使用方式。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">logdir:指定日志写入的具体目录</span></span><br><span class="line"><span class="string">graph:指定记录的tensorflow图</span></span><br><span class="line"><span class="string">filename_suffix:事件日志文件的后缀</span></span><br></pre></td></tr></table></figure>
+<h2 id="tensorboard启动"><a href="#tensorboard启动" class="headerlink" title="tensorboard启动"></a>tensorboard启动</h2><p>tensorboard的启动是在命令行中，输入<code>tensorboard --logdir=/path/to/log</code>命令启动，然后打开ip+port在浏览器中进行查看。查看tensorboard的参数信息，可以运行<code>tensorboard --help</code>来进行查看。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">--inspect:</span> <span class="string">用来查看事件日志信息，并不启动tensorboard</span></span><br><span class="line"><span class="string">--logdir：用来指定事件日志的存储目录</span></span><br></pre></td></tr></table></figure>
+<p>tensorboard主要是扫描logdir指定目录下的内容，扫描文件名带有<em>.tfevents.</em>的文件进行展示。如果logdir下有多个目录，则在浏览器中可以分别进行浏览。如果有多个相同的文件，则会显示时间戳距离最近的文件。文件名中带有时间戳。例如：<strong>events.out.tfevents.1545795299.DESKTOP-123</strong></p>
+]]></content>
+      <categories>
+        <category>tensorflow</category>
+      </categories>
+      <tags>
+        <tag>tensorboard</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>svm原理介绍</title>
     <url>/svm%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D.html</url>
     <content><![CDATA[<h1 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h1><p>这篇博客主要介绍如何推导svm算法。写这篇博客主要是最近在学习svm算法，想着合上书，自己推导一遍算法的原理，发现还是有很多需要思考的地方。<br>其实一般推导机器学习算法，是有一个模式的。</p>
@@ -1020,24 +1043,6 @@ s.t.\quad y^{(i)}(w^T + b) \geq 1, i=1,...,m \tag{1.3}</script><p>针对这个�
       </tags>
   </entry>
   <entry>
-    <title>tensorboard介绍</title>
-    <url>/tensorboard%E4%BB%8B%E7%BB%8D.html</url>
-    <content><![CDATA[<p>最近因为工作需要，看了下tensorboard的使用方式，这里做了简单的学习记录。使用的tensorflow版本是<strong>1.10.0</strong>,tensorboard的版本也是一样。</p>
-<h1 id="tensorboard介绍"><a href="#tensorboard介绍" class="headerlink" title="tensorboard介绍"></a>tensorboard介绍</h1><p>tensorboard主要是为了查看tensorflow程序，将程序进行图示化，可以用来查看程序的运行情况，也可以用来debug程序。</p>
-<h2 id="tensorflow写tensorboard日志"><a href="#tensorflow写tensorboard日志" class="headerlink" title="tensorflow写tensorboard日志"></a>tensorflow写tensorboard日志</h2><p>在程序中主要使用<code>tf.summary.FileWriter</code>来将需要记录的事件日志记录到硬盘中。这个函数主要由三个参数需要注意的，如果想要查看详细的内容，可以去源码中查找具体的使用方式。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">logdir:指定日志写入的具体目录</span></span><br><span class="line"><span class="string">graph:指定记录的tensorflow图</span></span><br><span class="line"><span class="string">filename_suffix:事件日志文件的后缀</span></span><br></pre></td></tr></table></figure>
-<h2 id="tensorboard启动"><a href="#tensorboard启动" class="headerlink" title="tensorboard启动"></a>tensorboard启动</h2><p>tensorboard的启动是在命令行中，输入<code>tensorboard --logdir=/path/to/log</code>命令启动，然后打开ip+port在浏览器中进行查看。查看tensorboard的参数信息，可以运行<code>tensorboard --help</code>来进行查看。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">--inspect:</span> <span class="string">用来查看事件日志信息，并不启动tensorboard</span></span><br><span class="line"><span class="string">--logdir：用来指定事件日志的存储目录</span></span><br></pre></td></tr></table></figure>
-<p>tensorboard主要是扫描logdir指定目录下的内容，扫描文件名带有<em>.tfevents.</em>的文件进行展示。如果logdir下有多个目录，则在浏览器中可以分别进行浏览。如果有多个相同的文件，则会显示时间戳距离最近的文件。文件名中带有时间戳。例如：<strong>events.out.tfevents.1545795299.DESKTOP-123</strong></p>
-]]></content>
-      <categories>
-        <category>tensorflow</category>
-      </categories>
-      <tags>
-        <tag>tensorboard</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>欧洲四国行</title>
     <url>/%E6%AC%A7%E6%B4%B2%E5%9B%9B%E5%9B%BD%E8%A1%8C.html</url>
     <content><![CDATA[<p>今年九月份去了一趟欧洲,总共去了有十五天的样子。去了比利时,西班牙(巴萨罗那),葡萄牙(里斯本),法国(巴黎)四个国家。除了比利时，其他的三个国家都是只去了一个城市。</p>
@@ -1053,29 +1058,6 @@ s.t.\quad y^{(i)}(w^T + b) \geq 1, i=1,...,m \tag{1.3}</script><p>针对这个�
         <tag>里斯本</tag>
         <tag>巴黎</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>左耳朵耗子-陈皓经历(转)</title>
-    <url>/%E5%B7%A6%E8%80%B3%E6%9C%B5%E8%80%97%E5%AD%90-%E9%99%88%E7%9A%93%E7%BB%8F%E5%8E%86-%E8%BD%AC.html</url>
-    <content><![CDATA[<h1 id="左耳朵耗子-陈皓"><a href="#左耳朵耗子-陈皓" class="headerlink" title="左耳朵耗子-陈皓"></a>左耳朵耗子-陈皓</h1><h2 id="一、个人简历"><a href="#一、个人简历" class="headerlink" title="一、个人简历"></a>一、个人简历</h2><p>陈皓，coolshell.cn博客博主。<br>14年以上软件开发相关工作经验，8年以上项目和团队管理经验。<br>擅长底层技术架构，软件工程。<br>对高性能，高可用，分布式，高并发，大规模数据处理系统有一定研究。<br>技术擅长C/C++/Java和Unix/Linux/Windows。</p>
-<h2 id="二、轶事和思考"><a href="#二、轶事和思考" class="headerlink" title="二、轶事和思考"></a>二、轶事和思考</h2><h3 id="2-1、毅然辞掉银行工作"><a href="#2-1、毅然辞掉银行工作" class="headerlink" title="2.1、毅然辞掉银行工作"></a>2.1、毅然辞掉银行工作</h3><p>我当时在银行做银行网络、银行的电子邮件系统和办公自动化系统。当时正处在银行信息化的阶段，加上当时互联网和IT业刚刚火起来，得到这份工作其实是很幸运的。银行正值扩张电子信息化业务的时候，其实应该有很多事可做，但是当时的主要工作都是由厂商来干。比如说IBM或Cisco拿下单子来，会把工作外包给系统集成商。作为一位技术人员，其实可以发挥的空间并不大，多数时间我只是出了问题打电话的角色。没有人会教你任何事，出了问题，就是打电话，然后按照他们的指导来完成工作。但这个还不是促使我离职的最主要原因，我离开是因为互联网和IT业的兴起让我有些心向往之，有想去看一看的冲动。我还记得当时的辞职书是这么写的：“本人对现有工作毫无兴趣，申请辞职”。处长说，“你可以这么写，但是要加上‘经调解无效’，另外，分给你的房就不能要了”。我说好啊。就这样就辞去了工作，去了上海。老实说，这个决定真不好做，因为几乎所有的朋友和亲人都很反对。</p>
-<h3 id="2-2、选择上海闯荡的原因"><a href="#2-2、选择上海闯荡的原因" class="headerlink" title="2.2、选择上海闯荡的原因"></a>2.2、选择上海闯荡的原因</h3><p>当时选择上海是有原因的，我觉得在当时的环境（2000年）下，上海的发展比较不错。没有选择深圳的原因是个人感觉那是因为政治原因凭空冒出来的一座城市，我不是很喜欢。北京我有很多同学，而我想去一个陌生的地方。但是后来发现上海也不是做技术的地方，过得有些压抑，初来到上海的时候经常会被人瞧不起，毕竟是刚刚来到大城市。<br>我当时感觉银行束缚了我，想看看自己可以跑多远，能发挥出多大的价值。于是决定出来闯一闯，主要就是要去经历一些应该去经历的事情，不希望老了以后会后悔年轻的时候没有去。当时IT产业的发展是一个大趋势，我感觉我必须要去一座大城市，去经历一些东西。在小地方基本没有这些机会。要学会游泳就必须要跳到水里去呛两口水，所以我就义无反顾地出来了。</p>
-<h3 id="2-3、工作挫折和自省"><a href="#2-3、工作挫折和自省" class="headerlink" title="2.3、工作挫折和自省"></a>2.3、工作挫折和自省</h3><p>我仍然记得自己拎着皮箱站在上海火车站的样子，举目无亲。原来在老家的时候觉得自己还挺厉害的，自以为不愁找不到好工作。不过事实却不是这样的。<br>我还记得第一次去面试时，（面试官）问了很多和C相关的问题，问了我半个小时，我一个问题都答不上来。我一直低着头，好像被审问的犯罪分子一样。我从大学毕业出来就没经历过什么面试，再加上自己内向的性格，所以，整个过程我都在低着头，不敢看别人一眼。最后，面试官问了我一个问题是“有不懂的问题你会怎么办”，这样的问题我都不敢回答，其实这道题的答案不过就是“问别人”或是“自己看书”或是“上网查资料”什么的。很显然，这场面试我肯定是被灭掉了。但这还没完，最后面试官对我说：“你出来干什么，像你这种性格根本不适合到大城市来”。<br>我当时被严重地打击了，感觉到自己确实有一些东西很差。第一个是性格差，不知道怎么与人交往；第二个是技术差，很多问题不知道；第三个就是视野狭窄，没见过世面。后面的几家公司的面试都大同小异。一个人在异地他乡，经历了这些事情，心里会非常地恐慌，“我这条路是不是走错了？”，我经常这样问自己。<br>面对这样的情况，我被逼迫着一定要改变自己。因为，离开银行时，我的家人、同学和朋友都很反对我出来，如果这样灰溜溜地回去，我面对不了他们。而前面的人还看不起我。我当时的处境真的很难堪，就像爬在悬崖中间，上不去也下不来。所以，当时只有一个想法，就是要证明自己不是那么差的人。人被逼到那个份上，活得就比较简单，哪有什么职业发展规划，只想拼命地多学技术，提高自己的能力。这个经历有点像是一剂兴奋剂，同时也相当阵痛。但是回头想想，第一个面试官应该是我最感谢的人。</p>
-<h3 id="2-4、疯狂成长"><a href="#2-4、疯狂成长" class="headerlink" title="2.4、疯狂成长"></a>2.4、疯狂成长</h3><p>在同学的帮助下我找到了在上海的第一份工作。南天公司，这是一家给银行做系统集成软件的公司，大学毕业时本来也可以进去，现在绕了一圈而且还是靠同学帮助进去的，所以那时的心态还很不平稳；另一方面因为以前是做银行的，是甲方，现在成了乙方了，两边的人都用异样的眼光看我，心态非常不好。<br>不过，这是个技术不错的企业，国内早期很多搞Unix/C的高手都是从这个公司培养出来的。我当时的技术还是不行，比如说到了用户站点以后，不知道怎么做，我曾经误操作把用户的数据删掉了。经常犯低级错误，不但没做好自己的工作，反而还给别人添了麻烦。这些经历都让我有一种“技术焦虑感”，或者叫“技术忧郁症”。我觉得自己这也不行，那也不行。这也是我今天仍然在拼命学习的原因。这就好像我们经常在参加工作多年后还会梦见自己的英语四级没过，或者是期末考试没过一样。我经常会梦见的是项目又做砸了，又把用户的系统搞乱了，一大堆人要审我、要训斥我。<br>因为技术差，沟通差，不会面试，所以，我决定经常出去面试，基本上每周都要去，不管懂不懂，也不管是什么公司，也不管别人鄙不鄙视我，反正一有机会就去面试，多见见人这样可以让我的性格有所改善，同时，也可以知道社会上需要一些什么样的技能，把别人面我回答不上来的东西都记下来，然后回头找答案。那个时候我会经常去上海书城看书，看很多很多的书。我学的东西很杂，什么做网页，Windows，Unix，Java，.NET，flash，连3DMax/Photoshop我也学，还去考CCNA的认证等等。这样散乱地学习两年后，我才慢慢确定了要走C/C++/Unix/Windows系统底层的路子。而这样扑天盖地学习的结果有一个好处就是，我成长的速度相当之快。我自己摸索到了适合我的学习方法（从基础和原理上学习），从而不再害怕各种新的技术。那时，所有人都在休黄金周出去玩的时候，我还呆在办公室或住处看书学习。<br>等到一年半之后，用句赵本山的台词说，我在面试中学会抢答了。面试官的问题没问完，我就能说出答案了。其实，基本上是面一个公司过一个（当然都是一些小公司），此时，我就开始挑公司了。<br>感到技术能力不行就去学技术，交往能力不行我就去面试，这两个问题都可以通过大量地实践和努力来弥补，但是眼界这个东西没有办法通过努力来弥补。所以，当时非常想去一些更大的公司看看，如果能去外企更好。</p>
-<h3 id="2-5、变得不一样"><a href="#2-5、变得不一样" class="headerlink" title="2.5、变得不一样"></a>2.5、变得不一样</h3><p>我还记得，有一天，有一个和网络相关的技术问题，同事们搞了三四个通宵，也没弄明白，后来想起我好像在看这方面的书，他们就让我去看看、试试，结果我只用了20分钟就搞定了。基础真的很重要，这受益于我看了《TCP/IP详解》这套书。<br>后来，我去了一家做电信软件的公司，他们让我做PowerBuilder，尽管我当时想做的是C++，但是因为当时各种原因很需要这份工作，就去了。进了那里的第一天发现公司里有一个论坛，上面都是一些技术上悬而未决的问题，都是关于Windows/C++的。我一看，都是些很简单的问题，一下午的时间就被我全部解决掉了，我的基础知识发挥了作用。于是，当天下午我一下子就被调到了核心组。不过，我只在那里呆了两个多月，因为那时我已经不愁找工作了，这期间有两家北京的公司录用了我，于是，02年我就来到了北京，去到一家做分布式计算平台软件的公司。<br>在上海的这两年的时间，从什么都不是，到得到工作上的全面肯定。那段时间感觉自己牛得不得了，有些狂妄和骄傲了，经常上网和不认识的人争论一些很傻的问题，后来发展到对当时的领导以及银行客户的领导不敬，总觉得这些人太二。现在回头看过去，我觉得那是我人生特定时期的记号，人生的痕迹。</p>
-<h3 id="2-6、建立coolshell-cn的原因"><a href="#2-6、建立coolshell-cn的原因" class="headerlink" title="2.6、建立coolshell.cn的原因"></a>2.6、建立coolshell.cn的原因</h3><p>我2002年在CSDN开了一个blog，当时叫专家专栏。开个专栏很简单，只要发6个帖子。我也不是什么专家，只是喜欢看书、喜欢学习而已，也喜欢做一些学习笔记。那时候没有笔记本也没有台式机，市面上好像也没有U盘和移动硬盘。正好有CSDN这么一个地方，就去CSDN的站点上把自己的一些学习笔记放在了上面。后来03年的时候技术专栏转到了博客，因为CSDN对其博客经营得不好，我09年就离开了csdn，创建了酷壳。花了4500块钱，租了一个server。我离开那里主要有两个原因，一个是因为当时CSDN博客有一些性能上的问题，.NET架构嘛，大家都懂的。另外一个原因就是当时出现了很多博客营销的站点，有点像今天的36氪。好像那时候出现最早的叫煎蛋，那上面会有一些报纸上不会出现的国外的趣闻，是以博客的方式形成的媒体。这和常规的以日记形式出现的博客大不一样。煎蛋、有意思吧等这些博客让我看到了博客还能这样写，我觉得很好玩儿。而我当时也经常会去国外社区看一些文章，也能看到一些有意思的东西（因为我当时有了学习瓶颈，国内的网站已经满足不了我了）。心想，既然这些东西这么有意思，我为什么不自己开一个博客呢？<br>我老婆是学新闻编辑的，她鄙视我说，你的博客虽然有很多人读，但是只能算是个书呆子的博客，全是一些书呆子式的文章。我有些不服，我觉得技术人员不全是书呆子，我们这个圈子里也有很多有趣的东西，只不过是你不知道而已。于是我想弄一个有意思的、有娱乐性质的东西，里面都是技术圈里面有意思的事儿，但是很多技术圈以外的人也能看懂。一开始酷壳和CSDN博客的风格完全迥然，如果有技术性的文章我还会在CSDN上贴，但是后来我就完全抛弃了原来CSDN上的博客。酷壳的初衷是希望很多人都可以来上面发表一些东西，但是可能是我写得太多了，别人就被压制住了。<br>现在博客更新频率是一周一篇，一开始的时候一周三篇。磨刀不误砍柴工，总是有时间来做这些事的。我经常看书，需要把学到的东西整理成学习笔记。自从在CSDN上写博客的时候，就有这样的习惯了，而且又有“技术焦虑症”，害怕跟不上，所以维护博客的事对我来说是很自然的。<br>现在我已经不用自己再租服务器了，由于酷壳的访问量比较有保证，我提供了广告位，就免费得到服务器了。</p>
-<h3 id="2-7、对于新技术的态度"><a href="#2-7、对于新技术的态度" class="headerlink" title="2.7、对于新技术的态度"></a>2.7、对于新技术的态度</h3><p>遇到新技术我会去了解，但不会把很大的精力放在这。这些技术尚不成熟，我只需要跟得住就可以了。我的团队自己想学什么我都不干涉，但是用到项目里的技术，必须是很成熟的，（技术应用）十年以上可能是一个门槛。有人说技术更新换代很快，我一点儿都不这样想。虽然有不成熟的技术不断地涌出，但是成熟的技术，比如Unix，40多年，C，40多年，C++，30多年，Java也有将近20年了……，所以，技术并不多啊。还有很多技术比如Ruby，Lisp这样的，它们没有进入主流的原因主要是缺少企业级的应用背景。<br>如果要捋一个脉络下来，70年代Unix的出现，是软件发展方面的一个里程碑，那个时期的C语言，也是语言方面的里程碑。当时所有的项目都在Unix/C上，全世界人都在用这两样东西写软件。Linux跟随的是Unix，Windows下的开发也是C。这时候出现的C++很自然就被大家接受了，企业级的系统很自然就会迁移到这上面，C++虽然接过了C的接力棒，但是它的问题是它没有一个企业方面的架构，否则也不会有今天的Java。C++和C非常接近，它只不过是C的一个扩展，长年没有一个企业架构的框架。而Java出现之后，IBM把企业架构这部分的需求接了过来，J2EE的出现让C/C++捉襟见肘了，后面还有了.NET，但可惜的是这只局限在Windows平台上。这些就是企业级软件方面语言层面这条线上的技术主干。</p>
-<p>另外一条脉络就是互联网方面的（HTML/CSS/JS/LAMP…）。这条脉络和上述的那条C/C++/Java的我都没有放，作为一个有技术忧虑症的人，这两条软件开发的主线一定不能放弃。无论是应用还是学术，我都会看，知识不愁多。何必搞应用的和搞学术的分开阵营，互相看不起呢？都是知识，学就好了。<br>技术的发展要根植于历史，而不是未来。不要和我描述这个技术的未来会多么美好，用这个技术可以实现什么花哨的东西。很多常青的技术都是承前的。所以说“某某（技术）要火”这样的话是没有意义的，等它火了、应用多了咱们再说嘛。有些人说不学C/C++也是没有问题的，我对此的回应是：如果连主干都可以不学的话，还有什么其他的好学呢？极端一点，我要这么说：这些是计算机发展的根、脉络、祖师爷，这样的东西怎么可以不学呢？大部分学校虽然都会教授C，但是教得都不好。学校喜欢教微软的东西，老师好教学生好学。我不是说Windows不好，但那不是计算机文化的主干，那只是微软的主干、PC的主干。整个计算机文化的主干肯定是源起于Unix/C这条线上（注意，我说的是文化不是技术）。我也写过很多与Unix文化相关的文章，大家可以看看我写的“Unix传奇”。</p>
-<h3 id="2-8、对于学校计算机科学教育的看法"><a href="#2-8、对于学校计算机科学教育的看法" class="headerlink" title="2.8、对于学校计算机科学教育的看法"></a>2.8、对于学校计算机科学教育的看法</h3><p>学校教的大部分都是知识密集型的技术，但是社会上的企业大部分都是劳动密集型的。什么是劳动密集型的企业呢？麦当劳炸薯条就是劳动密集型的工作，用不到学校教授的那些知识。如果有一天你不炸薯条了，而要去做更大更专业的东西，学校里的知识就会派上用场。有人说一个语言、一个技术，能解决问题能用就行了，我不这样认为。我觉得你应该至少要知道这些演变和进化的过程。而如果你要解决一些业务和技术难题，就需要抓住某种技术很深入地学习，当成艺术一样来学习。</p>
-<p>我在“软件开发‘三重门’”里说过，第一重门是业务功能，在这重门里，的确是会编程就可以了；第二重门是业务性能，在这一重门里，技术的基础就很管用了，比如：操作系统的文件管理，进程调度，内存管理，网络的七层模型，TCP/UDP的协议，语言用法、编译和类库的实现，数据结构，算法等等就非常关键了；第三重门是业务智能，在这一重门里，你会发现很多东西都很学院派了，比如，搜索算法，推荐算法，预测，统计，机器学习，图像识别，分布式架构和算法等等，你需要读很多计算机学院派的论文。<br>总之，这主要看你职业生涯的背景了，如果你整天被当作劳动力来使用，你用到的技术就比较浅，比较实用，但是如果你做一些知识密集型的工作，你就需要用心来搞搞研究，就会发现你需要理论上的知识。比如说，我之前做过的跨国库存调配，需要知道最短路径的算法，而我现在在亚马逊做的库存预测系统，数据挖掘的那些东西都需要很强的数学建模、算法、数据挖掘的功底。<br>我觉得真正的高手都来自知识密集型的学院派。他们更强的是，可以把那些理论的基础知识应用到现在的业务上来。但很可惜，我们国内今天的教育并没有很好地把那些学院派的理论知识和现实的业务问题很好地结合起来。比如说一些哈希表或二叉树的数据结构，如果我们的学校在讲述这些知识的时候能够结合实际的业务问题，效果会非常不错，比如：设计一个IP地址和地理位置的查询系统，设计一个分布式的NoSQL的数据库，或是设计一个地理位置的检索应用等等。在学习操作系统的时候，如果老师可以带学生做一个手机或嵌入式操作系统，或是研究一下Unix System V或是Linux的源码的话，会更有意思。在学习网络知识的时候，能带学生重点学一下以太网和TCP/IP的特性，并调优，或是能做一个网络上的Pub/Sub消息系统或是做一个像Nginx一样的web server，那会更好。如果在学图形学的过程中能带领学生实践开发一个作图工具或是一个游戏引擎，那会更有意思。<br>总之，我们的教育和现实脱节太严重了，教的东西无论是在技术还是在实践上都严重落后和脱节，没有通过实际的业务或技术问题来教学生那些理论知识，这是一个失败。</p>
-<h3 id="2-9、如何在压力下，享受技术带来的快乐"><a href="#2-9、如何在压力下，享受技术带来的快乐" class="headerlink" title="2.9、如何在压力下，享受技术带来的快乐"></a>2.9、如何在压力下，享受技术带来的快乐</h3><p>中国人中庸的思想，入世和出世，每天的工作就是入世。举个例子，在上海的时候，给交通银行做项目的时候，每周休息一天，早九点到晚十点，每天工作12个小时，这样的工作持续了一整年，没有节假日，项目上的技术也没什么意思。当时我晚上十点回到住处，还想学一些C++/Java和Unix/Windows的技术，于是就看书到晚上11:30，每天如此，一年下来学到很多东西，时间没有荒废，心里就很开心。我觉得当时是快乐的，因为有成长的感觉是快乐的。</p>
-<p>现在的我，工作、写博客、养孩子，事情其实更多。我早上7:30起床，会浏览一下国外的新闻，hacker news，tech church，reddit，highavailability之类的站点，9点上班。晚上6、7点钟下班，开始带孩子。十点钟孩子睡了觉，我会开始重新细读一下这一天都发生了些什么事情。这个时间也有可能会用来看书。学习的过程我是不喜欢被打断的，所以从十点到十二点，家人都睡了，这正是我连续学习的好时间。可能从晚上11:30开始，我会做点笔记或者写博客。我现在对酷壳文章的质量要求比较高一些，所以大概积累一个星期的时间才可以生成一篇文章。每天我大概都在一两点钟才会睡觉。没办法，我有技术焦虑症。但是觉得这样的生活很充实，也很踏实。<br>另外，任何一门技术玩深了，都是很有意思的。有些人形成了一个价值取向，“我只做什么，绝不做什么”。前段时间有一个刚来亚马逊的工程师，他原来做的是数据挖掘推荐系统，后来公司重组要他做前端，他不肯。我觉得，前端后端都是编程，Javascript是编程，C++也是编程。编程不在于你用什么语言去coding，而是你组织程序、设计软件的能力，只要你上升到脑力劳动上来，用什么都一样，技术无贵贱就是这个意思。<br>回到问题，怎么才能享受到快乐呢？第一，入世和出世要分开，不要让世俗的东西打扰到你的内心世界，你的情绪不应该为别人所控，也不应该被世俗所污染，活得真实，你才会快乐。第二点就是要有热情，有了热情，你的心情就会很好，加班都可以是快乐的，想一想我们整个通宵用来打游戏的时光，虽然很累，但是你也很开心，这都是因为有了热情的缘故。</p>
-<h3 id="2-10、做自己是最难的"><a href="#2-10、做自己是最难的" class="headerlink" title="2.10、做自己是最难的"></a>2.10、做自己是最难的</h3><p>我承认我活在我的精神家园里面。我推荐大家看一下王小波的《我的精神家园》，这篇文章对我的影响非常大。看了这篇文章，你就会明白我为什么要躺在自己的池子里，如果不想被这个社会所污染，就必须要躺在自己的池子里。做大众是很容易的，做自己是最难的。当你老了的时候，回想过去，如果你是为自己而活的，你总会觉得很踏实。可能有人会觉得我偏激，没关系，为什么要所有人看法都一致呢？世界因为不同而美丽，多元化的价值观并不冲突。</p>
-<p>转载自：<a href="http://www.ituring.com.cn/article/9174">http://www.ituring.com.cn/article/9174</a></p>
-]]></content>
-      <categories>
-        <category>编程人生</category>
-      </categories>
   </entry>
   <entry>
     <title>用静态工厂方法替换构造函数</title>
@@ -1107,6 +1089,29 @@ s.t.\quad y^{(i)}(w^T + b) \geq 1, i=1,...,m \tag{1.3}</script><p>针对这个�
       </categories>
   </entry>
   <entry>
+    <title>左耳朵耗子-陈皓经历(转)</title>
+    <url>/%E5%B7%A6%E8%80%B3%E6%9C%B5%E8%80%97%E5%AD%90-%E9%99%88%E7%9A%93%E7%BB%8F%E5%8E%86-%E8%BD%AC.html</url>
+    <content><![CDATA[<h1 id="左耳朵耗子-陈皓"><a href="#左耳朵耗子-陈皓" class="headerlink" title="左耳朵耗子-陈皓"></a>左耳朵耗子-陈皓</h1><h2 id="一、个人简历"><a href="#一、个人简历" class="headerlink" title="一、个人简历"></a>一、个人简历</h2><p>陈皓，coolshell.cn博客博主。<br>14年以上软件开发相关工作经验，8年以上项目和团队管理经验。<br>擅长底层技术架构，软件工程。<br>对高性能，高可用，分布式，高并发，大规模数据处理系统有一定研究。<br>技术擅长C/C++/Java和Unix/Linux/Windows。</p>
+<h2 id="二、轶事和思考"><a href="#二、轶事和思考" class="headerlink" title="二、轶事和思考"></a>二、轶事和思考</h2><h3 id="2-1、毅然辞掉银行工作"><a href="#2-1、毅然辞掉银行工作" class="headerlink" title="2.1、毅然辞掉银行工作"></a>2.1、毅然辞掉银行工作</h3><p>我当时在银行做银行网络、银行的电子邮件系统和办公自动化系统。当时正处在银行信息化的阶段，加上当时互联网和IT业刚刚火起来，得到这份工作其实是很幸运的。银行正值扩张电子信息化业务的时候，其实应该有很多事可做，但是当时的主要工作都是由厂商来干。比如说IBM或Cisco拿下单子来，会把工作外包给系统集成商。作为一位技术人员，其实可以发挥的空间并不大，多数时间我只是出了问题打电话的角色。没有人会教你任何事，出了问题，就是打电话，然后按照他们的指导来完成工作。但这个还不是促使我离职的最主要原因，我离开是因为互联网和IT业的兴起让我有些心向往之，有想去看一看的冲动。我还记得当时的辞职书是这么写的：“本人对现有工作毫无兴趣，申请辞职”。处长说，“你可以这么写，但是要加上‘经调解无效’，另外，分给你的房就不能要了”。我说好啊。就这样就辞去了工作，去了上海。老实说，这个决定真不好做，因为几乎所有的朋友和亲人都很反对。</p>
+<h3 id="2-2、选择上海闯荡的原因"><a href="#2-2、选择上海闯荡的原因" class="headerlink" title="2.2、选择上海闯荡的原因"></a>2.2、选择上海闯荡的原因</h3><p>当时选择上海是有原因的，我觉得在当时的环境（2000年）下，上海的发展比较不错。没有选择深圳的原因是个人感觉那是因为政治原因凭空冒出来的一座城市，我不是很喜欢。北京我有很多同学，而我想去一个陌生的地方。但是后来发现上海也不是做技术的地方，过得有些压抑，初来到上海的时候经常会被人瞧不起，毕竟是刚刚来到大城市。<br>我当时感觉银行束缚了我，想看看自己可以跑多远，能发挥出多大的价值。于是决定出来闯一闯，主要就是要去经历一些应该去经历的事情，不希望老了以后会后悔年轻的时候没有去。当时IT产业的发展是一个大趋势，我感觉我必须要去一座大城市，去经历一些东西。在小地方基本没有这些机会。要学会游泳就必须要跳到水里去呛两口水，所以我就义无反顾地出来了。</p>
+<h3 id="2-3、工作挫折和自省"><a href="#2-3、工作挫折和自省" class="headerlink" title="2.3、工作挫折和自省"></a>2.3、工作挫折和自省</h3><p>我仍然记得自己拎着皮箱站在上海火车站的样子，举目无亲。原来在老家的时候觉得自己还挺厉害的，自以为不愁找不到好工作。不过事实却不是这样的。<br>我还记得第一次去面试时，（面试官）问了很多和C相关的问题，问了我半个小时，我一个问题都答不上来。我一直低着头，好像被审问的犯罪分子一样。我从大学毕业出来就没经历过什么面试，再加上自己内向的性格，所以，整个过程我都在低着头，不敢看别人一眼。最后，面试官问了我一个问题是“有不懂的问题你会怎么办”，这样的问题我都不敢回答，其实这道题的答案不过就是“问别人”或是“自己看书”或是“上网查资料”什么的。很显然，这场面试我肯定是被灭掉了。但这还没完，最后面试官对我说：“你出来干什么，像你这种性格根本不适合到大城市来”。<br>我当时被严重地打击了，感觉到自己确实有一些东西很差。第一个是性格差，不知道怎么与人交往；第二个是技术差，很多问题不知道；第三个就是视野狭窄，没见过世面。后面的几家公司的面试都大同小异。一个人在异地他乡，经历了这些事情，心里会非常地恐慌，“我这条路是不是走错了？”，我经常这样问自己。<br>面对这样的情况，我被逼迫着一定要改变自己。因为，离开银行时，我的家人、同学和朋友都很反对我出来，如果这样灰溜溜地回去，我面对不了他们。而前面的人还看不起我。我当时的处境真的很难堪，就像爬在悬崖中间，上不去也下不来。所以，当时只有一个想法，就是要证明自己不是那么差的人。人被逼到那个份上，活得就比较简单，哪有什么职业发展规划，只想拼命地多学技术，提高自己的能力。这个经历有点像是一剂兴奋剂，同时也相当阵痛。但是回头想想，第一个面试官应该是我最感谢的人。</p>
+<h3 id="2-4、疯狂成长"><a href="#2-4、疯狂成长" class="headerlink" title="2.4、疯狂成长"></a>2.4、疯狂成长</h3><p>在同学的帮助下我找到了在上海的第一份工作。南天公司，这是一家给银行做系统集成软件的公司，大学毕业时本来也可以进去，现在绕了一圈而且还是靠同学帮助进去的，所以那时的心态还很不平稳；另一方面因为以前是做银行的，是甲方，现在成了乙方了，两边的人都用异样的眼光看我，心态非常不好。<br>不过，这是个技术不错的企业，国内早期很多搞Unix/C的高手都是从这个公司培养出来的。我当时的技术还是不行，比如说到了用户站点以后，不知道怎么做，我曾经误操作把用户的数据删掉了。经常犯低级错误，不但没做好自己的工作，反而还给别人添了麻烦。这些经历都让我有一种“技术焦虑感”，或者叫“技术忧郁症”。我觉得自己这也不行，那也不行。这也是我今天仍然在拼命学习的原因。这就好像我们经常在参加工作多年后还会梦见自己的英语四级没过，或者是期末考试没过一样。我经常会梦见的是项目又做砸了，又把用户的系统搞乱了，一大堆人要审我、要训斥我。<br>因为技术差，沟通差，不会面试，所以，我决定经常出去面试，基本上每周都要去，不管懂不懂，也不管是什么公司，也不管别人鄙不鄙视我，反正一有机会就去面试，多见见人这样可以让我的性格有所改善，同时，也可以知道社会上需要一些什么样的技能，把别人面我回答不上来的东西都记下来，然后回头找答案。那个时候我会经常去上海书城看书，看很多很多的书。我学的东西很杂，什么做网页，Windows，Unix，Java，.NET，flash，连3DMax/Photoshop我也学，还去考CCNA的认证等等。这样散乱地学习两年后，我才慢慢确定了要走C/C++/Unix/Windows系统底层的路子。而这样扑天盖地学习的结果有一个好处就是，我成长的速度相当之快。我自己摸索到了适合我的学习方法（从基础和原理上学习），从而不再害怕各种新的技术。那时，所有人都在休黄金周出去玩的时候，我还呆在办公室或住处看书学习。<br>等到一年半之后，用句赵本山的台词说，我在面试中学会抢答了。面试官的问题没问完，我就能说出答案了。其实，基本上是面一个公司过一个（当然都是一些小公司），此时，我就开始挑公司了。<br>感到技术能力不行就去学技术，交往能力不行我就去面试，这两个问题都可以通过大量地实践和努力来弥补，但是眼界这个东西没有办法通过努力来弥补。所以，当时非常想去一些更大的公司看看，如果能去外企更好。</p>
+<h3 id="2-5、变得不一样"><a href="#2-5、变得不一样" class="headerlink" title="2.5、变得不一样"></a>2.5、变得不一样</h3><p>我还记得，有一天，有一个和网络相关的技术问题，同事们搞了三四个通宵，也没弄明白，后来想起我好像在看这方面的书，他们就让我去看看、试试，结果我只用了20分钟就搞定了。基础真的很重要，这受益于我看了《TCP/IP详解》这套书。<br>后来，我去了一家做电信软件的公司，他们让我做PowerBuilder，尽管我当时想做的是C++，但是因为当时各种原因很需要这份工作，就去了。进了那里的第一天发现公司里有一个论坛，上面都是一些技术上悬而未决的问题，都是关于Windows/C++的。我一看，都是些很简单的问题，一下午的时间就被我全部解决掉了，我的基础知识发挥了作用。于是，当天下午我一下子就被调到了核心组。不过，我只在那里呆了两个多月，因为那时我已经不愁找工作了，这期间有两家北京的公司录用了我，于是，02年我就来到了北京，去到一家做分布式计算平台软件的公司。<br>在上海的这两年的时间，从什么都不是，到得到工作上的全面肯定。那段时间感觉自己牛得不得了，有些狂妄和骄傲了，经常上网和不认识的人争论一些很傻的问题，后来发展到对当时的领导以及银行客户的领导不敬，总觉得这些人太二。现在回头看过去，我觉得那是我人生特定时期的记号，人生的痕迹。</p>
+<h3 id="2-6、建立coolshell-cn的原因"><a href="#2-6、建立coolshell-cn的原因" class="headerlink" title="2.6、建立coolshell.cn的原因"></a>2.6、建立coolshell.cn的原因</h3><p>我2002年在CSDN开了一个blog，当时叫专家专栏。开个专栏很简单，只要发6个帖子。我也不是什么专家，只是喜欢看书、喜欢学习而已，也喜欢做一些学习笔记。那时候没有笔记本也没有台式机，市面上好像也没有U盘和移动硬盘。正好有CSDN这么一个地方，就去CSDN的站点上把自己的一些学习笔记放在了上面。后来03年的时候技术专栏转到了博客，因为CSDN对其博客经营得不好，我09年就离开了csdn，创建了酷壳。花了4500块钱，租了一个server。我离开那里主要有两个原因，一个是因为当时CSDN博客有一些性能上的问题，.NET架构嘛，大家都懂的。另外一个原因就是当时出现了很多博客营销的站点，有点像今天的36氪。好像那时候出现最早的叫煎蛋，那上面会有一些报纸上不会出现的国外的趣闻，是以博客的方式形成的媒体。这和常规的以日记形式出现的博客大不一样。煎蛋、有意思吧等这些博客让我看到了博客还能这样写，我觉得很好玩儿。而我当时也经常会去国外社区看一些文章，也能看到一些有意思的东西（因为我当时有了学习瓶颈，国内的网站已经满足不了我了）。心想，既然这些东西这么有意思，我为什么不自己开一个博客呢？<br>我老婆是学新闻编辑的，她鄙视我说，你的博客虽然有很多人读，但是只能算是个书呆子的博客，全是一些书呆子式的文章。我有些不服，我觉得技术人员不全是书呆子，我们这个圈子里也有很多有趣的东西，只不过是你不知道而已。于是我想弄一个有意思的、有娱乐性质的东西，里面都是技术圈里面有意思的事儿，但是很多技术圈以外的人也能看懂。一开始酷壳和CSDN博客的风格完全迥然，如果有技术性的文章我还会在CSDN上贴，但是后来我就完全抛弃了原来CSDN上的博客。酷壳的初衷是希望很多人都可以来上面发表一些东西，但是可能是我写得太多了，别人就被压制住了。<br>现在博客更新频率是一周一篇，一开始的时候一周三篇。磨刀不误砍柴工，总是有时间来做这些事的。我经常看书，需要把学到的东西整理成学习笔记。自从在CSDN上写博客的时候，就有这样的习惯了，而且又有“技术焦虑症”，害怕跟不上，所以维护博客的事对我来说是很自然的。<br>现在我已经不用自己再租服务器了，由于酷壳的访问量比较有保证，我提供了广告位，就免费得到服务器了。</p>
+<h3 id="2-7、对于新技术的态度"><a href="#2-7、对于新技术的态度" class="headerlink" title="2.7、对于新技术的态度"></a>2.7、对于新技术的态度</h3><p>遇到新技术我会去了解，但不会把很大的精力放在这。这些技术尚不成熟，我只需要跟得住就可以了。我的团队自己想学什么我都不干涉，但是用到项目里的技术，必须是很成熟的，（技术应用）十年以上可能是一个门槛。有人说技术更新换代很快，我一点儿都不这样想。虽然有不成熟的技术不断地涌出，但是成熟的技术，比如Unix，40多年，C，40多年，C++，30多年，Java也有将近20年了……，所以，技术并不多啊。还有很多技术比如Ruby，Lisp这样的，它们没有进入主流的原因主要是缺少企业级的应用背景。<br>如果要捋一个脉络下来，70年代Unix的出现，是软件发展方面的一个里程碑，那个时期的C语言，也是语言方面的里程碑。当时所有的项目都在Unix/C上，全世界人都在用这两样东西写软件。Linux跟随的是Unix，Windows下的开发也是C。这时候出现的C++很自然就被大家接受了，企业级的系统很自然就会迁移到这上面，C++虽然接过了C的接力棒，但是它的问题是它没有一个企业方面的架构，否则也不会有今天的Java。C++和C非常接近，它只不过是C的一个扩展，长年没有一个企业架构的框架。而Java出现之后，IBM把企业架构这部分的需求接了过来，J2EE的出现让C/C++捉襟见肘了，后面还有了.NET，但可惜的是这只局限在Windows平台上。这些就是企业级软件方面语言层面这条线上的技术主干。</p>
+<p>另外一条脉络就是互联网方面的（HTML/CSS/JS/LAMP…）。这条脉络和上述的那条C/C++/Java的我都没有放，作为一个有技术忧虑症的人，这两条软件开发的主线一定不能放弃。无论是应用还是学术，我都会看，知识不愁多。何必搞应用的和搞学术的分开阵营，互相看不起呢？都是知识，学就好了。<br>技术的发展要根植于历史，而不是未来。不要和我描述这个技术的未来会多么美好，用这个技术可以实现什么花哨的东西。很多常青的技术都是承前的。所以说“某某（技术）要火”这样的话是没有意义的，等它火了、应用多了咱们再说嘛。有些人说不学C/C++也是没有问题的，我对此的回应是：如果连主干都可以不学的话，还有什么其他的好学呢？极端一点，我要这么说：这些是计算机发展的根、脉络、祖师爷，这样的东西怎么可以不学呢？大部分学校虽然都会教授C，但是教得都不好。学校喜欢教微软的东西，老师好教学生好学。我不是说Windows不好，但那不是计算机文化的主干，那只是微软的主干、PC的主干。整个计算机文化的主干肯定是源起于Unix/C这条线上（注意，我说的是文化不是技术）。我也写过很多与Unix文化相关的文章，大家可以看看我写的“Unix传奇”。</p>
+<h3 id="2-8、对于学校计算机科学教育的看法"><a href="#2-8、对于学校计算机科学教育的看法" class="headerlink" title="2.8、对于学校计算机科学教育的看法"></a>2.8、对于学校计算机科学教育的看法</h3><p>学校教的大部分都是知识密集型的技术，但是社会上的企业大部分都是劳动密集型的。什么是劳动密集型的企业呢？麦当劳炸薯条就是劳动密集型的工作，用不到学校教授的那些知识。如果有一天你不炸薯条了，而要去做更大更专业的东西，学校里的知识就会派上用场。有人说一个语言、一个技术，能解决问题能用就行了，我不这样认为。我觉得你应该至少要知道这些演变和进化的过程。而如果你要解决一些业务和技术难题，就需要抓住某种技术很深入地学习，当成艺术一样来学习。</p>
+<p>我在“软件开发‘三重门’”里说过，第一重门是业务功能，在这重门里，的确是会编程就可以了；第二重门是业务性能，在这一重门里，技术的基础就很管用了，比如：操作系统的文件管理，进程调度，内存管理，网络的七层模型，TCP/UDP的协议，语言用法、编译和类库的实现，数据结构，算法等等就非常关键了；第三重门是业务智能，在这一重门里，你会发现很多东西都很学院派了，比如，搜索算法，推荐算法，预测，统计，机器学习，图像识别，分布式架构和算法等等，你需要读很多计算机学院派的论文。<br>总之，这主要看你职业生涯的背景了，如果你整天被当作劳动力来使用，你用到的技术就比较浅，比较实用，但是如果你做一些知识密集型的工作，你就需要用心来搞搞研究，就会发现你需要理论上的知识。比如说，我之前做过的跨国库存调配，需要知道最短路径的算法，而我现在在亚马逊做的库存预测系统，数据挖掘的那些东西都需要很强的数学建模、算法、数据挖掘的功底。<br>我觉得真正的高手都来自知识密集型的学院派。他们更强的是，可以把那些理论的基础知识应用到现在的业务上来。但很可惜，我们国内今天的教育并没有很好地把那些学院派的理论知识和现实的业务问题很好地结合起来。比如说一些哈希表或二叉树的数据结构，如果我们的学校在讲述这些知识的时候能够结合实际的业务问题，效果会非常不错，比如：设计一个IP地址和地理位置的查询系统，设计一个分布式的NoSQL的数据库，或是设计一个地理位置的检索应用等等。在学习操作系统的时候，如果老师可以带学生做一个手机或嵌入式操作系统，或是研究一下Unix System V或是Linux的源码的话，会更有意思。在学习网络知识的时候，能带学生重点学一下以太网和TCP/IP的特性，并调优，或是能做一个网络上的Pub/Sub消息系统或是做一个像Nginx一样的web server，那会更好。如果在学图形学的过程中能带领学生实践开发一个作图工具或是一个游戏引擎，那会更有意思。<br>总之，我们的教育和现实脱节太严重了，教的东西无论是在技术还是在实践上都严重落后和脱节，没有通过实际的业务或技术问题来教学生那些理论知识，这是一个失败。</p>
+<h3 id="2-9、如何在压力下，享受技术带来的快乐"><a href="#2-9、如何在压力下，享受技术带来的快乐" class="headerlink" title="2.9、如何在压力下，享受技术带来的快乐"></a>2.9、如何在压力下，享受技术带来的快乐</h3><p>中国人中庸的思想，入世和出世，每天的工作就是入世。举个例子，在上海的时候，给交通银行做项目的时候，每周休息一天，早九点到晚十点，每天工作12个小时，这样的工作持续了一整年，没有节假日，项目上的技术也没什么意思。当时我晚上十点回到住处，还想学一些C++/Java和Unix/Windows的技术，于是就看书到晚上11:30，每天如此，一年下来学到很多东西，时间没有荒废，心里就很开心。我觉得当时是快乐的，因为有成长的感觉是快乐的。</p>
+<p>现在的我，工作、写博客、养孩子，事情其实更多。我早上7:30起床，会浏览一下国外的新闻，hacker news，tech church，reddit，highavailability之类的站点，9点上班。晚上6、7点钟下班，开始带孩子。十点钟孩子睡了觉，我会开始重新细读一下这一天都发生了些什么事情。这个时间也有可能会用来看书。学习的过程我是不喜欢被打断的，所以从十点到十二点，家人都睡了，这正是我连续学习的好时间。可能从晚上11:30开始，我会做点笔记或者写博客。我现在对酷壳文章的质量要求比较高一些，所以大概积累一个星期的时间才可以生成一篇文章。每天我大概都在一两点钟才会睡觉。没办法，我有技术焦虑症。但是觉得这样的生活很充实，也很踏实。<br>另外，任何一门技术玩深了，都是很有意思的。有些人形成了一个价值取向，“我只做什么，绝不做什么”。前段时间有一个刚来亚马逊的工程师，他原来做的是数据挖掘推荐系统，后来公司重组要他做前端，他不肯。我觉得，前端后端都是编程，Javascript是编程，C++也是编程。编程不在于你用什么语言去coding，而是你组织程序、设计软件的能力，只要你上升到脑力劳动上来，用什么都一样，技术无贵贱就是这个意思。<br>回到问题，怎么才能享受到快乐呢？第一，入世和出世要分开，不要让世俗的东西打扰到你的内心世界，你的情绪不应该为别人所控，也不应该被世俗所污染，活得真实，你才会快乐。第二点就是要有热情，有了热情，你的心情就会很好，加班都可以是快乐的，想一想我们整个通宵用来打游戏的时光，虽然很累，但是你也很开心，这都是因为有了热情的缘故。</p>
+<h3 id="2-10、做自己是最难的"><a href="#2-10、做自己是最难的" class="headerlink" title="2.10、做自己是最难的"></a>2.10、做自己是最难的</h3><p>我承认我活在我的精神家园里面。我推荐大家看一下王小波的《我的精神家园》，这篇文章对我的影响非常大。看了这篇文章，你就会明白我为什么要躺在自己的池子里，如果不想被这个社会所污染，就必须要躺在自己的池子里。做大众是很容易的，做自己是最难的。当你老了的时候，回想过去，如果你是为自己而活的，你总会觉得很踏实。可能有人会觉得我偏激，没关系，为什么要所有人看法都一致呢？世界因为不同而美丽，多元化的价值观并不冲突。</p>
+<p>转载自：<a href="http://www.ituring.com.cn/article/9174">http://www.ituring.com.cn/article/9174</a></p>
+]]></content>
+      <categories>
+        <category>编程人生</category>
+      </categories>
+  </entry>
+  <entry>
     <title>统计学知识</title>
     <url>/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%9F%A5%E8%AF%86.html</url>
     <content><![CDATA[<h1 id="统计学相关知识"><a href="#统计学相关知识" class="headerlink" title="统计学相关知识"></a>统计学相关知识</h1><p>在平常的机器学习应用中,我们首先要做的事情就是分析数据.分析数据有很多种方法,而且其中很多方法都是统计学中的内容.本篇blog主要记录我认为平常经常能够用到的统计学内容.</p>
@@ -1131,6 +1136,28 @@ s.t.\quad y^{(i)}(w^T + b) \geq 1, i=1,...,m \tag{1.3}</script><p>针对这个�
       <categories>
         <category>书</category>
       </categories>
+  </entry>
+  <entry>
+    <title>读过的技术书籍</title>
+    <url>/%E8%AF%BB%E8%BF%87%E7%9A%84%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D.html</url>
+    <content><![CDATA[<h1 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h1><p>都说书籍是人类进步的阶梯,现在这篇博客就是记录下我个人梯子的组成,主要是技术相关的.隔一段时间会更新一次,因为梯子一直在增长,哈哈.</p>
+<h2 id="Hands-On-Machine-Learning-with-Scikit-Learn-and-TensorFlow"><a href="#Hands-On-Machine-Learning-with-Scikit-Learn-and-TensorFlow" class="headerlink" title="Hands-On Machine Learning with Scikit-Learn and TensorFlow"></a>Hands-On Machine Learning with Scikit-Learn and TensorFlow</h2><p>这本书主要是通过scikit-learn工具包来讲解如何使用常用的机器学习算法以及机器学习算法在平常的工作中的应用流程.深度学习主要是通过tensorflow来进行讲解.</p>
+<h2 id="Andrew-Ng-斯坦福-cs229机器学习讲义"><a href="#Andrew-Ng-斯坦福-cs229机器学习讲义" class="headerlink" title="Andrew Ng 斯坦福 cs229机器学习讲义"></a>Andrew Ng 斯坦福 cs229机器学习讲义</h2><p>想要入门机器学习的同学,强烈建议学一学Andrew Ng的这么课,最好把里面的数学公式都自己推一遍,我自己推完这些数学公式之后,对于机器学习算法中原理有了很清晰的认识.</p>
+<h2 id="《mysql必知必会》"><a href="#《mysql必知必会》" class="headerlink" title="《mysql必知必会》"></a>《mysql必知必会》</h2><p>阅读时间：2019-4-7~2019-4-9<br>感想：这几天看完了mysql必知必会，其实基本上mysql的语法都会，只是为了能够看看还有什么地方自己不太知道的。总体来说，这本书对于初学者比较适合，按着里面的内容手敲一遍例子。掌握mysql的使用是没有问题的。</p>
+<h2 id="《图解tcp-ip-第五版》"><a href="#《图解tcp-ip-第五版》" class="headerlink" title="《图解tcp-ip 第五版》"></a>《图解tcp-ip 第五版》</h2><p>阅读时间：2019-4-9<br>感想：</p>
+<h2 id="《effective-java-第三版》-英文"><a href="#《effective-java-第三版》-英文" class="headerlink" title="《effective java 第三版》 英文"></a>《effective java 第三版》 英文</h2><p>阅读时间：2019-4-10<br>感想：</p>
+]]></content>
+      <categories>
+        <category>书</category>
+      </categories>
+      <tags>
+        <tag>技术</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>集成算法</title>
+    <url>/%E9%9B%86%E6%88%90%E7%AE%97%E6%B3%95.html</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>线性回归算法</title>
@@ -1206,32 +1233,5 @@ s.t.\quad y^{(i)}(w^T + b) \geq 1, i=1,...,m \tag{1.3}</script><p>针对这个�
         <tag>岭回归算法</tag>
         <tag>lasso回归算法</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>读过的技术书籍</title>
-    <url>/%E8%AF%BB%E8%BF%87%E7%9A%84%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D.html</url>
-    <content><![CDATA[<h1 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h1><p>都说书籍是人类进步的阶梯,现在这篇博客就是记录下我个人梯子的组成,主要是技术相关的.隔一段时间会更新一次,因为梯子一直在增长,哈哈.</p>
-<h2 id="Hands-On-Machine-Learning-with-Scikit-Learn-and-TensorFlow"><a href="#Hands-On-Machine-Learning-with-Scikit-Learn-and-TensorFlow" class="headerlink" title="Hands-On Machine Learning with Scikit-Learn and TensorFlow"></a>Hands-On Machine Learning with Scikit-Learn and TensorFlow</h2><p>这本书主要是通过scikit-learn工具包来讲解如何使用常用的机器学习算法以及机器学习算法在平常的工作中的应用流程.深度学习主要是通过tensorflow来进行讲解.</p>
-<h2 id="Andrew-Ng-斯坦福-cs229机器学习讲义"><a href="#Andrew-Ng-斯坦福-cs229机器学习讲义" class="headerlink" title="Andrew Ng 斯坦福 cs229机器学习讲义"></a>Andrew Ng 斯坦福 cs229机器学习讲义</h2><p>想要入门机器学习的同学,强烈建议学一学Andrew Ng的这么课,最好把里面的数学公式都自己推一遍,我自己推完这些数学公式之后,对于机器学习算法中原理有了很清晰的认识.</p>
-<h2 id="《mysql必知必会》"><a href="#《mysql必知必会》" class="headerlink" title="《mysql必知必会》"></a>《mysql必知必会》</h2><p>阅读时间：2019-4-7~2019-4-9<br>感想：这几天看完了mysql必知必会，其实基本上mysql的语法都会，只是为了能够看看还有什么地方自己不太知道的。总体来说，这本书对于初学者比较适合，按着里面的内容手敲一遍例子。掌握mysql的使用是没有问题的。</p>
-<h2 id="《图解tcp-ip-第五版》"><a href="#《图解tcp-ip-第五版》" class="headerlink" title="《图解tcp-ip 第五版》"></a>《图解tcp-ip 第五版》</h2><p>阅读时间：2019-4-9<br>感想：</p>
-<h2 id="《effective-java-第三版》-英文"><a href="#《effective-java-第三版》-英文" class="headerlink" title="《effective java 第三版》 英文"></a>《effective java 第三版》 英文</h2><p>阅读时间：2019-4-10<br>感想：</p>
-]]></content>
-      <categories>
-        <category>书</category>
-      </categories>
-      <tags>
-        <tag>技术</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>集成算法</title>
-    <url>/%E9%9B%86%E6%88%90%E7%AE%97%E6%B3%95.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>java-zero-copy</title>
-    <url>/java-zero-copy.html</url>
-    <content><![CDATA[]]></content>
   </entry>
 </search>

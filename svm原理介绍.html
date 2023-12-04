@@ -1,37 +1,802 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="svm,支持向量机," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="支持向量机这篇博客主要介绍如何推导svm算法。写这篇博客主要是最近在学习svm算法，想着合上书，自己推导一遍算法的原理，发现还是有很多需要思考的地方。其实一般推导机器学习算法，是有一个模式的。  定义模型，这里模型理解为如何定义公式 选择损失函数 采用优化算法求损失函数的最小值 推导完毕  比如拿逻辑回归算法举例：  定义模型，即选取sigmoid函数 定义损失函数 采用最大梯度下降算法求损失函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="svm原理介绍">
+<meta property="og:url" content="https://lightnine/github.io/svm%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="支持向量机这篇博客主要介绍如何推导svm算法。写这篇博客主要是最近在学习svm算法，想着合上书，自己推导一遍算法的原理，发现还是有很多需要思考的地方。其实一般推导机器学习算法，是有一个模式的。  定义模型，这里模型理解为如何定义公式 选择损失函数 采用优化算法求损失函数的最小值 推导完毕  比如拿逻辑回归算法举例：  定义模型，即选取sigmoid函数 定义损失函数 采用最大梯度下降算法求损失函数">
+<meta property="og:locale">
+<meta property="og:image" content="https://lightnine/svm%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D/%E5%87%A0%E4%BD%95%E9%97%B4%E9%9A%94.png">
+<meta property="article:published_time" content="2018-10-18T14:16:43.000Z">
+<meta property="article:modified_time" content="2023-12-04T03:11:40.910Z">
+<meta property="article:author" content="liang">
+<meta property="article:tag" content="svm">
+<meta property="article:tag" content="支持向量机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lightnine/svm%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D/%E5%87%A0%E4%BD%95%E9%97%B4%E9%9A%94.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/svm原理介绍.html"/>
+
+
+
+
+
+  <title>svm原理介绍 | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/svm%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">svm原理介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-18T22:16:43+08:00">
+                2018-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/machine-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">machine learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h1><p>这篇博客主要介绍如何推导svm算法。写这篇博客主要是最近在学习svm算法，想着合上书，自己推导一遍算法的原理，发现还是有很多需要思考的地方。<br>其实一般推导机器学习算法，是有一个模式的。</p>
+<ol>
+<li>定义模型，这里模型理解为如何定义公式</li>
+<li>选择损失函数</li>
+<li>采用优化算法求损失函数的最小值</li>
+<li>推导完毕</li>
+</ol>
+<p>比如拿逻辑回归算法举例：</p>
+<ol>
+<li>定义模型，即选取sigmoid函数</li>
+<li>定义损失函数</li>
+<li>采用最大梯度下降算法求损失函数的最小值</li>
+<li>得到算法的w和b</li>
+</ol>
+<p>但是svm的推导基本上没有怎么提损失函数的内容，大家等会可以在这篇博客中看到如何推导svm算法</p>
+<h2 id="判别函数"><a href="#判别函数" class="headerlink" title="判别函数"></a>判别函数</h2><script type="math/tex; mode=display">h_{w,b}(x) = g(w^T + b)</script><p>上式是SVM的判别函数，其中函数g如下所示：</p>
+<script type="math/tex; mode=display">g(z)=\left\{
+\begin{array}{rcl}
+1       &      & {z \geq 0 }\\
+-1     &      & {z < 0 }
+\end{array} \right.</script><p>即$g(z)$的输出为1时，判别为正例；输出为-1时，判别为反例。</p>
+<h2 id="函数间隔和几何间隔-Functional-and-geometric-margins"><a href="#函数间隔和几何间隔-Functional-and-geometric-margins" class="headerlink" title="函数间隔和几何间隔(Functional and geometric margins)"></a>函数间隔和几何间隔(Functional and geometric margins)</h2><h3 id="函数间隔"><a href="#函数间隔" class="headerlink" title="函数间隔"></a>函数间隔</h3><p>对于某一个训练样本$(x^(i), y^(i))$定义函数间隔如下式：</p>
+<script type="math/tex; mode=display">\hat{\gamma}^{(i)} = y^{(i)}(w^T + b)</script><p>分析函数间隔公式,可以得出如下的结论.当$y^{(i)}=1$时,则$w^T+b&gt;0$,所以$g(z) = 1$;当$y^{(i)}=-1$时,则$w^T+b&lt;0$,所以$g(z) = -1$.所以函数间隔对于判别样本的类别是有作用的.<br>但是,当我们将$w,b$扩大两倍时,函数函数间隔扩大两倍,但是对于$g(z)$并没有什么变化.即下式成立</p>
+<script type="math/tex; mode=display">g(2w^T+2b) = g(w^T+b)</script><p>所以更大的函数间隔并不一定比小的函数间隔的置信度大.由此引出了几何间隔</p>
+<h3 id="几何间隔"><a href="#几何间隔" class="headerlink" title="几何间隔"></a>几何间隔</h3><p>针对几何间隔,我们考虑二维平面,如下图所示:<br><img src="/svm%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D/%E5%87%A0%E4%BD%95%E9%97%B4%E9%9A%94.png" class=""><br>图中的斜线是对应于参数$(w,b)$的决策分隔线.注意$w$是垂直于决策线的,即$w$是决策线的法向量.</p>
+<blockquote>
+<p>证明如下:<br>设$x_0,x_1$是直线$w^T+b=0$上不同的两个点,则有下式成立</p>
+<script type="math/tex; mode=display">\left\{
+\begin{array}{rcl}
+w^Tx_0 + b = 0       &      & \\
+w^Tx_1 + b = 0     &      &
+\end{array} \right.</script><p>两式相减的$w^T(x_0 - x_1) = 0$,而其中$x_0 - x_1$是直线$w^T+b=0$的方向向量,所以w是法向量.</p>
+</blockquote>
+<p>图中$\gamma^{(i)}$是A点对应的几何间隔.设A点为$x^{(i)}$,而向量$w/{\left|w\right|}$是法向量上的单位向量.因此得到B点为$x^{(i)} - \gamma^{(i)}\cdot w/{\left|w\right|}$,又因为B点在分离平面上,所以下式成立:</p>
+<script type="math/tex; mode=display">w^T(x^{(i)} - \gamma^{(i)}{\frac w {\left\|w\right\|}}) = 0</script><p>从而得到下式:</p>
+<script type="math/tex; mode=display">\gamma^{(i)} = {\frac {w^Tx^{(i)}+b} {\left\|w\right\|} }=({\frac w {\left\|w\right\|}})^Tx^{(i)} + {\frac b {\left\|w\right\|} }</script><p>如果A点在B点的另外一侧,则B点可以表示为下式:</p>
+<script type="math/tex; mode=display">x^{(i)} + \gamma^{(i)}\cdot w/{\left\|w\right\|}$$,带入分离超平面,得到几何间隔如下:
+$$\gamma^{(i)} = -{\frac {w^Tx^{(i)}+b} {\left\|w\right\|} }</script><p>综合两种情况,得到</p>
+<script type="math/tex; mode=display">\gamma^{(i)} =y^{(i)}(({\frac w {\left\|w\right\|}})^Tx^{(i)} + {\frac b {\left\|w\right\|} })</script><p>具体的公式推导过程中,并没有完全限制在二维平面上(虽然开始展示的图像是二维平面上的),所以对于高维平面也是得到上述公式.<br>几何间隔反应了样本到分离面的距离,直观上最小的几何间隔越大越好.并且几何间隔中的参数$w,b$可以随意的进行尺度变换而不影响几何间隔的大小(这是因为几何间隔的式子中除以了w的二范数).同时当$\left|w\right|=1$时,几何间隔就等于函数间隔.<br>定义</p>
+<script type="math/tex; mode=display">\hat{\gamma} = \min_{i=1,...,m}{\hat{\gamma}^{(i)}}</script><script type="math/tex; mode=display">{\gamma} = \min_{i=1,...,m}{\gamma}^{(i)}</script><p>即$\hat{\gamma}$和${\gamma}$分别是函数间隔和几何间隔的最小值.</p>
+<h2 id="最优间隔分类器"><a href="#最优间隔分类器" class="headerlink" title="最优间隔分类器"></a>最优间隔分类器</h2><p>通过上面的函数间隔和几何间隔,我们自然能够想到优化目标如下式所示:</p>
+<script type="math/tex; mode=display">\max_{\gamma,w,b} {\gamma} \\
+s.t.\quad   y^{(i)}(w^T + b) \geq \gamma, i=1,...,m \\
+\left\|w\right\|=1 \tag{1.1}</script><p>即在满足所有样本的几何间隔都大于最小几何间隔的情况下,求使得几何间隔最大的参数$w,b$<br>我们可以将上述优化公式转变成用函数间隔进行表达,如下式所示:</p>
+<script type="math/tex; mode=display">\max_{\gamma,w,b} {\frac {\hat\gamma} {\left\|w\right\|}}\\
+s.t.\quad   y^{(i)}(w^T + b) \geq \hat\gamma, i=1,...,m \tag{1.2}</script><blockquote>
+<p>上述两个优化问题为什么等价?因为$\gamma={\frac {\hat\gamma} {\left|w\right|}}$.针对优化公式(1.2),即求取几何间隔最大,同时在约束不等式两边同时除以$\left|w\right|$,即得所有的几何间隔都大于最小的几何间隔.这即等价于优化公式(1.1)</p>
+</blockquote>
+<p>由于参数$w,b$进行尺度变化,所以我们可以固定函数间隔等于1,即$\hat\gamma=1$<br>最终将优化公式化简为下式:</p>
+<script type="math/tex; mode=display">\min_{\gamma,w,b}{\frac 1 2}{\left\|w\right\|}^2 \\
+s.t.\quad y^{(i)}(w^T + b) \geq 1, i=1,...,m \tag{1.3}</script><p>针对这个优化公式,即满足不等式的条件下,求取二次函数的最小值,虽然可以采用优化算法求取此最优值.但是我们下面介绍拉格朗日对偶来进行求取,第一求取最优值会变得更加简单,第二能够使用核函数.</p>
+<h2 id="拉格朗日对偶-Lagrange-duality"><a href="#拉格朗日对偶-Lagrange-duality" class="headerlink" title="拉格朗日对偶(Lagrange duality)"></a>拉格朗日对偶(Lagrange duality)</h2><p>拉格朗日对偶主要是将优化公式转变为其对偶形式,具体的推导过程可以参考Andrew Ng cs229课程中的内容.</p>
+<h2 id="再次求解最优间隔分类器"><a href="#再次求解最优间隔分类器" class="headerlink" title="再次求解最优间隔分类器"></a>再次求解最优间隔分类器</h2><p>通过拉格朗日对偶,将SVM的优化目标转变为对偶形式,从而得到参数$w,b$</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/svm/" rel="tag"># svm</a>
+          
+            <a href="/tags/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" rel="tag"># 支持向量机</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Gaussian-Discriminant-Analysis-and-Logistic-Regression.html" rel="next" title="Gaussian Discriminant Analysis and Logistic Regression">
+                <i class="fa fa-chevron-left"></i> Gaussian Discriminant Analysis and Logistic Regression
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%9F%A5%E8%AF%86.html" rel="prev" title="统计学知识">
+                统计学知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">判别函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E9%97%B4%E9%9A%94%E5%92%8C%E5%87%A0%E4%BD%95%E9%97%B4%E9%9A%94-Functional-and-geometric-margins"><span class="nav-number">1.2.</span> <span class="nav-text">函数间隔和几何间隔(Functional and geometric margins)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E9%97%B4%E9%9A%94"><span class="nav-number">1.2.1.</span> <span class="nav-text">函数间隔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E9%97%B4%E9%9A%94"><span class="nav-number">1.2.2.</span> <span class="nav-text">几何间隔</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E9%97%B4%E9%9A%94%E5%88%86%E7%B1%BB%E5%99%A8"><span class="nav-number">1.3.</span> <span class="nav-text">最优间隔分类器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E5%AF%B9%E5%81%B6-Lagrange-duality"><span class="nav-number">1.4.</span> <span class="nav-text">拉格朗日对偶(Lagrange duality)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%8D%E6%AC%A1%E6%B1%82%E8%A7%A3%E6%9C%80%E4%BC%98%E9%97%B4%E9%9A%94%E5%88%86%E7%B1%BB%E5%99%A8"><span class="nav-number">1.5.</span> <span class="nav-text">再次求解最优间隔分类器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
