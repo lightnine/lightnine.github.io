@@ -63,15 +63,90 @@ ssize_t sendfile(int out_fd, int in_fd, off_t *offset, size_t count);
 
 我们将上下文切换从4次降低到2次，数据拷贝从4次降低到3次(其中仅有一个数据拷贝需要CPU参与)。但是这还没有达到zero copy的目的。如果底层网卡支持gather操作，那么我们可以减少内核空间中的数据重复。在linux kernel2.4及以后版本中，socket buffer已经支持了这个操作。这个方法不仅仅减少了上下文切换并且也消除了CPU参与的数据拷贝。具体如下：
 1. `transferTo()`方法将文件内容拷贝到内核缓冲区，由DMA引擎执行
-2. 不需要将数据拷贝进socket buffer中，仅仅将数据的位置以及数据长度添加到socket buffer中。DMA引擎直接将kernel buffer中的数据拷贝到网卡中。
+2. 不需要将数据拷贝进socket buffer中，仅仅将数据的位置以及数据长度添加到kernel buffer中。DMA引擎直接将kernel buffer中的数据拷贝到网卡中。
 下图展示了包含gather操作的`transferTo()`
 {% asset_img figure5.gif gather操作的transferTo方法 %}
 
 ## 性能比较
-使用java实现了文件传输，同时采用传统的IO和nio来实现。完整代码[参考](https://github.com/lightnine/j-zerocopy).性能比较如下：
+使用java实现了文件传输，同时采用传统的IO和nio来实现。完整代码[参考](https://github.com/lightnine/j-zerocopy).其中客户端是主要的视线，服务端仅仅读取数据。
+### 传统IO client 代码
+```java
+// 1. create socket and connect to server
+        try {
+            socket = new Socket(Common.SERVER, port);
+            System.out.println("Connected with server " + socket.getInetAddress() + ":" + socket.getPort());
+        } catch (UnknownHostException e) {
+            System.out.println(e);
+            System.exit(Common.ERROR);
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(Common.ERROR);
+        }
+
+        // 2. send data to server
+        try {
+            inputStream = Files.newInputStream(Paths.get(fileName));
+            output = new DataOutputStream(socket.getOutputStream());
+            long start = System.currentTimeMillis();
+            byte[] b = new byte[4096];
+            long read = 0;
+            long total = 0;
+            // read function cause user mode to kernel mode,
+            // and DMA engine read file content from disk to kernel buffer
+            // then copy kernel buffer to the b array. This cause another context switch
+            // then when read return, cause kernel mode to user mode
+            // Summary: two context switch, two copy(one cpu copy)
+            while ((read = inputStream.read(b)) >= 0) {
+                total = total + read;
+                System.out.println("total size:" + total);
+                // write function cause user mode to kernel mode,
+                // and copy data from b array to socket buffer,
+                // then DMA engine copy socket buffer to nic(network interface) buffer
+                // then when write return, cause kernel mode to user mode,
+                // Summary: two context switch, two copy(one cpu copy)
+                output.write(b);
+            }
+            System.out.println("bytes send: " + total + " and totalTime(ms):" + (System.currentTimeMillis() - start));
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+```
+
+### nio client 代码
+```java
+public void testSendfile() throws IOException  {
+        // 1. get file size(bytes)
+        Path path = Paths.get(fileName);
+        long fsize = Files.size(path);
+
+        SocketAddress sad = new InetSocketAddress(Common.SERVER, port);
+        SocketChannel sc = SocketChannel.open();
+        sc.connect(sad);
+        sc.configureBlocking(true);
+        FileInputStream fis = new FileInputStream(fileName);
+        FileChannel fc = fis.getChannel();
+        long start = System.currentTimeMillis();
+        long curnset = 0;
+
+        // in linux kernel 2.4 and later
+        // transferTo() function cause user mode to kernel mode
+        // DMA engine copy data from disk to kernel buffer
+        // then just copy data position and data length to kernel buffer
+        // then DMA engine copy kernel buffer to NIC buffer
+        // when transferTo return, cause another context switch
+        // Summary: two context switch, two copy(zero CPU copy)
+        curnset = fc.transferTo(0, fsize, sc);
+        System.out.println("total bytes transferred: " + curnset + " and time taken in MS: " +
+                (System.currentTimeMillis() - start) );
+
+        fc.close();
+        fis.close();
+    }
+```
+性能比较如下：
 
 | file size | traditional(ms) | nio(ms) |
-|-----------|-----------------|---------|
+| --------- | --------------- | ------- |
 | 12MB      | 50              | 18      |
 | 221MB     | 690             | 314     |
 | 2.5G      | 15496           | 2610    |
