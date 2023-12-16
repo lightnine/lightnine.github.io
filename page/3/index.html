@@ -263,6 +263,172 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Gaussian-Discriminant-Analysis-and-Logistic-Regression.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/Gaussian-Discriminant-Analysis-and-Logistic-Regression.html" itemprop="url">Gaussian Discriminant Analysis and Logistic Regression</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T11:22:36+08:00">
+                2018-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="高斯判别分析和逻辑回归算法的关系"><a href="#高斯判别分析和逻辑回归算法的关系" class="headerlink" title="高斯判别分析和逻辑回归算法的关系"></a>高斯判别分析和逻辑回归算法的关系</h1><p>最近一直在看Andrew Ng的cs229那门课的讲义，看到高斯判别分析模型和逻辑回归算法的关系那一部分，自己采用贝叶斯后验概率也证明了两者之间的关系，证明不难，本来打算记录一下的。在网上看到有个外国人写的更好，那我就把他写的直接翻译过来了。当然文章中也加入了在网上看到的其他资料和自己的一些思考。<br><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">原文</a></p>
+<h2 id="判别模型和生成模型"><a href="#判别模型和生成模型" class="headerlink" title="判别模型和生成模型"></a>判别模型和生成模型</h2><p>有很多方式可以对机器学习算法进行分类，比如：监督/非监督，回归/分类,等等。还有一种方式用判别模型(<strong>Discriminative model</strong>)和生成模型(<strong>Generative model</strong>)进行区分.本篇文章，我们将会讨论高斯判别分析(Gaussian Discriminant Analysis )模型和逻辑回归(Logistic Regression)之间的关系,这也体现了判别模型和生成模型之间的关系。<br>判别模型是求$p(y|x)$.在分类问题中，判别模型是直接寻找能够将不同类的数据分开的超平面或者称之为决策边界。有很多常用的机器学习算法属于判别模型，比如：逻辑回归，SVM，神经网络等等。另一方面，生成模型是求取$p(x|y)$和$p(y)$.这意味着，在分类问题中，生成模型给出了每个类的概率分布，给出了数据是如何生成的。也即生成(generative)这个词的意思.生成模型依赖贝叶斯公式计算后验概率$p(y|x)$.像朴素贝叶斯，高斯判别分析等都属于生成模型。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/discriminative_vs_generative.png" class="" title="Discriminative vs Generative"><br>在实际使用中，判别模型要比生成模型用的更多，原因很多。比如：判别模型更加灵活，更加鲁棒，当对模型做出错误的假设时，模型表现的也不是很敏感。而生成模型需要我们定义数据的先验概率，即数据分布，在很多时候这是非常有困难和挑战的。然后，生成模型也有它的优势，比如：相比于判别模型，生成模型对于数据有更多的先验信息。这导致如果我们对于数据的假设是正确的，那么生成模型在少量数据下也能够表现的更好。</p>
+<h2 id="GDA和逻辑回归"><a href="#GDA和逻辑回归" class="headerlink" title="GDA和逻辑回归"></a>GDA和逻辑回归</h2><p>接下来我将要证明，GDA(Gaussian Discriminant Analysis)如何最终推导出逻辑回归，从这个推导中也可以看出采用逻辑回归的道理。<br>对于二分类问题，GDA假设类别服从伯努利分布，数据服从多元高斯分布，如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%85%88%E9%AA%8C%E5%88%86%E5%B8%83.PNG" class="" title="先验分布"><br>具体的数学公式如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%88%86%E5%B8%83%E7%9A%84%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F.PNG" class="" title="分布的数学公式"><br>而采用GDA就是求取后验概率，我们可以证明如下等式成立：</p>
+<script type="math/tex; mode=display">p(y=1|x) = \frac{1}{1+exp(-\theta^Tx)}</script><p>在公式中可以看到，GDA关于类别1的后验概率就是逻辑回归的sigmoid函数，这里$\theta$就是关于参数$\phi,\mu_0,\mu_1,\sum$的函数<br>接下来进行证明：</p>
+<script type="math/tex; mode=display">
+p(y=1|x)
+=\frac{p(x|y=1)\times{p(y=1)}}{p(x)}
+=\frac{p(x|y=1)\times{p(y=1)}}{p(x|y=1)\times{p(y=1)} + p(x|y=1)\times{p(y=0)}}
+=\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}</script><p>我们接下来带入概率公式，计算$\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}$,计算过程如下，主要是涉及一些log和exp的转换：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E.PNG" class="" title="证明"><br>在公式的最后，我们令$x_0=1$,至此我们得到了$\theta^Tx$,即如下式：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E%E7%BB%93%E6%9E%9C.PNG" class="" title="证明结果"><br>$\theta$向量的值如下：</p>
+<script type="math/tex; mode=display">\theta=\left[
+ \begin{matrix}
+   log(\frac{1-\phi}{\phi}) - \frac{\mu_0^2 + \mu_1^2}{2\sum} \\
+   \frac{\mu_0 - \mu_1}{\sum}
+  \end{matrix}
+  \right]</script><h2 id="关系说明"><a href="#关系说明" class="headerlink" title="关系说明"></a>关系说明</h2><p>可以看出，从GDA可以推导出逻辑回归，但是反过来是不成立的。即如果$p(y|x)$是一个逻辑回归函数并不能推导出$p(x|y)$是一个多元的高斯分布。这说明GDA模型比逻辑回归模型具有更强的假设。事实上，如果$p(x|y)$是指数分布族(<strong>Exponential Family</strong>，比如高斯分布，泊松分布)中的一种，那么其后验概率就是逻辑回归。由此我们也得到一个为什么逻辑回归使用的更加广泛的原因，因为逻辑回归是一种非常通用，健壮的算法，适用于许多基本假设。另一方面，GDA以及一般的生成模型做出了更强的假设，因此对于非高斯或某些未定义分布数据来说并不理想。<br>特别的，当$p(x|y)$是高斯分布(类别之间具有相同的协方差)时，则GDA是渐进有效的(首先搞清楚什么叫有效性，有效性是指在所有的无偏估计方法里，某种方法的估计量的方差是最小的，则该种估计方法就是有效的，比如古典假定的OLS(最小二乘算法)估计。渐近有效是指该种估计方法在中小样本时可能不是最有效的，但随着样本数的增加，慢慢变得有效（没有其它无偏估计方法可以得到更小的方差），这就称为渐近有效，比如正态分布下线性模型的最大似然估计)。非正式地说，当训练集数目很大时，没有模型能显著地比GDA更好(即模型准确估计$p(y|x)$的程度).如果数据服从正态分布，则GDA要比逻辑回归表现的更好，更近一步，即使对于比较小的训练集，我们也总是认为GDA要表现的更好。<br>假设有一个一维训练集，包含一些正样本和负样本，如下图x轴的叉和圈，设叉为0，圈为1，用GDA对两类样本分别拟合高斯概率密度函数p(x|y=0)和p(x|y=1)，如下图的两个钟形曲线。沿x轴遍历样本，在x轴上方画出相应的p(y=1|x)。如选x轴靠左的点，那么它属于1的概率几乎为0，p(y=1|x)=0，两条钟形曲线交点处，属于0或1的概率相同，p(y=1|x)=0.5，x轴靠右的点，输出1的概率几乎为1，p(y=1|x)=1。最终发现，得到的曲线和sigmoid函数曲线很相似。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E5%92%8C%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92.png" class="" title="高斯分布和逻辑回归"><br>也就是说，当使用GDA模型时，p(x|y)属于高斯分布，计算p(y|x)时，几乎能得到和logistic回归中使用的sigmiod函数一样的函数，但实际上还是存在本质区别。</p>
+<p>在Andrew Ng的cs229采用两种方法可以推导出逻辑回归</p>
+<ol>
+<li>通过指数分布族来推导。</li>
+<li>通过生成学习假设先验概率分布的方式进行推导。</li>
+</ol>
+<h2 id="如何选择两种模型"><a href="#如何选择两种模型" class="headerlink" title="如何选择两种模型"></a>如何选择两种模型</h2><p>由上面的分析可以知道，GDA比逻辑回归有更多的前置假设。当数据服从或大致服从正态分布时，GDA会具有更高的拟合度，因为GDA利用了更多的信息构建模型。但是当数据不服从正态分布时，那么逻辑回归更有效，因为它做出更少的假设，构建的模型更加强壮，更加具有鲁棒性。生成学习还有另外的一个好处，就是可以使用比判别学习模型使用更少的数据构建出强壮的模型。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过推导，我们可以看到很多算法内在都是存在某种联系的，理解算法之间的关系对于我们理解算法以及选择什么算法都是有很多的帮助的。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
+<li><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">Gaussian Discriminant Analysis and Logistic Regression</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/jupyter-notebook%E4%BD%BF%E7%94%A8.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1753,187 +1919,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Refactor-improving-the-Design-of-Existing-Code.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/Refactor-improving-the-Design-of-Existing-Code.html" itemprop="url">Refactor-improving the Design of Existing Code</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-23T15:18:53+08:00">
-                2018-06-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">读书笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Refactor-improving the Design of Existing Code(重构-改善既有代码的设计),这是Martin Fowler的一本书.主要是针对Java语言.书已经出版多年了,买这本书也有一年多了,但是一直只看了第一章.最近因为工作不是很忙,就拾起来读了.这里主要是记录下读这本书的一些感想以及收获.<br>读这本书有个收获,重构不单单只是修改函数名称,重命名变量名称那么简单.比如进行类的分解,将合适的函数放置在合适的类中.而这些都需要我们在平常的编程活动中去实践.<br>什么时候进行重构呢?当遇到几个方面时,可以考虑进行重构.发现当为函数添加新功能时,并不能很好的添加进去,这时候我们可以进行重构;当写完功能时,我们也可以考虑重构.总之,重构并不是开发过程中必须要通过的一个过程,就像编译-链接等.你可以随时进行重构.</p>
-<h2 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h2><p>我们在平时编程的时候,不可能一次性的就把问题或者程序写的完美无缺,除非我们已经非常熟知某个问题或者某个领域,即使非常熟悉,可能还有我们没有发现的提升之处.那么当我们的程序写的不完美的时候,我们怎么办呢?这时候就可以采用重构的方法来小步快跑的提升我们程序的易读性,优化程序的结构.而这本书给我们提供了如何进行重构的一系列方法.<br>整个开发流程:<br>开发—-&gt; 测试 —-&gt; 重构 —-&gt; 测试</p>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在我们重构之前,一定要有合适的测试.在Java中,我们经常用的就是Junit和TestNG了.其中Junit主要是用来做单元测试,而TestNG主要是功能测试或者集成测试.如果我们是开发人员,可能使用Junit比较多,不过TestNG一般也会用到.在我们重构完成之后,一定要跑测试用例,跑通了所有的测试用例,这项重构才算是完成.</p>
-<h3 id="代码的坏味道"><a href="#代码的坏味道" class="headerlink" title="代码的坏味道"></a>代码的坏味道</h3><ol>
-<li>重复代码<br> 遇到相同的程序结构,应该想办法将它们合二为一,这样程序会变得更好</li>
-<li>过长函数<br>函数的代码行数不宜过长,并且函数的命名应该体现出函数做了什么而不是表明怎么做</li>
-<li>过大的类<br>当类过大时,我们可以采取Extract class 或者Extract Subclass来减小类的大小</li>
-<li>过长的参数列<br>将函数的参数可以用对象来进行传递</li>
-<li>发散式变化<br>如果某个类经常因为不同的原因在不同的方向上发生变化,那么这个类就产生了发散式变化.理想情况是针对外界的某一个变化产生的所有相应修改,都应该发生在单一类中.采用 <strong>Extract Class</strong>将因为特定原因造成的所有变化提炼到另一个类中</li>
-<li>霰弹式修改<br>如果遇到某种变化,都必须在许多不同的类内做出许多小修改,那么就产生了霰弹式修改.遇到这种情况,应该使用<strong>Move Method</strong>和<strong>Move Field</strong>将所有的修改集中在一个类中.<br>发散式修改是指”一个类受多种变化的影响”,而霰弹式修改是指”一种变化引发多个类的相应修改”.理想情况是外界变化与需要修改的类趋于一一对应.</li>
-<li>依恋情结<br>函数对某个类的兴趣高过对自己所处类的兴趣.这时候我们应该将此函数移动到此函数对应的类中.</li>
-<li>数据泥团<br>两个类中相同的字段,许多函数签名中相同的参数.这些总是绑定在一起出现的数据应该拥有属于它们的对象</li>
-<li>基本类型偏执<br>我们有时候可以用对象来替代基本类型,比如当表示由一个起始值和一个结束值组成的range类,一个币种的money类.我们可以创建对应的小对象.</li>
-<li>switch惊悚现身<br>在面向对象程序中尽量少用switch语句,因为switch容易造成重复.而且修改switch条件时,需要找到所有的switch来进行修改</li>
-<li>平行继承体系</li>
-<li>冗余类<br>消除没有用的类</li>
-<li>夸夸其谈未来性</li>
-<li>令人迷惑的暂时字段</li>
-<li>过度耦合的消息链</li>
-<li>中间人<br>不要过度使用委托</li>
-<li>狎昵关系</li>
-<li>异曲同工的类</li>
-<li>不完美的类库</li>
-<li>过多的注释</li>
-</ol>
-<h3 id="重构方法"><a href="#重构方法" class="headerlink" title="重构方法"></a>重构方法</h3><blockquote>
-<p>这里仅仅记录了部分的重构方法</p>
-</blockquote>
-<ol>
-<li>提取方法<br>在重构中有一个很核心的动作就是将代码提取为一个单独的方法.这种方式其实也杜绝了重复代码的出现,能够在我们修改代码的时候只需要修改一处就可以.并且能够在多个地方使用</li>
-<li>将注释提取为方法<br>理想的程序就是代码完全能够表达自己,当我们在程序中看到注释或者添加注释的时候,我们可以先思考下能否将注释下的代码提取为一个方法,并且方法的函数名称能够体现注释的内容,方法名称要体现程序做了什么而不是怎么做.</li>
-<li>明确类的职责<br>类的职责不宜过于多,不宜过于复杂.如果看到一个类承担的职责很多,我们可以考虑是否可以将此类拆分,将不属于其应该承担的责任提取到一个新的类中.然后在源类中通过引用来使用新类中的字段或方法</li>
-<li>用查询来代替变量<br>就是在我们使用变量时,我们应该采用计算变量的方法来替代此变量.其实对于这一做法,我是抱有怀疑态度的,因为这造成了函数运行多次.会造成性能下降,但是书中说性能优化属于优化阶段的工作,而且这样重构会为优化阶段带来很好的铺垫.这个我觉得还是主要看平时我们的工作中需要具体情况具体分析.不能尽信书,什么东西都需要我们自己的独立思考</li>
-<li>以卫语句取代嵌套条件表达式<br>条件表达式的两种形式:1.所有分支都属于正常分支;2.只有一种是正常行为,其他都是不正常行为.针对情况1,建议使用if…else结构;针对情况2,使用if进行判断,然后直接返回结果.这样子处理能够提高程序清晰度</li>
-<li>封装集合<br>当我们在类中有个字段是集合时,我们的返回函数不应该直接返回集合自身,而是应该返回集合的只读副本.另外,不应该为这整个集合提供一个设值函数,应该提供为集合添加,删除元素的函数.</li>
-<li>分解条件表达式<br>将复杂的条件表达式分解为较简单的表达式,可是试着尝试将if段落以及else then等提炼为单独的函数</li>
-<li>合并条件表达式<br>如果发现检查条件各不相同,但是最终的行为一致.应该使用逻辑与和逻辑或合并为一个条件表示式</li>
-<li>引入参数对象<br>可以使用对象来替换函数中的众多参数.比如,遇到数据范围的,参数是一个开始时间,结束时间,那么可以新建一个日期范围类,其中的开始时间和结束时间不能修改.用此类来替换开始时间和结束时间.这样做的好处是可以缩短参数列表.</li>
-<li>移除设置函数<br>如果类中的某个字段在对象创建之后不能修改,那么就不提供设置函数,并且将此字段设为<strong>final</strong></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1984,7 +1969,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1995,7 +1980,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2006,7 +1991,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -263,6 +263,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/BIO-NIO-AIO%E8%AF%A6%E8%A7%A3.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/BIO-NIO-AIO%E8%AF%A6%E8%A7%A3.html" itemprop="url">BIO NIO AIO详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-23T16:20:19+08:00">
+                2019-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Java-BIO-NIO-AIO详解"><a href="#Java-BIO-NIO-AIO详解" class="headerlink" title="Java BIO NIO AIO详解"></a>Java BIO NIO AIO详解</h1><h2 id="同步，异步，阻塞，非阻塞"><a href="#同步，异步，阻塞，非阻塞" class="headerlink" title="同步，异步，阻塞，非阻塞"></a>同步，异步，阻塞，非阻塞</h2><p>这几个概念理解起来确实比较困难，特别是同步和阻塞，异步和非阻塞。首先要明确的一个概念是同步和异步主要是关注的是消息通信机制，所以同步和异步主要是关注客户端和服务端两个方面的消息如何通信。而阻塞和非阻塞主要是等待调用结果时的状态，所以关注的主要是当前线程在等待结果时能够做什么，如果在等待结果时当前线程能够做其他的事，则线程是非阻塞的；如果只能等待返回结果，则当前线程是阻塞的。下面举个例子来具体说明一下：<br>比如你跟书店老板打电话，确认是否书店中有哈利波特这本书。书店老板电话没有挂断，说你等一下，我现在查一下，你一直在等待，此时就是一种同步通信。而如果老板说我晚点电话通知你，然后挂断电话，此时就是异步通信。<br>让我们在换一个视角，还是打电话确定是否有哈利波特这本书这件事情。在打电话的过程中，你什么都没有干，只是一直在等待，那么此时你就是处于阻塞状态。而如果此时你正在看电视，此时你就是非阻塞状态，但是需要不定时的检查一下电话那边有没有回复。</p>
+<blockquote>
+<p>所谓同步，就是在发出一个<strong>调用</strong>时，在没有得到结果之前，该<strong>调用</strong>就不返回。但是一旦调用返回，就得到返回值了。换句话说，就是由<strong>调用者</strong>主动等待这个<strong>调用</strong>的结果.<br>而异步则是相反，<strong>调用</strong>在发出之后，这个调用就直接返回了，所以没有返回结果。换句话说，当一个异步过程调用发出后，调用者不会立刻得到结果。而是在<strong>调用</strong>发出后，<strong>被调用者</strong>通过状态、通知来通知调用者，或通过回调函数处理这个调用。<br>阻塞调用是指调用结果返回之前，当前线程会被挂起。调用线程只有在得到结果之后才会返回。非阻塞调用指在不能立刻得到结果之前，该调用不会阻塞当前线程。<br>在IO操作中，有以下四种组合：</p>
+</blockquote>
+<ol>
+<li>同步阻塞IO：调用者发起IO操作请求，等待IO操作完成(阻塞)。IO操作的过程需要等待，等待服务端返回结果，操作执行完成后返回结果(同步)</li>
+<li>同步非阻塞：调用者发起IO操作请求，询问IO操作的的状态，如果未完成，则立即返回；如果完成，则返回结果(非阻塞)。IO操作的过程需要等待执行完成才返回结果(同步)</li>
+<li>异步阻塞：调用者发起IO操作请求，等待IO操作完成在返回(阻塞)。IO操作的过程不需要等待，操作完成后通过通知或者回调获取结果(异步)</li>
+<li>异步非阻塞：调用者发起IO操作请求，询问IO操作的状态，如果未完成，则立即返回；如果完成，则返回结果(非阻塞)。IO操作的过程不需要等待，操作完成后通过通知或回调获得结果(异步)<br>在下面的具体介绍中，我会进行具体的说明。</li>
+</ol>
+<h2 id="Java-IO-操作类"><a href="#Java-IO-操作类" class="headerlink" title="Java IO 操作类"></a>Java IO 操作类</h2><p>Java中进行IO操作的类一般分为以下四类：</p>
+<ol>
+<li>字节流的输入和输出：InputStream和OutputStream</li>
+<li>字符流的输入和输出</li>
+<li>网络编程Socket</li>
+<li></li>
+</ol>
+<h2 id="BIO"><a href="#BIO" class="headerlink" title="BIO"></a>BIO</h2><p>首先BIO是同步阻塞调用。阻塞是因为服务端在调用accept方法时，服务端会一直阻塞在accept方法上，直到在对应的端口上接收到数据；同步是因为客户端会一直等待服务端执行完成才返回结果。可以想一下JavaScript中的Ajax请求，在异步Ajax请求发出后，浏览器会执行接下来的JS代码，直到服务端发回处理结果，然后执行对应的回调函数。这是典型的异步请求。</p>
+<h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><p>NIO(New IO or Non-Block IO)是一种同步非阻塞的通信模式。NIO客户端和服务器之间通过Channel通信。NIO可以在Channel进行读写操作。这些Channel都会被注册在Selector多路复用器上。Selector通过一个线程不停的轮询这些Channel。找出已经准备就绪的Channel执行IO操作。说是非阻塞是因为NIO通过一个线程轮询，实现千万个客户端的请求。说是同步是因为客户端一直在等待服务端执行完成才返回结果。</p>
+<h2 id="AIO"><a href="#AIO" class="headerlink" title="AIO"></a>AIO</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/2019-plan-and-learn.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1751,172 +1911,6 @@ s.t.\quad y^{(i)}(w^T + b) \geq 1, i=1,...,m \tag{1.3}</script><p>针对这个�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Gaussian-Discriminant-Analysis-and-Logistic-Regression.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/Gaussian-Discriminant-Analysis-and-Logistic-Regression.html" itemprop="url">Gaussian Discriminant Analysis and Logistic Regression</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T11:22:36+08:00">
-                2018-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="高斯判别分析和逻辑回归算法的关系"><a href="#高斯判别分析和逻辑回归算法的关系" class="headerlink" title="高斯判别分析和逻辑回归算法的关系"></a>高斯判别分析和逻辑回归算法的关系</h1><p>最近一直在看Andrew Ng的cs229那门课的讲义，看到高斯判别分析模型和逻辑回归算法的关系那一部分，自己采用贝叶斯后验概率也证明了两者之间的关系，证明不难，本来打算记录一下的。在网上看到有个外国人写的更好，那我就把他写的直接翻译过来了。当然文章中也加入了在网上看到的其他资料和自己的一些思考。<br><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">原文</a></p>
-<h2 id="判别模型和生成模型"><a href="#判别模型和生成模型" class="headerlink" title="判别模型和生成模型"></a>判别模型和生成模型</h2><p>有很多方式可以对机器学习算法进行分类，比如：监督/非监督，回归/分类,等等。还有一种方式用判别模型(<strong>Discriminative model</strong>)和生成模型(<strong>Generative model</strong>)进行区分.本篇文章，我们将会讨论高斯判别分析(Gaussian Discriminant Analysis )模型和逻辑回归(Logistic Regression)之间的关系,这也体现了判别模型和生成模型之间的关系。<br>判别模型是求$p(y|x)$.在分类问题中，判别模型是直接寻找能够将不同类的数据分开的超平面或者称之为决策边界。有很多常用的机器学习算法属于判别模型，比如：逻辑回归，SVM，神经网络等等。另一方面，生成模型是求取$p(x|y)$和$p(y)$.这意味着，在分类问题中，生成模型给出了每个类的概率分布，给出了数据是如何生成的。也即生成(generative)这个词的意思.生成模型依赖贝叶斯公式计算后验概率$p(y|x)$.像朴素贝叶斯，高斯判别分析等都属于生成模型。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/discriminative_vs_generative.png" class="" title="Discriminative vs Generative"><br>在实际使用中，判别模型要比生成模型用的更多，原因很多。比如：判别模型更加灵活，更加鲁棒，当对模型做出错误的假设时，模型表现的也不是很敏感。而生成模型需要我们定义数据的先验概率，即数据分布，在很多时候这是非常有困难和挑战的。然后，生成模型也有它的优势，比如：相比于判别模型，生成模型对于数据有更多的先验信息。这导致如果我们对于数据的假设是正确的，那么生成模型在少量数据下也能够表现的更好。</p>
-<h2 id="GDA和逻辑回归"><a href="#GDA和逻辑回归" class="headerlink" title="GDA和逻辑回归"></a>GDA和逻辑回归</h2><p>接下来我将要证明，GDA(Gaussian Discriminant Analysis)如何最终推导出逻辑回归，从这个推导中也可以看出采用逻辑回归的道理。<br>对于二分类问题，GDA假设类别服从伯努利分布，数据服从多元高斯分布，如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%85%88%E9%AA%8C%E5%88%86%E5%B8%83.PNG" class="" title="先验分布"><br>具体的数学公式如下：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E5%88%86%E5%B8%83%E7%9A%84%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F.PNG" class="" title="分布的数学公式"><br>而采用GDA就是求取后验概率，我们可以证明如下等式成立：</p>
-<script type="math/tex; mode=display">p(y=1|x) = \frac{1}{1+exp(-\theta^Tx)}</script><p>在公式中可以看到，GDA关于类别1的后验概率就是逻辑回归的sigmoid函数，这里$\theta$就是关于参数$\phi,\mu_0,\mu_1,\sum$的函数<br>接下来进行证明：</p>
-<script type="math/tex; mode=display">
-p(y=1|x)
-=\frac{p(x|y=1)\times{p(y=1)}}{p(x)}
-=\frac{p(x|y=1)\times{p(y=1)}}{p(x|y=1)\times{p(y=1)} + p(x|y=1)\times{p(y=0)}}
-=\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}</script><p>我们接下来带入概率公式，计算$\frac{1}{1 + \frac{p(x|y=0)\times{p(y=0)}}{p(x|y=1)\times{p(y=1)}}}$,计算过程如下，主要是涉及一些log和exp的转换：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E.PNG" class="" title="证明"><br>在公式的最后，我们令$x_0=1$,至此我们得到了$\theta^Tx$,即如下式：<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E8%AF%81%E6%98%8E%E7%BB%93%E6%9E%9C.PNG" class="" title="证明结果"><br>$\theta$向量的值如下：</p>
-<script type="math/tex; mode=display">\theta=\left[
- \begin{matrix}
-   log(\frac{1-\phi}{\phi}) - \frac{\mu_0^2 + \mu_1^2}{2\sum} \\
-   \frac{\mu_0 - \mu_1}{\sum}
-  \end{matrix}
-  \right]</script><h2 id="关系说明"><a href="#关系说明" class="headerlink" title="关系说明"></a>关系说明</h2><p>可以看出，从GDA可以推导出逻辑回归，但是反过来是不成立的。即如果$p(y|x)$是一个逻辑回归函数并不能推导出$p(x|y)$是一个多元的高斯分布。这说明GDA模型比逻辑回归模型具有更强的假设。事实上，如果$p(x|y)$是指数分布族(<strong>Exponential Family</strong>，比如高斯分布，泊松分布)中的一种，那么其后验概率就是逻辑回归。由此我们也得到一个为什么逻辑回归使用的更加广泛的原因，因为逻辑回归是一种非常通用，健壮的算法，适用于许多基本假设。另一方面，GDA以及一般的生成模型做出了更强的假设，因此对于非高斯或某些未定义分布数据来说并不理想。<br>特别的，当$p(x|y)$是高斯分布(类别之间具有相同的协方差)时，则GDA是渐进有效的(首先搞清楚什么叫有效性，有效性是指在所有的无偏估计方法里，某种方法的估计量的方差是最小的，则该种估计方法就是有效的，比如古典假定的OLS(最小二乘算法)估计。渐近有效是指该种估计方法在中小样本时可能不是最有效的，但随着样本数的增加，慢慢变得有效（没有其它无偏估计方法可以得到更小的方差），这就称为渐近有效，比如正态分布下线性模型的最大似然估计)。非正式地说，当训练集数目很大时，没有模型能显著地比GDA更好(即模型准确估计$p(y|x)$的程度).如果数据服从正态分布，则GDA要比逻辑回归表现的更好，更近一步，即使对于比较小的训练集，我们也总是认为GDA要表现的更好。<br>假设有一个一维训练集，包含一些正样本和负样本，如下图x轴的叉和圈，设叉为0，圈为1，用GDA对两类样本分别拟合高斯概率密度函数p(x|y=0)和p(x|y=1)，如下图的两个钟形曲线。沿x轴遍历样本，在x轴上方画出相应的p(y=1|x)。如选x轴靠左的点，那么它属于1的概率几乎为0，p(y=1|x)=0，两条钟形曲线交点处，属于0或1的概率相同，p(y=1|x)=0.5，x轴靠右的点，输出1的概率几乎为1，p(y=1|x)=1。最终发现，得到的曲线和sigmoid函数曲线很相似。<br><img src="/Gaussian-Discriminant-Analysis-and-Logistic-Regression/%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E5%92%8C%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92.png" class="" title="高斯分布和逻辑回归"><br>也就是说，当使用GDA模型时，p(x|y)属于高斯分布，计算p(y|x)时，几乎能得到和logistic回归中使用的sigmiod函数一样的函数，但实际上还是存在本质区别。</p>
-<p>在Andrew Ng的cs229采用两种方法可以推导出逻辑回归</p>
-<ol>
-<li>通过指数分布族来推导。</li>
-<li>通过生成学习假设先验概率分布的方式进行推导。</li>
-</ol>
-<h2 id="如何选择两种模型"><a href="#如何选择两种模型" class="headerlink" title="如何选择两种模型"></a>如何选择两种模型</h2><p>由上面的分析可以知道，GDA比逻辑回归有更多的前置假设。当数据服从或大致服从正态分布时，GDA会具有更高的拟合度，因为GDA利用了更多的信息构建模型。但是当数据不服从正态分布时，那么逻辑回归更有效，因为它做出更少的假设，构建的模型更加强壮，更加具有鲁棒性。生成学习还有另外的一个好处，就是可以使用比判别学习模型使用更少的数据构建出强壮的模型。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过推导，我们可以看到很多算法内在都是存在某种联系的，理解算法之间的关系对于我们理解算法以及选择什么算法都是有很多的帮助的。</p>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
-<li><a href="https://duphan.wordpress.com/2016/10/27/gaussian-discriminant-analysis-and-logistic-regression/">Gaussian Discriminant Analysis and Logistic Regression</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1967,7 +1961,7 @@ p(y=1|x)
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1978,7 +1972,7 @@ p(y=1|x)
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1989,7 +1983,7 @@ p(y=1|x)
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
