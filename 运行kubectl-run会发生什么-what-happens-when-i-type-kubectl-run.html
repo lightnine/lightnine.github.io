@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="个人博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="原文链接：https:&#x2F;&#x2F;github.com&#x2F;jamiehannaford&#x2F;what-happens-when-k8s 想像一下当你运行下面的命令时1kubectl create deployment nginx --image&#x3D;nginx --replica&#x3D;3在一切顺利的情况下，在k8s集群中能够看到生成了3个pod。那么在底层到底发生了什么？本篇文章试图解决一个请求从客户端到kubele">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运行kubectl run会发生什么(what happens when i type kubectl run)">
+<meta property="og:url" content="https://lightnine/github.io/%E8%BF%90%E8%A1%8Ckubectl-run%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88-what-happens-when-i-type-kubectl-run.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="原文链接：https:&#x2F;&#x2F;github.com&#x2F;jamiehannaford&#x2F;what-happens-when-k8s 想像一下当你运行下面的命令时1kubectl create deployment nginx --image&#x3D;nginx --replica&#x3D;3在一切顺利的情况下，在k8s集群中能够看到生成了3个pod。那么在底层到底发生了什么？本篇文章试图解决一个请求从客户端到kubele">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-04-17T12:09:04.000Z">
+<meta property="article:modified_time" content="2024-05-13T14:52:45.203Z">
+<meta property="article:author" content="liang">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lightnine/github.io/运行kubectl-run会发生什么-what-happens-when-i-type-kubectl-run.html"/>
+
+
+
+
+
+  <title>运行kubectl run会发生什么(what happens when i type kubectl run) | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E8%BF%90%E8%A1%8Ckubectl-run%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88-what-happens-when-i-type-kubectl-run.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">运行kubectl run会发生什么(what happens when i type kubectl run)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-04-17T20:09:04+08:00">
+                2024-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/k8s/" itemprop="url" rel="index">
+                    <span itemprop="name">k8s</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>原文链接：<a href="https://github.com/jamiehannaford/what-happens-when-k8s">https://github.com/jamiehannaford/what-happens-when-k8s</a></p>
+<p>想像一下当你运行下面的命令时<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment nginx --image=nginx --replica=3</span><br></pre></td></tr></table></figure><br>在一切顺利的情况下，在k8s集群中能够看到生成了3个pod。那么在底层到底发生了什么？本篇文章试图解决一个请求从客户端到kubelet整体的流程，并且也链接了源码。</p>
+</blockquote>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li>kubectl<ul>
+<li>Validation and generators(验证和生成)</li>
+<li>API groups and version negotiation(API组和版本协商)</li>
+<li>Client auth(客户端认证)</li>
+</ul>
+</li>
+<li>kube-apiserver<ul>
+<li>Authentication（认证）</li>
+<li>Authorization（鉴权）</li>
+<li>Admission control（admission控制）</li>
+</ul>
+</li>
+<li>etcd</li>
+<li>Initializers</li>
+<li>Control loops<ul>
+<li>Deployments controller</li>
+<li>ReplicaSet controller</li>
+<li>Informers</li>
+<li>Scheduler</li>
+</ul>
+</li>
+<li>kubelet<ul>
+<li>Pod sync</li>
+<li>CRI and pause containers</li>
+<li>CNI and pod networking</li>
+<li>Inter-host networking</li>
+<li>Container startup</li>
+</ul>
+</li>
+<li>Wrap-up（总结）</li>
+</ol>
+<h2 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h2><h3 id="Validation-and-generators"><a href="#Validation-and-generators" class="headerlink" title="Validation and generators"></a>Validation and generators</h3><p>针对开头提到的命令，在命令行输入回车后，会发生什么呢？<br>kubectl首先会进行客户端侧的验证。针对非法的命令(比如不支持的资源或镜像不合法)能够快速失败提示，避免发送到kube-apiserver，从而降低k8s负载。<br>经过验证后，kubectl组装将要发送到api-server的http请求。在k8s中，获取或者改变k8s中的状态都要通过apiserver，apiserver负责与etcd交互。kubectl使用generators来构建http请求，generators是负责序列化的一种抽象（注：可以简单的把generators理解为帮帮助用户构建完成的资源的工具，比如kubectl create中我们只指定了部分的内容，剩下的内容是generators帮助我们生成的）。<br>kubectl run 命令可以通过使用—generator参数指定运行多种资源，而不仅仅是deployments。如果不使用—generator参数，kubectl可以主动推断要运行的资源。<br>例如，参数<code>--restart-policy=Always</code>会触发deployments，而<code>--restrart-policy=Never</code>会触发pods。kubectl也会根据其他的参数确定需要执行的其他动作。比如记录命令(回滚或审计)，或者<code>--dry-run</code><br>在确定要创建的资源是Deployment后，kubectl将会使用<code>DeploymnetAppsV1</code> generator来根据命令行参数构造runtime object。runtime object是k8s resource的通用表示。</p>
+<h3 id="API-groups-and-version-negotiation"><a href="#API-groups-and-version-negotiation" class="headerlink" title="API groups and version negotiation"></a>API groups and version negotiation</h3><p>k8s使用版本API，并且每个版本有自己所属的API groups。API groups意味着一些相似资源的集合。这比使用单调递增的版本号更加灵活。比如deployment的api group是apps，最近的版本是v1。这也是在deployment中写<code>apiVersion: apps/v1</code>的原因。<br>kubectl生成了runtime object后，kubectl开始找到正确的API group和version，并且会组装versioned client。versioned client能够意识到资源的各种REST 语义。这个阶段被称为版本协商，它涉及kubectl扫描远程API上的/apis路径，从而检索所有可能的API组。由于kube-apiserver在此路径上公开了其模式文档(以OpenAPI格式),因此客户端可以很容易执行自己的发现。<br>为了提高性能，kubectl会将OpenAPI schema缓存到 ~/.kube/cache/discovery 目录中。如果想要看到API 发现的过程，那么可以将这个缓存目录删除，然后运行kubectl命令时带上-v参数。你将会看到查询API versions的所有http请求。<br>kubectl最后一步是发送http请求。一旦接收到成功的响应后，那么kubectl就会按照期望的格式打印结果。</p>
+<h3 id="Client-auth"><a href="#Client-auth" class="headerlink" title="Client auth"></a>Client auth</h3><p>为了成功发送请求，kubectl需要能够处理认证信息。用户的凭证一般存储在<code>kubeconfig</code>文件中，但是有时候也在其他地方。kubectl做了下面的事情来决定用户凭证：</p>
+<ul>
+<li>如果kubectl中使用了<code>--kubeconfig</code>，那么就使用这个参数指定的文件</li>
+<li>如果当前环境变量中定义了<code>$KUBECONFIG</code>，那么使用这个环境变量指定的文件</li>
+<li>否则使用推荐的主目录，比如<code>~/.kube</code>,然后使用此目录中的第一个文件<br>当kubectl解析了凭证文件后，kubectl会决定当前需要使用的上下文，当前需要连接的集群，与当前用户关联的认证信息。如果kubectl中提供了指定的参数，比如<code>--username</code>, 那么这些参数将会覆盖凭证文件的配置。一旦有了这些信息，那么kubectl将会用这些信息去修饰http请求：</li>
+<li>使用tls.TLSConfig来发送x509证书</li>
+<li>bearer token放到http header中的”Authorization”</li>
+<li>username 和 password通过http basic authentication发送</li>
+<li>OpenID认证流程是由用户事先手动处理的，生成一个类似于Bearer令牌的token，然后发送。</li>
+</ul>
+<h2 id="kube-apiserver"><a href="#kube-apiserver" class="headerlink" title="kube-apiserver"></a>kube-apiserver</h2><h3 id="Authentication-认证，确定用户是谁"><a href="#Authentication-认证，确定用户是谁" class="headerlink" title="Authentication(认证，确定用户是谁)"></a>Authentication(认证，确定用户是谁)</h3><p>k8s客户端和k8s系统组件与k8s交互主要是通过kube-apiserver来进行，比如获取和存储系统状态。kube-apiserver第一步要做的就是要验证请求的身份信息，这一步叫做认证(authentication).<br>apiserver如何进行认证呢？首先，apiserver在启动时，它会首先检查启动参数，然后组装一系列的认证器(authenticators)。举个例子，比如<code>--client-ca-file</code>传递进来，那么会添加x509认证器；如果提供<code>--token-auth-file</code>，那么会添加token认证器。apiserver收到的每个请求都会经过这些认证器，并且会依次进行认证，直到有一个认证器成功，那么请求就通过了。</p>
+<ul>
+<li>x509 handler 将会检查请求的证书是否有效，并且是否在指定的ca文件中</li>
+<li>bearer token handler 将会检查token(http Authorization header)是否在指定的文件中(由<code>--token-auth-file</code>指定)</li>
+<li>basic handler仅仅简单的检查http 请求中的basic 认证信息是否与本地状态匹配<br>如果每个认证器都认证失败了，那么一个组装的错误(每个错误的认证)会返回。如果认证成功，那么在http header中的<code>Authorization</code>会移除，并且用户信息会添加到上下文中。这样后续的apiserver处理逻辑(比如authorization和admission controllers)能够直接获取到用户信息。</li>
+</ul>
+<h3 id="Authorization-鉴权，确定用户是否有权限"><a href="#Authorization-鉴权，确定用户是否有权限" class="headerlink" title="Authorization(鉴权，确定用户是否有权限)"></a>Authorization(鉴权，确定用户是否有权限)</h3><p>经过认证后，apiserver会进行鉴权检查，确定执行的请求动作是否允许。<br>apiserver处理鉴权跟认证类似。基于启动的参数，apiserver会组装一系列的鉴权器(authorizers), 这些鉴权器会依次检查请求。如果所有的鉴权都没有通过，那么请求会被拒绝并返回给客户端。如果其中某个鉴权器通过，那么请求会继续。<br>下面展示了一些鉴权器：</p>
+<ul>
+<li>webhook，负责与k8s集群外的http(s) service进行交互的</li>
+<li>ABAC，执行定义在static文件中的鉴权策略</li>
+<li>RBAC，采用RBAC角色来进行鉴权</li>
+<li>Node，确保node clients(比如kubelet)只能够访问托管到自身上的k8s资源。<h3 id="Admission-control"><a href="#Admission-control" class="headerlink" title="Admission control"></a>Admission control</h3>从apiserver的角度看，它已经确定了请求是谁以及请求是否能够执行。但是对于kubernetes，系统的其他部分对于能够做什么和不能做什么都有自己的想法。这就是admission controller要做的事情。<br>鉴权侧重于用户是否有权限，而admission controllers是用来确保请求符合期望以及遵守集群规则。amission controller是对象存储到etcd之前的最后一个处理，因此它封装了系统剩余的检查以确定请求不会产生意想不到的后果。<br>admission controllers的逻辑与authenticators和authorizers类似，但是不同之处是：不像authenticator和authorizers链式调用，如果一个admission controller失败，那么整个admission chain会失败。<br>amission controllers比较优秀的设计是专注于提升扩展性。每个controller都作为一个插件放置到<code>plugin/pkg/admission</code>目录下，每个controller都满足一个比较小的接口定义。然后编译到k8s中。<br>admission controllers通常分为这几类，资源管理、安全性、默认设置和引用一致性。下面列出了专注于资源管理的admission controller：</li>
+<li>InitialResources：根据过去资源使用情况，设置默认的资源限制</li>
+<li>LimitRanger：设置容器资源的request和limit或者为资源设置资源上界。</li>
+<li>ResourceQuota：确保集群中资源使用量不会超过配额</li>
+</ul>
+<h2 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h2><p>apiserver验证了请求后，下一步apiserver反序列化http请求，从http请求中构建runtime objects(类似于kubectl generators的反过程)，然后将objects存储到底层存储中。将这个过程细化如下。<br>首先，apiserver在接受到请求后是怎么知道如何处理呢？这个过程比较复杂。我们首先看下apiserver在启动时都会做什么：</p>
+<ol>
+<li>当前apiserver启动时，它会创建server chain，是一个组合的调用链。基本上是由多个apiserver组成的。</li>
+<li>server chain中有个通用的apiserver，是一个默认的实现</li>
+<li>openAPI schema会填充到apiserver的配置中</li>
+<li>apiserver遍历所有在openAPI schema中定义的api groups，然后为每个api group都配置一个storage provider，这些storage provider是一个通用的存储抽象。apiserver主要通过与这些storage provider交互来存储和检索数据。</li>
+<li>在每个api group中，apiserver会遍历所有的版本，然后为每个http 路径配置rest mapping。这样apiserver就能够将收到的外部请求与对应的处理逻辑关联起来</li>
+<li>针对我们上面的例子，apiserver已经注册了post handler。这个handler被委托用来创建资源<br>到这里，apiserver已经知道有哪些http route存在，并且如何将handler跟route进行映射。让我们现在看下http 请求进来后的处理</li>
+<li>如果请求跟某个特定的route匹配上，那么就会交给对应的handler进行处理。如果没有匹配上，那么会采用基于url 路径的方式进行匹配。如果针对这个路径也没有匹配上，那么一个not found handler会被调用，然后返回404错误。</li>
+<li>针对我们的例子，有一个注册的路由会调用createHandler方法。它首先解码http请求，执行基础的验证。比如确保http提供的json格式复合对应的版本资源。</li>
+<li>触发审计以及最后的admission</li>
+<li>专用的storage provider将资源存储到etcd中。etcd中资源的key通常是<code>&lt;namespace&gt;/&lt;name&gt;</code>，但是这个格式是可以配置的</li>
+<li>创建中的任何错误都会被捕获，最后storage provider会执行get请求来确保资源一定是创建成功的。如果需要，还会调用而外的后处理逻辑。</li>
+<li>构造http 响应并返回<br>通过上面的步骤，我们知道apiserver做了很多的步骤。当前deployment已经成功的在etcd中创建了。但是当前deployment还没有被调度<h2 id="Initializers"><a href="#Initializers" class="headerlink" title="Initializers"></a>Initializers</h2>在object存储到etcd之后，apiserver或者调度器并不能立马看到它。直到一系列的initializers执行完毕后，才会看到这个对象。初始化控制器将资源类型和要执行的逻辑进行关联。如果一个资源没有注册初始化控制器，那么初始化阶段会调用，这个资源立马会被apiserver或调度器看到。<br>初始化控制器给我们提供了扩展k8s的能力，比如：</li>
+</ol>
+<ul>
+<li>给pod注入代理sidecar 容器，或者获取特定的注解</li>
+<li>向特定的命名空间下的pod注入证书</li>
+<li>阻止创建小于20个字符的secret小于<br><code>initializerConfiguration</code>允许你声明哪些资源运行哪些initializers。假设我们想要一个在每个pod创建时都运行的initializer，我们的配置如下：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">admissionregistration.k8s.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">InitializerConfiguration</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">   <span class="attr">name:</span> <span class="string">custom-pod-initializer</span></span><br><span class="line"><span class="attr">initializers:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">podimage.example.com</span></span><br><span class="line">     <span class="attr">rules:</span></span><br><span class="line">       <span class="bullet">-</span> <span class="attr">apiGroups:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">&quot;&quot;</span></span><br><span class="line">         <span class="attr">apiVersions:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">v1</span></span><br><span class="line">         <span class="attr">resources:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">pods</span></span><br></pre></td></tr></table></figure>
+上面的InitializerConfiguration会给每个pod的<code>metadata.initializers.pending</code>字段添加<code>podimage.example.com</code>。initializer controller已经提前部署好，initializer会扫描每个新建的pod。当发现pod的<code>metadata.initializers.pending</code>字段不为空时，initializer controller就会执行。执行完后，会将对应的<code>podimage.example.com</code>删除。当所有的初始化器执行完毕并且<code>pending</code>字段为空，则此对象被认为已经初始化完成。<br>可能你已经发现一个问题，如果资源对于apiserver不可见，那么我们这里的初始化控制器怎么处理呢？apiserver暴露了一个<code>includeUninitialized</code>查询参数来返回所有的对象，包括那些还未初始化的对象。</li>
+</ul>
+<h2 id="Control-loops"><a href="#Control-loops" class="headerlink" title="Control loops"></a>Control loops</h2><h3 id="Deployments-controller"><a href="#Deployments-controller" class="headerlink" title="Deployments controller"></a>Deployments controller</h3><p>到现在这个阶段，deployment已经存储到etcd中并且初始化逻辑已经完成了。接下来就要设置资源拓扑。deployment就是replicasets的集合，而replicaSet就是pod的集合。k8s如何从http 请求中去创建这些对象呢？这就是k8s内置controller需要做的内容。<br>k8s在整个系统中大量使用了”控制器”思想。控制器就是一个异步过程，调谐k8s当前的状态到期望状态。每个控制器有自己的职责，并且由<code>kube-controller-manager</code>组件负责并发运行。下面介绍deployment controller<br>在 deployment存储到etcd并且初始化完成后，那么deployment就能够被kube-apiserver看到。deployment controller能够检测到可用的deployment资源以及对于资源的变更。在我们的例子中，deployment controller通过informer为创建事件注册了一个特定的回调。<br>当deployment可用时，handler开始执行，将对象添加到内部的工作队列中。当开始处理这个对象时，控制器会检查deployment，发现deployment没有关联的ReplicaSet或者Pod记录。这是通过使用标签选择器来查询kube-apiserver来完成的。有趣的是，这个同步过程是状态未知的：调谐新的记录跟调谐旧的记录是一样的工作方式。<br>在意识到相关的ReplcaSet和Pod不存在后，deployment controller会开启scaling process来解析状态。创建一个ReplicaSet资源，给它分配标签选择器，然后给定数字1的版本号。ReplicaSet中的PodSpec是从deployment清单中拷贝而来，类似于其他相关的元数据。有些时候，deployment记录在这个过程后也需要对应的更新(比如，设定了截止日期)<br>更新deployment中的status字段，然后控制器重新进行调谐过程，然后等待deployment达到期望的状态。由于deployment controller仅仅关心创建ReplicaSets,接下来的工作需要由下一个控制器来完成，既ReplicaSet controller。</p>
+<h3 id="ReplicaSet-controller"><a href="#ReplicaSet-controller" class="headerlink" title="ReplicaSet controller"></a>ReplicaSet controller</h3><p>在前面的步骤中，Deployments controller创建了ReplicaSet,但是还没有创建Pods。这就是ReplicaSet 控制器发挥作用的时刻。ReplicaSet controller的主要工作就是监视ReplicaSet的生命周期和对应的Pods资源。类似于大多数其他的控制器，它通过在特定事件上触发handler来实现。<br>我们感兴趣的事件是创建。当ReplicaSet被创建后。ReplicaSet controller检查新的replicaSet的状态，然后发现当前的状态跟期望的状态不一致。它试图通过增加属于ReplicaSet的Pod数量来达到目标状态。它以谨慎的方式来创建它们，确保ReplicaSet的数量始终匹配。<br>创建Pods的过程是批量处理的，以<code>SlowStartInitiaBatchSize</code>开始，然后每次都以两倍的数量来启动其他的Pods。这样做的目的是确保当pod创建失败时，避免大量的http 请求到apiserver。如果要失败，可以采用对组件影响最小的方式来进行。<br>k8s通过Owner References(child资源中的一个字段，用来指向父资源的id)来确保对象的引用关系。这样做，不仅能够确保一旦父资源被删除，子资源也会被删除(级联删除)，同时还能够保证父资源不会竞争子资源(想象一下，两个潜在的父资源认为他们拥有同样的子资源)<br>Owner Reference另一个好处是，它是有状态的。如果控制器重启了，那么重启过程中，不会影响到这些资源，因为资源拓扑是独立于controler的。这种对隔离的关注也渗透到控制器本身的设计中：它们不应该操作它们没有明确拥有的资源。相反，控制器应该只操作它们明确拥有的资源。<br>然而，有时候会存在”孤儿”资源，比如下面这些情况：</p>
+<ol>
+<li>父资源删除，但是子资源没有删除</li>
+<li>垃圾回收策略禁止删除子资源<br>如果发生了这种情况，那么控制器会确保这些“孤儿”资源被新的父资源领养。多个父资源能够竞争性的去领养孤儿资源，但是只有一个能够成功。<h3 id="Informers"><a href="#Informers" class="headerlink" title="Informers"></a>Informers</h3>rbac authorizer 或者 deployment controller需要获取集群状态，从而实现相关逻辑。比如以rbac authorizer为例，当请求进入时，authenticator需要将用户的初始状态保存起来以供后续使用。rbac authorizer后续会使用用户的初始表示来获取在etcd中相关的角色和角色绑定关系。控制器应该如何访问和修改这些资源？k8s中提供了informers来实现。<br>informer是一种模式，既允许控制器订阅存储时间以及查询资源列表。informer除了提供一种抽象外，它还封装了大量的工作，比如缓存(缓存很重要，不仅可以减少apiserver连接数，同时还可以较少服务端和客户端的序列化)。informer还提供了线程安全的方式来操作资源。<h3 id="Scheduler"><a href="#Scheduler" class="headerlink" title="Scheduler"></a>Scheduler</h3>在所有的控制器都运行后，当前在etcd中会存在一个deployment，一个ReplicaSet以及三个pod资源。此时，pod的状态是<code>Pending</code>,因为它们还没有被调度。最后的一个控制器是scheduler，它负责调度pod。<br>scheduler是作为控制面的一个标准组件，它的运行机制跟其他的控制器类似。它监听事件，然后尝试将状态调整到期望状态。在这个例子中，调调度器筛选出<code>NodeName</code>为空的pod，然后尝试将它们调度到合适的节点上。<br>为了找到合适的节点，scheduler使用了专门的调度算法。默认的调度算法工作如下：</li>
+<li>scheduler启动时，会注册一系列的默认predicates。这些predicates会检查pod是否满足特定的条件，比如：如果PodSpec中明确指定了CPU或RAM资源，如果Node上的资源不满足，那么此Node就会被过滤掉。</li>
+<li>一旦选择了一些符合条件的节点，那么接下来priority函数将会给这些节点打分。比如：为了在集群中使得资源均匀分配，那么节点剩余资源较多的节点会得到更高的分数，最终选择一个分数最高的节点作为目标节点。<br>当找到合适节点后，scheduler会创建一个Binding Object，其中名称和UID会匹配对应的pod。Binding Object的ObjectReference字段会包含选择的目标节点。通过post请求会发送给apiserver。<br>当apiserver接受到Binding object后，它会反序列化请求，然后将信息更新到pod对象上：设置pod的NodeName字段，添加相关的注解以及将<code>PodScheduled</code>设置为<code>True</code>.<br>一旦scheudler将pod调度到目标节点后，剩下的工作就交与kubelet来完成了。<blockquote>
+<p>注：定制调度器。通过<code>--policy-config-file</code>可以定制predicate和priority函数。我们可以在k8s集群中运行特定的调度器，比如采用deployment运行。如果在PodSpec中指定了<code>schedulerName</code>,那么k8s会将调度过程交给这个调度器执行。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="kubelet"><a href="#kubelet" class="headerlink" title="kubelet"></a>kubelet</h2><h3 id="Pod-sync"><a href="#Pod-sync" class="headerlink" title="Pod sync"></a>Pod sync</h3><p>让我们总结下上面的过程：</p>
+<ol>
+<li>HTTP请求经过认证、鉴权以及admission controller阶段；</li>
+<li>一个deployment、一个replicaSet、三个pod持久化到etcd中</li>
+<li>一系列初始化器运行</li>
+<li>最后，每个pod被调度到合适的节点上<br>到这个时候，数据仅仅存在于etcd中。接下来，就需要将pod在worker节点上启动。这个是通过kubelet组件来实现的。<br>kubelet是k8s集群中运行在每个节点上的组件，主要负责管理pod的生命周期。这意味kubelet需要将pod转换成具体的容器、网络等。同时，它也负责处理卷挂载、容器日志、垃圾收集以及其他重要的事情。<br>另一种考虑kubelet的方式是将它看做是一个控制器。kubectl从kube-apiserver每个20秒钟（可以配置）查询pod信息，挑选出<code>NodeName</code>于当前节点名称一致的pod。然后它将pod与本地内部缓存中pod的信息进行比较，如果发现有差异就进行同步。下面来具体看下同步的过程是怎么样的：</li>
+<li>如果pod是要进行创建，那么kubelet会注册一些metrics，这些metrics主要给prometheus用于追踪pod的延迟。</li>
+<li>kubectl生成PodStatus对象，PodStatus代表了Pod的当前状态(Phase)。pod的状态是pod生命周期的更高一级的抽象。比如<code>Pending</code>，<code>Running</code>,<code>Succeeded</code>,<code>Failed</code>和<code>Unknown</code>。产生这些状态是比较复杂的，让我们深挖一下：<ul>
+<li>首先，一系列的<code>PodSyncHandlers</code>会顺序执行。每个handler都会检查pod是否应该在当前节点上。如果任意的handler判断pod不应该在当前节点上，那么pod的phase将会变成<code>PodFailed</code>，并且pod会从此节点上被剔除。比如在Job资源中设置了<code>activeDeadlineSeconds</code>，超过了设置的时间，那么pod就会被剔除。</li>
+<li>接下来，pod的phase会由初始化容器以及主容器的状态来决定。因为在这里容器还没有启动，这些容器会被归类为等待。具有等待容器的pod的phase都是<code>Pending</code></li>
+<li>最后,Pod Condition会由容器的Condition来决定。因为我们的容器当前还没有被容器运行时创建，所以kubelet会将<code>PodReady</code> condition设置为False</li>
+</ul>
+</li>
+<li>当PodStatus产生后，PodStatus对象会被发送到Pod的status manager中。该管理器的任务是通过apiserver异步更新etcd记录</li>
+<li>接下来，将运行一系列准入处理程序，以确保pod具有正确的安全权限。这包括强制的AppArmor profiles 和 NO_NEW_PRIVS。在这个阶段被拒绝的pod将无限期地处于挂起状态。</li>
+<li>如果kubelet在启动时指定了<code>cgroups-per-qos</code>参数，那么kubelet将会为pod创建cgroups并且会应用这些资源参数。这是为了实现对pod更好地服务质量(QoS)处理。</li>
+<li>给pod创建数据目录。包括pod目录(通常是：<code>/var/run/kubelet/pods/&lt;podID&gt;</code>)，卷目录(<code>&lt;podDir&gt;/volumes</code>)以及插件目录(<code>&lt;podDir&gt;/plugins</code>)</li>
+<li>卷管理器(volume manager)等待<code>Spec.Volumes</code>中定义的卷准备好。根据挂载卷的类型，有些pod需要等待更长的时间(比如云或NFS卷)。</li>
+<li>在<code>Spec.ImagePullSecrets</code>中定义的secrets资源，会从apiserver中获取。从而后续会注入到容器中</li>
+<li>容器运行时开始启动容器<h3 id="CRI-and-pause-containers"><a href="#CRI-and-pause-containers" class="headerlink" title="CRI and pause containers"></a>CRI and pause containers</h3>到现在，大多数工作已经完成了，容器已经准备好启动了。启动容器的部分叫做容器运行时(Container Runtime，比如<code>docker</code>或<code>rkt</code>)。<br>为了增加扩展性，kubelet自从v1.5.0版本以来，提出了CRI(Container Runtime Interface),CRI用于与具体的容器运行时进行交互。总的来说，CRI是一个抽象层。kubelet和容器运行时通过protocal buffers以及对应的gRPC API接口进行交互。CRI带来了很大的好处，如果后续替换下层的容器运行时，核心的k8s代码不需要做任何修改。<br>我们回到部署容器的过程。当pod启动后，kubelet通过RPC启动<code>RunPodSandbox</code>。沙箱是一个CRI术语，用来描述一组容器，在k8s中被称作pod。<br>在我们的例子中，我们使用了docker。在沙箱中首先创建一个”pause”容器。pause容器主要是为了给pod中其他的容器提供服务，提供必要的资源。这些资源包括linux namespace(IPC、网络、PID等)。如果你不熟悉linux中容器如何工作。我们快速说一下。linux内核有命名空间的概念，命名空间主要是隔离专有的资源，比如CPU、内存。然后将这些资源指定给特定的进程，从而保证资源只能被指定的进程使用。Cgroups主要是给linux提供了资源分配的方式。Docker利用了linux命名空间和Cgroups来实现容器。<br>pause容器提供了所有的命名空间，并且允许子容器共享他们。作为同一个网络命名空间的一部分，一个好处是同一个pod中的容器可以通过localhost互相引用。pause容器的第二个角色是，PID命名空间如何工作。进程形成了等级树，最顶层的init进程，负责收割死进程。在pause容器创建后，它被检查点指向磁盘，然后启动。<h3 id="CNI-and-pod-networking"><a href="#CNI-and-pod-networking" class="headerlink" title="CNI and pod networking"></a>CNI and pod networking</h3>pod当前具有了基本的内容：pause容器持有所有的命名空间，从而pod内部的容器可以交流。但是网络如何工作以及如何设置？<br>kubelet将设置网络的工作委托给了CNI(Container Network Interface)插件。CNI的工作方式类似于Container Runtime Interface。简单来说，CNI提供了一种抽象，用于给不同的网络提供者使用不同的网络实现。kubelet与这些注册的CNI插件通过流式json数据进行交流。下面展示了json配置的例子：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;cniVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.3.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;bridge&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;bridge&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;bridge&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cnio0&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;isGateway&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;isMasq&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;ipam&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;host-local&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;ranges&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">         <span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;subnet&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;POD_CIDR&#125;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;routes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;dst&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.0.0.0/0&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+json也为pod提供了特定的额外的元数据，比如通过<code>CNI_ARGS</code>环境变量提供名称和命名空间。<br>接下来发生的事情与具体的CNI插件有关，我们看看<code>bridge</code> CNI插件的工作：</li>
+<li>插件首先在root命名空间中设置一个本地的linux bridge，这个bridge为当前host(本机)上的所有容器服务</li>
+<li>接下来，插件创建veth pair，其中一端在pause容器，另一端在bridge中。可以将veth pair想象成一个管道，一端连接到容器，另一端连接到root 网络命名空间，从而允许容器和root网络命名空间进行通信。</li>
+<li>现在应该给pause容器分配IP地址，并且设置路由。这样做之后pod就有了自己的ip地址。ip地址分配是委托给IPAM，IPAM在json中定义。<ul>
+<li>IPAM插件类似于主要的网络插件：通过二进制调用并且有标准化的接口。每种IPAM插件都必须去顶容器的IP/子网，网络和路由，然后将这些信息返回给CNI插件。最常用的IPAM插件是<code>host-local</code>,它从一个预先定义好的地址范围中分配IP地址。它将已经分配的ip地址存储在本地的文件系统中，从而确保在本机上不会重复使用ip地址。</li>
+</ul>
+</li>
+<li>kubelet会指定一个内部的DNS服务器ip地址给CNI插件，保证容器的<code>resolv.conf</code>文件被正确设置。<br>一定这个过程完成，CNI插件会返回json数据给kubelet，表明网络设置的结果。<h3 id="Inter-host-networking"><a href="#Inter-host-networking" class="headerlink" title="Inter-host networking"></a>Inter-host networking</h3>我们现在仅仅说了容器如何同主机进行通信。但是如果pod在不同的主机上，那么pod之间如何通信呢？<br>这通常是基于一种叫做overlay networking的技术来实现，这是一种跨多个主机动态同步路由的方法。一个流行的overlay netwoker实现是Flannel。Flannel的核心作用是在不同节点之间提供IPv4网络。Flannel不会控制容器如何跟主机通信(这是CNI的职责)，而是负责流量在不同主机间的转发。为了实现这个功能，Flannel为主机选择了一个子网，将这个信息存储到etcd中。它保留集群路由的本地表示，并将传出的数据包封装在UDP数据报中，确保它到达正确的主机。<h3 id="Container-startup"><a href="#Container-startup" class="headerlink" title="Container startup"></a>Container startup</h3>所有的网络工作都完成了，接下来就是启动工作容器了。<br>一旦沙箱完成初始化并且仍然是活跃的，那么kubelet将会为其创建工作容器。kubelet首先启动定义在PodSpec中定义的初始化容器，然后启动主容器。主要过程如下：</li>
+<li>拉取容器的镜像。PodSpec中定义的secrets用于私有仓库</li>
+<li>通过CRI创建容器.填充<code>ContainerConfig</code>结构体(包括启动命令、镜像、标签、挂载、环境变量等)，数据来自于PodSpec。然后通过protobufs协议发送给CRI插件。对于Docker来说，docker会反序列化请求，然后填充到自己的config结构体，然后发送给docker的后台进程。在这个过程中，它将一些元数据标签（如容器类型、日志路径、沙盒id）应用到容器。</li>
+<li>然后，它向CPU管理器注册容器，这是1.8中的一个新的alpha功能，通过使用UpdateContainerResources CRI方法将容器分配给本地节点上的CPU集。</li>
+<li>容器启动</li>
+<li>若定义了post-start hook，则执行这些hook。hooks可以是<code>Exec</code>（在容器中执行特定的命令）或<code>Http</code>（执行一个http请求）。如果PostStart hook需要很长时间运行、或者失败，那么容器将不会到达running状态</li>
+</ol>
+<h2 id="Wrap-up-总结"><a href="#Wrap-up-总结" class="headerlink" title="Wrap-up(总结)"></a>Wrap-up(总结)</h2><p>到这里，已经产生了三个容器，他们可能运行在一个或者多个工作节点上。所有的网络、卷、secret都已经被kubelet填充，并且通过CRI插件填充到了容器中。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/redis-study.html" rel="next" title="redis study">
+                <i class="fa fa-chevron-left"></i> redis study
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kubectl"><span class="nav-number">2.</span> <span class="nav-text">kubectl</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Validation-and-generators"><span class="nav-number">2.1.</span> <span class="nav-text">Validation and generators</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-groups-and-version-negotiation"><span class="nav-number">2.2.</span> <span class="nav-text">API groups and version negotiation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Client-auth"><span class="nav-number">2.3.</span> <span class="nav-text">Client auth</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kube-apiserver"><span class="nav-number">3.</span> <span class="nav-text">kube-apiserver</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Authentication-%E8%AE%A4%E8%AF%81%EF%BC%8C%E7%A1%AE%E5%AE%9A%E7%94%A8%E6%88%B7%E6%98%AF%E8%B0%81"><span class="nav-number">3.1.</span> <span class="nav-text">Authentication(认证，确定用户是谁)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Authorization-%E9%89%B4%E6%9D%83%EF%BC%8C%E7%A1%AE%E5%AE%9A%E7%94%A8%E6%88%B7%E6%98%AF%E5%90%A6%E6%9C%89%E6%9D%83%E9%99%90"><span class="nav-number">3.2.</span> <span class="nav-text">Authorization(鉴权，确定用户是否有权限)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Admission-control"><span class="nav-number">3.3.</span> <span class="nav-text">Admission control</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etcd"><span class="nav-number">4.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Initializers"><span class="nav-number">5.</span> <span class="nav-text">Initializers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Control-loops"><span class="nav-number">6.</span> <span class="nav-text">Control loops</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Deployments-controller"><span class="nav-number">6.1.</span> <span class="nav-text">Deployments controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReplicaSet-controller"><span class="nav-number">6.2.</span> <span class="nav-text">ReplicaSet controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Informers"><span class="nav-number">6.3.</span> <span class="nav-text">Informers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scheduler"><span class="nav-number">6.4.</span> <span class="nav-text">Scheduler</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kubelet"><span class="nav-number">7.</span> <span class="nav-text">kubelet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod-sync"><span class="nav-number">7.1.</span> <span class="nav-text">Pod sync</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CRI-and-pause-containers"><span class="nav-number">7.2.</span> <span class="nav-text">CRI and pause containers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNI-and-pod-networking"><span class="nav-number">7.3.</span> <span class="nav-text">CNI and pod networking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inter-host-networking"><span class="nav-number">7.4.</span> <span class="nav-text">Inter-host networking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Container-startup"><span class="nav-number">7.5.</span> <span class="nav-text">Container startup</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wrap-up-%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">Wrap-up(总结)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -263,6 +263,438 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E8%BF%90%E8%A1%8Ckubectl-run%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88-what-happens-when-i-type-kubectl-run.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/%E8%BF%90%E8%A1%8Ckubectl-run%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88-what-happens-when-i-type-kubectl-run.html" itemprop="url">运行kubectl run会发生什么(what happens when i type kubectl run)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-04-17T20:09:04+08:00">
+                2024-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/k8s/" itemprop="url" rel="index">
+                    <span itemprop="name">k8s</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>原文链接：<a href="https://github.com/jamiehannaford/what-happens-when-k8s">https://github.com/jamiehannaford/what-happens-when-k8s</a></p>
+<p>想像一下当你运行下面的命令时<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment nginx --image=nginx --replica=3</span><br></pre></td></tr></table></figure><br>在一切顺利的情况下，在k8s集群中能够看到生成了3个pod。那么在底层到底发生了什么？本篇文章试图解决一个请求从客户端到kubelet整体的流程，并且也链接了源码。</p>
+</blockquote>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li>kubectl<ul>
+<li>Validation and generators(验证和生成)</li>
+<li>API groups and version negotiation(API组和版本协商)</li>
+<li>Client auth(客户端认证)</li>
+</ul>
+</li>
+<li>kube-apiserver<ul>
+<li>Authentication（认证）</li>
+<li>Authorization（鉴权）</li>
+<li>Admission control（admission控制）</li>
+</ul>
+</li>
+<li>etcd</li>
+<li>Initializers</li>
+<li>Control loops<ul>
+<li>Deployments controller</li>
+<li>ReplicaSet controller</li>
+<li>Informers</li>
+<li>Scheduler</li>
+</ul>
+</li>
+<li>kubelet<ul>
+<li>Pod sync</li>
+<li>CRI and pause containers</li>
+<li>CNI and pod networking</li>
+<li>Inter-host networking</li>
+<li>Container startup</li>
+</ul>
+</li>
+<li>Wrap-up（总结）</li>
+</ol>
+<h2 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h2><h3 id="Validation-and-generators"><a href="#Validation-and-generators" class="headerlink" title="Validation and generators"></a>Validation and generators</h3><p>针对开头提到的命令，在命令行输入回车后，会发生什么呢？<br>kubectl首先会进行客户端侧的验证。针对非法的命令(比如不支持的资源或镜像不合法)能够快速失败提示，避免发送到kube-apiserver，从而降低k8s负载。<br>经过验证后，kubectl组装将要发送到api-server的http请求。在k8s中，获取或者改变k8s中的状态都要通过apiserver，apiserver负责与etcd交互。kubectl使用generators来构建http请求，generators是负责序列化的一种抽象（注：可以简单的把generators理解为帮帮助用户构建完成的资源的工具，比如kubectl create中我们只指定了部分的内容，剩下的内容是generators帮助我们生成的）。<br>kubectl run 命令可以通过使用—generator参数指定运行多种资源，而不仅仅是deployments。如果不使用—generator参数，kubectl可以主动推断要运行的资源。<br>例如，参数<code>--restart-policy=Always</code>会触发deployments，而<code>--restrart-policy=Never</code>会触发pods。kubectl也会根据其他的参数确定需要执行的其他动作。比如记录命令(回滚或审计)，或者<code>--dry-run</code><br>在确定要创建的资源是Deployment后，kubectl将会使用<code>DeploymnetAppsV1</code> generator来根据命令行参数构造runtime object。runtime object是k8s resource的通用表示。</p>
+<h3 id="API-groups-and-version-negotiation"><a href="#API-groups-and-version-negotiation" class="headerlink" title="API groups and version negotiation"></a>API groups and version negotiation</h3><p>k8s使用版本API，并且每个版本有自己所属的API groups。API groups意味着一些相似资源的集合。这比使用单调递增的版本号更加灵活。比如deployment的api group是apps，最近的版本是v1。这也是在deployment中写<code>apiVersion: apps/v1</code>的原因。<br>kubectl生成了runtime object后，kubectl开始找到正确的API group和version，并且会组装versioned client。versioned client能够意识到资源的各种REST 语义。这个阶段被称为版本协商，它涉及kubectl扫描远程API上的/apis路径，从而检索所有可能的API组。由于kube-apiserver在此路径上公开了其模式文档(以OpenAPI格式),因此客户端可以很容易执行自己的发现。<br>为了提高性能，kubectl会将OpenAPI schema缓存到 ~/.kube/cache/discovery 目录中。如果想要看到API 发现的过程，那么可以将这个缓存目录删除，然后运行kubectl命令时带上-v参数。你将会看到查询API versions的所有http请求。<br>kubectl最后一步是发送http请求。一旦接收到成功的响应后，那么kubectl就会按照期望的格式打印结果。</p>
+<h3 id="Client-auth"><a href="#Client-auth" class="headerlink" title="Client auth"></a>Client auth</h3><p>为了成功发送请求，kubectl需要能够处理认证信息。用户的凭证一般存储在<code>kubeconfig</code>文件中，但是有时候也在其他地方。kubectl做了下面的事情来决定用户凭证：</p>
+<ul>
+<li>如果kubectl中使用了<code>--kubeconfig</code>，那么就使用这个参数指定的文件</li>
+<li>如果当前环境变量中定义了<code>$KUBECONFIG</code>，那么使用这个环境变量指定的文件</li>
+<li>否则使用推荐的主目录，比如<code>~/.kube</code>,然后使用此目录中的第一个文件<br>当kubectl解析了凭证文件后，kubectl会决定当前需要使用的上下文，当前需要连接的集群，与当前用户关联的认证信息。如果kubectl中提供了指定的参数，比如<code>--username</code>, 那么这些参数将会覆盖凭证文件的配置。一旦有了这些信息，那么kubectl将会用这些信息去修饰http请求：</li>
+<li>使用tls.TLSConfig来发送x509证书</li>
+<li>bearer token放到http header中的”Authorization”</li>
+<li>username 和 password通过http basic authentication发送</li>
+<li>OpenID认证流程是由用户事先手动处理的，生成一个类似于Bearer令牌的token，然后发送。</li>
+</ul>
+<h2 id="kube-apiserver"><a href="#kube-apiserver" class="headerlink" title="kube-apiserver"></a>kube-apiserver</h2><h3 id="Authentication-认证，确定用户是谁"><a href="#Authentication-认证，确定用户是谁" class="headerlink" title="Authentication(认证，确定用户是谁)"></a>Authentication(认证，确定用户是谁)</h3><p>k8s客户端和k8s系统组件与k8s交互主要是通过kube-apiserver来进行，比如获取和存储系统状态。kube-apiserver第一步要做的就是要验证请求的身份信息，这一步叫做认证(authentication).<br>apiserver如何进行认证呢？首先，apiserver在启动时，它会首先检查启动参数，然后组装一系列的认证器(authenticators)。举个例子，比如<code>--client-ca-file</code>传递进来，那么会添加x509认证器；如果提供<code>--token-auth-file</code>，那么会添加token认证器。apiserver收到的每个请求都会经过这些认证器，并且会依次进行认证，直到有一个认证器成功，那么请求就通过了。</p>
+<ul>
+<li>x509 handler 将会检查请求的证书是否有效，并且是否在指定的ca文件中</li>
+<li>bearer token handler 将会检查token(http Authorization header)是否在指定的文件中(由<code>--token-auth-file</code>指定)</li>
+<li>basic handler仅仅简单的检查http 请求中的basic 认证信息是否与本地状态匹配<br>如果每个认证器都认证失败了，那么一个组装的错误(每个错误的认证)会返回。如果认证成功，那么在http header中的<code>Authorization</code>会移除，并且用户信息会添加到上下文中。这样后续的apiserver处理逻辑(比如authorization和admission controllers)能够直接获取到用户信息。</li>
+</ul>
+<h3 id="Authorization-鉴权，确定用户是否有权限"><a href="#Authorization-鉴权，确定用户是否有权限" class="headerlink" title="Authorization(鉴权，确定用户是否有权限)"></a>Authorization(鉴权，确定用户是否有权限)</h3><p>经过认证后，apiserver会进行鉴权检查，确定执行的请求动作是否允许。<br>apiserver处理鉴权跟认证类似。基于启动的参数，apiserver会组装一系列的鉴权器(authorizers), 这些鉴权器会依次检查请求。如果所有的鉴权都没有通过，那么请求会被拒绝并返回给客户端。如果其中某个鉴权器通过，那么请求会继续。<br>下面展示了一些鉴权器：</p>
+<ul>
+<li>webhook，负责与k8s集群外的http(s) service进行交互的</li>
+<li>ABAC，执行定义在static文件中的鉴权策略</li>
+<li>RBAC，采用RBAC角色来进行鉴权</li>
+<li>Node，确保node clients(比如kubelet)只能够访问托管到自身上的k8s资源。<h3 id="Admission-control"><a href="#Admission-control" class="headerlink" title="Admission control"></a>Admission control</h3>从apiserver的角度看，它已经确定了请求是谁以及请求是否能够执行。但是对于kubernetes，系统的其他部分对于能够做什么和不能做什么都有自己的想法。这就是admission controller要做的事情。<br>鉴权侧重于用户是否有权限，而admission controllers是用来确保请求符合期望以及遵守集群规则。amission controller是对象存储到etcd之前的最后一个处理，因此它封装了系统剩余的检查以确定请求不会产生意想不到的后果。<br>admission controllers的逻辑与authenticators和authorizers类似，但是不同之处是：不像authenticator和authorizers链式调用，如果一个admission controller失败，那么整个admission chain会失败。<br>amission controllers比较优秀的设计是专注于提升扩展性。每个controller都作为一个插件放置到<code>plugin/pkg/admission</code>目录下，每个controller都满足一个比较小的接口定义。然后编译到k8s中。<br>admission controllers通常分为这几类，资源管理、安全性、默认设置和引用一致性。下面列出了专注于资源管理的admission controller：</li>
+<li>InitialResources：根据过去资源使用情况，设置默认的资源限制</li>
+<li>LimitRanger：设置容器资源的request和limit或者为资源设置资源上界。</li>
+<li>ResourceQuota：确保集群中资源使用量不会超过配额</li>
+</ul>
+<h2 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h2><p>apiserver验证了请求后，下一步apiserver反序列化http请求，从http请求中构建runtime objects(类似于kubectl generators的反过程)，然后将objects存储到底层存储中。将这个过程细化如下。<br>首先，apiserver在接受到请求后是怎么知道如何处理呢？这个过程比较复杂。我们首先看下apiserver在启动时都会做什么：</p>
+<ol>
+<li>当前apiserver启动时，它会创建server chain，是一个组合的调用链。基本上是由多个apiserver组成的。</li>
+<li>server chain中有个通用的apiserver，是一个默认的实现</li>
+<li>openAPI schema会填充到apiserver的配置中</li>
+<li>apiserver遍历所有在openAPI schema中定义的api groups，然后为每个api group都配置一个storage provider，这些storage provider是一个通用的存储抽象。apiserver主要通过与这些storage provider交互来存储和检索数据。</li>
+<li>在每个api group中，apiserver会遍历所有的版本，然后为每个http 路径配置rest mapping。这样apiserver就能够将收到的外部请求与对应的处理逻辑关联起来</li>
+<li>针对我们上面的例子，apiserver已经注册了post handler。这个handler被委托用来创建资源<br>到这里，apiserver已经知道有哪些http route存在，并且如何将handler跟route进行映射。让我们现在看下http 请求进来后的处理</li>
+<li>如果请求跟某个特定的route匹配上，那么就会交给对应的handler进行处理。如果没有匹配上，那么会采用基于url 路径的方式进行匹配。如果针对这个路径也没有匹配上，那么一个not found handler会被调用，然后返回404错误。</li>
+<li>针对我们的例子，有一个注册的路由会调用createHandler方法。它首先解码http请求，执行基础的验证。比如确保http提供的json格式复合对应的版本资源。</li>
+<li>触发审计以及最后的admission</li>
+<li>专用的storage provider将资源存储到etcd中。etcd中资源的key通常是<code>&lt;namespace&gt;/&lt;name&gt;</code>，但是这个格式是可以配置的</li>
+<li>创建中的任何错误都会被捕获，最后storage provider会执行get请求来确保资源一定是创建成功的。如果需要，还会调用而外的后处理逻辑。</li>
+<li>构造http 响应并返回<br>通过上面的步骤，我们知道apiserver做了很多的步骤。当前deployment已经成功的在etcd中创建了。但是当前deployment还没有被调度<h2 id="Initializers"><a href="#Initializers" class="headerlink" title="Initializers"></a>Initializers</h2>在object存储到etcd之后，apiserver或者调度器并不能立马看到它。直到一系列的initializers执行完毕后，才会看到这个对象。初始化控制器将资源类型和要执行的逻辑进行关联。如果一个资源没有注册初始化控制器，那么初始化阶段会调用，这个资源立马会被apiserver或调度器看到。<br>初始化控制器给我们提供了扩展k8s的能力，比如：</li>
+</ol>
+<ul>
+<li>给pod注入代理sidecar 容器，或者获取特定的注解</li>
+<li>向特定的命名空间下的pod注入证书</li>
+<li>阻止创建小于20个字符的secret小于<br><code>initializerConfiguration</code>允许你声明哪些资源运行哪些initializers。假设我们想要一个在每个pod创建时都运行的initializer，我们的配置如下：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">admissionregistration.k8s.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">InitializerConfiguration</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">   <span class="attr">name:</span> <span class="string">custom-pod-initializer</span></span><br><span class="line"><span class="attr">initializers:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">podimage.example.com</span></span><br><span class="line">     <span class="attr">rules:</span></span><br><span class="line">       <span class="bullet">-</span> <span class="attr">apiGroups:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">&quot;&quot;</span></span><br><span class="line">         <span class="attr">apiVersions:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">v1</span></span><br><span class="line">         <span class="attr">resources:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">pods</span></span><br></pre></td></tr></table></figure>
+上面的InitializerConfiguration会给每个pod的<code>metadata.initializers.pending</code>字段添加<code>podimage.example.com</code>。initializer controller已经提前部署好，initializer会扫描每个新建的pod。当发现pod的<code>metadata.initializers.pending</code>字段不为空时，initializer controller就会执行。执行完后，会将对应的<code>podimage.example.com</code>删除。当所有的初始化器执行完毕并且<code>pending</code>字段为空，则此对象被认为已经初始化完成。<br>可能你已经发现一个问题，如果资源对于apiserver不可见，那么我们这里的初始化控制器怎么处理呢？apiserver暴露了一个<code>includeUninitialized</code>查询参数来返回所有的对象，包括那些还未初始化的对象。</li>
+</ul>
+<h2 id="Control-loops"><a href="#Control-loops" class="headerlink" title="Control loops"></a>Control loops</h2><h3 id="Deployments-controller"><a href="#Deployments-controller" class="headerlink" title="Deployments controller"></a>Deployments controller</h3><p>到现在这个阶段，deployment已经存储到etcd中并且初始化逻辑已经完成了。接下来就要设置资源拓扑。deployment就是replicasets的集合，而replicaSet就是pod的集合。k8s如何从http 请求中去创建这些对象呢？这就是k8s内置controller需要做的内容。<br>k8s在整个系统中大量使用了”控制器”思想。控制器就是一个异步过程，调谐k8s当前的状态到期望状态。每个控制器有自己的职责，并且由<code>kube-controller-manager</code>组件负责并发运行。下面介绍deployment controller<br>在 deployment存储到etcd并且初始化完成后，那么deployment就能够被kube-apiserver看到。deployment controller能够检测到可用的deployment资源以及对于资源的变更。在我们的例子中，deployment controller通过informer为创建事件注册了一个特定的回调。<br>当deployment可用时，handler开始执行，将对象添加到内部的工作队列中。当开始处理这个对象时，控制器会检查deployment，发现deployment没有关联的ReplicaSet或者Pod记录。这是通过使用标签选择器来查询kube-apiserver来完成的。有趣的是，这个同步过程是状态未知的：调谐新的记录跟调谐旧的记录是一样的工作方式。<br>在意识到相关的ReplcaSet和Pod不存在后，deployment controller会开启scaling process来解析状态。创建一个ReplicaSet资源，给它分配标签选择器，然后给定数字1的版本号。ReplicaSet中的PodSpec是从deployment清单中拷贝而来，类似于其他相关的元数据。有些时候，deployment记录在这个过程后也需要对应的更新(比如，设定了截止日期)<br>更新deployment中的status字段，然后控制器重新进行调谐过程，然后等待deployment达到期望的状态。由于deployment controller仅仅关心创建ReplicaSets,接下来的工作需要由下一个控制器来完成，既ReplicaSet controller。</p>
+<h3 id="ReplicaSet-controller"><a href="#ReplicaSet-controller" class="headerlink" title="ReplicaSet controller"></a>ReplicaSet controller</h3><p>在前面的步骤中，Deployments controller创建了ReplicaSet,但是还没有创建Pods。这就是ReplicaSet 控制器发挥作用的时刻。ReplicaSet controller的主要工作就是监视ReplicaSet的生命周期和对应的Pods资源。类似于大多数其他的控制器，它通过在特定事件上触发handler来实现。<br>我们感兴趣的事件是创建。当ReplicaSet被创建后。ReplicaSet controller检查新的replicaSet的状态，然后发现当前的状态跟期望的状态不一致。它试图通过增加属于ReplicaSet的Pod数量来达到目标状态。它以谨慎的方式来创建它们，确保ReplicaSet的数量始终匹配。<br>创建Pods的过程是批量处理的，以<code>SlowStartInitiaBatchSize</code>开始，然后每次都以两倍的数量来启动其他的Pods。这样做的目的是确保当pod创建失败时，避免大量的http 请求到apiserver。如果要失败，可以采用对组件影响最小的方式来进行。<br>k8s通过Owner References(child资源中的一个字段，用来指向父资源的id)来确保对象的引用关系。这样做，不仅能够确保一旦父资源被删除，子资源也会被删除(级联删除)，同时还能够保证父资源不会竞争子资源(想象一下，两个潜在的父资源认为他们拥有同样的子资源)<br>Owner Reference另一个好处是，它是有状态的。如果控制器重启了，那么重启过程中，不会影响到这些资源，因为资源拓扑是独立于controler的。这种对隔离的关注也渗透到控制器本身的设计中：它们不应该操作它们没有明确拥有的资源。相反，控制器应该只操作它们明确拥有的资源。<br>然而，有时候会存在”孤儿”资源，比如下面这些情况：</p>
+<ol>
+<li>父资源删除，但是子资源没有删除</li>
+<li>垃圾回收策略禁止删除子资源<br>如果发生了这种情况，那么控制器会确保这些“孤儿”资源被新的父资源领养。多个父资源能够竞争性的去领养孤儿资源，但是只有一个能够成功。<h3 id="Informers"><a href="#Informers" class="headerlink" title="Informers"></a>Informers</h3>rbac authorizer 或者 deployment controller需要获取集群状态，从而实现相关逻辑。比如以rbac authorizer为例，当请求进入时，authenticator需要将用户的初始状态保存起来以供后续使用。rbac authorizer后续会使用用户的初始表示来获取在etcd中相关的角色和角色绑定关系。控制器应该如何访问和修改这些资源？k8s中提供了informers来实现。<br>informer是一种模式，既允许控制器订阅存储时间以及查询资源列表。informer除了提供一种抽象外，它还封装了大量的工作，比如缓存(缓存很重要，不仅可以减少apiserver连接数，同时还可以较少服务端和客户端的序列化)。informer还提供了线程安全的方式来操作资源。<h3 id="Scheduler"><a href="#Scheduler" class="headerlink" title="Scheduler"></a>Scheduler</h3>在所有的控制器都运行后，当前在etcd中会存在一个deployment，一个ReplicaSet以及三个pod资源。此时，pod的状态是<code>Pending</code>,因为它们还没有被调度。最后的一个控制器是scheduler，它负责调度pod。<br>scheduler是作为控制面的一个标准组件，它的运行机制跟其他的控制器类似。它监听事件，然后尝试将状态调整到期望状态。在这个例子中，调调度器筛选出<code>NodeName</code>为空的pod，然后尝试将它们调度到合适的节点上。<br>为了找到合适的节点，scheduler使用了专门的调度算法。默认的调度算法工作如下：</li>
+<li>scheduler启动时，会注册一系列的默认predicates。这些predicates会检查pod是否满足特定的条件，比如：如果PodSpec中明确指定了CPU或RAM资源，如果Node上的资源不满足，那么此Node就会被过滤掉。</li>
+<li>一旦选择了一些符合条件的节点，那么接下来priority函数将会给这些节点打分。比如：为了在集群中使得资源均匀分配，那么节点剩余资源较多的节点会得到更高的分数，最终选择一个分数最高的节点作为目标节点。<br>当找到合适节点后，scheduler会创建一个Binding Object，其中名称和UID会匹配对应的pod。Binding Object的ObjectReference字段会包含选择的目标节点。通过post请求会发送给apiserver。<br>当apiserver接受到Binding object后，它会反序列化请求，然后将信息更新到pod对象上：设置pod的NodeName字段，添加相关的注解以及将<code>PodScheduled</code>设置为<code>True</code>.<br>一旦scheudler将pod调度到目标节点后，剩下的工作就交与kubelet来完成了。<blockquote>
+<p>注：定制调度器。通过<code>--policy-config-file</code>可以定制predicate和priority函数。我们可以在k8s集群中运行特定的调度器，比如采用deployment运行。如果在PodSpec中指定了<code>schedulerName</code>,那么k8s会将调度过程交给这个调度器执行。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="kubelet"><a href="#kubelet" class="headerlink" title="kubelet"></a>kubelet</h2><h3 id="Pod-sync"><a href="#Pod-sync" class="headerlink" title="Pod sync"></a>Pod sync</h3><p>让我们总结下上面的过程：</p>
+<ol>
+<li>HTTP请求经过认证、鉴权以及admission controller阶段；</li>
+<li>一个deployment、一个replicaSet、三个pod持久化到etcd中</li>
+<li>一系列初始化器运行</li>
+<li>最后，每个pod被调度到合适的节点上<br>到这个时候，数据仅仅存在于etcd中。接下来，就需要将pod在worker节点上启动。这个是通过kubelet组件来实现的。<br>kubelet是k8s集群中运行在每个节点上的组件，主要负责管理pod的生命周期。这意味kubelet需要将pod转换成具体的容器、网络等。同时，它也负责处理卷挂载、容器日志、垃圾收集以及其他重要的事情。<br>另一种考虑kubelet的方式是将它看做是一个控制器。kubectl从kube-apiserver每个20秒钟（可以配置）查询pod信息，挑选出<code>NodeName</code>于当前节点名称一致的pod。然后它将pod与本地内部缓存中pod的信息进行比较，如果发现有差异就进行同步。下面来具体看下同步的过程是怎么样的：</li>
+<li>如果pod是要进行创建，那么kubelet会注册一些metrics，这些metrics主要给prometheus用于追踪pod的延迟。</li>
+<li>kubectl生成PodStatus对象，PodStatus代表了Pod的当前状态(Phase)。pod的状态是pod生命周期的更高一级的抽象。比如<code>Pending</code>，<code>Running</code>,<code>Succeeded</code>,<code>Failed</code>和<code>Unknown</code>。产生这些状态是比较复杂的，让我们深挖一下：<ul>
+<li>首先，一系列的<code>PodSyncHandlers</code>会顺序执行。每个handler都会检查pod是否应该在当前节点上。如果任意的handler判断pod不应该在当前节点上，那么pod的phase将会变成<code>PodFailed</code>，并且pod会从此节点上被剔除。比如在Job资源中设置了<code>activeDeadlineSeconds</code>，超过了设置的时间，那么pod就会被剔除。</li>
+<li>接下来，pod的phase会由初始化容器以及主容器的状态来决定。因为在这里容器还没有启动，这些容器会被归类为等待。具有等待容器的pod的phase都是<code>Pending</code></li>
+<li>最后,Pod Condition会由容器的Condition来决定。因为我们的容器当前还没有被容器运行时创建，所以kubelet会将<code>PodReady</code> condition设置为False</li>
+</ul>
+</li>
+<li>当PodStatus产生后，PodStatus对象会被发送到Pod的status manager中。该管理器的任务是通过apiserver异步更新etcd记录</li>
+<li>接下来，将运行一系列准入处理程序，以确保pod具有正确的安全权限。这包括强制的AppArmor profiles 和 NO_NEW_PRIVS。在这个阶段被拒绝的pod将无限期地处于挂起状态。</li>
+<li>如果kubelet在启动时指定了<code>cgroups-per-qos</code>参数，那么kubelet将会为pod创建cgroups并且会应用这些资源参数。这是为了实现对pod更好地服务质量(QoS)处理。</li>
+<li>给pod创建数据目录。包括pod目录(通常是：<code>/var/run/kubelet/pods/&lt;podID&gt;</code>)，卷目录(<code>&lt;podDir&gt;/volumes</code>)以及插件目录(<code>&lt;podDir&gt;/plugins</code>)</li>
+<li>卷管理器(volume manager)等待<code>Spec.Volumes</code>中定义的卷准备好。根据挂载卷的类型，有些pod需要等待更长的时间(比如云或NFS卷)。</li>
+<li>在<code>Spec.ImagePullSecrets</code>中定义的secrets资源，会从apiserver中获取。从而后续会注入到容器中</li>
+<li>容器运行时开始启动容器<h3 id="CRI-and-pause-containers"><a href="#CRI-and-pause-containers" class="headerlink" title="CRI and pause containers"></a>CRI and pause containers</h3>到现在，大多数工作已经完成了，容器已经准备好启动了。启动容器的部分叫做容器运行时(Container Runtime，比如<code>docker</code>或<code>rkt</code>)。<br>为了增加扩展性，kubelet自从v1.5.0版本以来，提出了CRI(Container Runtime Interface),CRI用于与具体的容器运行时进行交互。总的来说，CRI是一个抽象层。kubelet和容器运行时通过protocal buffers以及对应的gRPC API接口进行交互。CRI带来了很大的好处，如果后续替换下层的容器运行时，核心的k8s代码不需要做任何修改。<br>我们回到部署容器的过程。当pod启动后，kubelet通过RPC启动<code>RunPodSandbox</code>。沙箱是一个CRI术语，用来描述一组容器，在k8s中被称作pod。<br>在我们的例子中，我们使用了docker。在沙箱中首先创建一个”pause”容器。pause容器主要是为了给pod中其他的容器提供服务，提供必要的资源。这些资源包括linux namespace(IPC、网络、PID等)。如果你不熟悉linux中容器如何工作。我们快速说一下。linux内核有命名空间的概念，命名空间主要是隔离专有的资源，比如CPU、内存。然后将这些资源指定给特定的进程，从而保证资源只能被指定的进程使用。Cgroups主要是给linux提供了资源分配的方式。Docker利用了linux命名空间和Cgroups来实现容器。<br>pause容器提供了所有的命名空间，并且允许子容器共享他们。作为同一个网络命名空间的一部分，一个好处是同一个pod中的容器可以通过localhost互相引用。pause容器的第二个角色是，PID命名空间如何工作。进程形成了等级树，最顶层的init进程，负责收割死进程。在pause容器创建后，它被检查点指向磁盘，然后启动。<h3 id="CNI-and-pod-networking"><a href="#CNI-and-pod-networking" class="headerlink" title="CNI and pod networking"></a>CNI and pod networking</h3>pod当前具有了基本的内容：pause容器持有所有的命名空间，从而pod内部的容器可以交流。但是网络如何工作以及如何设置？<br>kubelet将设置网络的工作委托给了CNI(Container Network Interface)插件。CNI的工作方式类似于Container Runtime Interface。简单来说，CNI提供了一种抽象，用于给不同的网络提供者使用不同的网络实现。kubelet与这些注册的CNI插件通过流式json数据进行交流。下面展示了json配置的例子：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;cniVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.3.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;bridge&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;bridge&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;bridge&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cnio0&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;isGateway&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;isMasq&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;ipam&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;host-local&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;ranges&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">         <span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;subnet&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;POD_CIDR&#125;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;routes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;dst&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.0.0.0/0&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+json也为pod提供了特定的额外的元数据，比如通过<code>CNI_ARGS</code>环境变量提供名称和命名空间。<br>接下来发生的事情与具体的CNI插件有关，我们看看<code>bridge</code> CNI插件的工作：</li>
+<li>插件首先在root命名空间中设置一个本地的linux bridge，这个bridge为当前host(本机)上的所有容器服务</li>
+<li>接下来，插件创建veth pair，其中一端在pause容器，另一端在bridge中。可以将veth pair想象成一个管道，一端连接到容器，另一端连接到root 网络命名空间，从而允许容器和root网络命名空间进行通信。</li>
+<li>现在应该给pause容器分配IP地址，并且设置路由。这样做之后pod就有了自己的ip地址。ip地址分配是委托给IPAM，IPAM在json中定义。<ul>
+<li>IPAM插件类似于主要的网络插件：通过二进制调用并且有标准化的接口。每种IPAM插件都必须去顶容器的IP/子网，网络和路由，然后将这些信息返回给CNI插件。最常用的IPAM插件是<code>host-local</code>,它从一个预先定义好的地址范围中分配IP地址。它将已经分配的ip地址存储在本地的文件系统中，从而确保在本机上不会重复使用ip地址。</li>
+</ul>
+</li>
+<li>kubelet会指定一个内部的DNS服务器ip地址给CNI插件，保证容器的<code>resolv.conf</code>文件被正确设置。<br>一定这个过程完成，CNI插件会返回json数据给kubelet，表明网络设置的结果。<h3 id="Inter-host-networking"><a href="#Inter-host-networking" class="headerlink" title="Inter-host networking"></a>Inter-host networking</h3>我们现在仅仅说了容器如何同主机进行通信。但是如果pod在不同的主机上，那么pod之间如何通信呢？<br>这通常是基于一种叫做overlay networking的技术来实现，这是一种跨多个主机动态同步路由的方法。一个流行的overlay netwoker实现是Flannel。Flannel的核心作用是在不同节点之间提供IPv4网络。Flannel不会控制容器如何跟主机通信(这是CNI的职责)，而是负责流量在不同主机间的转发。为了实现这个功能，Flannel为主机选择了一个子网，将这个信息存储到etcd中。它保留集群路由的本地表示，并将传出的数据包封装在UDP数据报中，确保它到达正确的主机。<h3 id="Container-startup"><a href="#Container-startup" class="headerlink" title="Container startup"></a>Container startup</h3>所有的网络工作都完成了，接下来就是启动工作容器了。<br>一旦沙箱完成初始化并且仍然是活跃的，那么kubelet将会为其创建工作容器。kubelet首先启动定义在PodSpec中定义的初始化容器，然后启动主容器。主要过程如下：</li>
+<li>拉取容器的镜像。PodSpec中定义的secrets用于私有仓库</li>
+<li>通过CRI创建容器.填充<code>ContainerConfig</code>结构体(包括启动命令、镜像、标签、挂载、环境变量等)，数据来自于PodSpec。然后通过protobufs协议发送给CRI插件。对于Docker来说，docker会反序列化请求，然后填充到自己的config结构体，然后发送给docker的后台进程。在这个过程中，它将一些元数据标签（如容器类型、日志路径、沙盒id）应用到容器。</li>
+<li>然后，它向CPU管理器注册容器，这是1.8中的一个新的alpha功能，通过使用UpdateContainerResources CRI方法将容器分配给本地节点上的CPU集。</li>
+<li>容器启动</li>
+<li>若定义了post-start hook，则执行这些hook。hooks可以是<code>Exec</code>（在容器中执行特定的命令）或<code>Http</code>（执行一个http请求）。如果PostStart hook需要很长时间运行、或者失败，那么容器将不会到达running状态</li>
+</ol>
+<h2 id="Wrap-up-总结"><a href="#Wrap-up-总结" class="headerlink" title="Wrap-up(总结)"></a>Wrap-up(总结)</h2><p>到这里，已经产生了三个容器，他们可能运行在一个或者多个工作节点上。所有的网络、卷、secret都已经被kubelet填充，并且通过CRI插件填充到了容器中。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/redis-study.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/redis-study.html" itemprop="url">redis study</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-04-01T19:33:09+08:00">
+                2024-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="redis-数据结构"><a href="#redis-数据结构" class="headerlink" title="redis 数据结构"></a>redis 数据结构</h2><h3 id="简单动态字符串"><a href="#简单动态字符串" class="headerlink" title="简单动态字符串"></a>简单动态字符串</h3><p>redis中字符串是自己定义的结构，名为SDS。不是用的c语言的字符串。<br>SDS的定义如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sdshdr</span> &#123;</span></span><br><span class="line">    <span class="comment">// 记录buf数组中已使用字节的数量</span></span><br><span class="line">    <span class="type">int</span> len;</span><br><span class="line">    <span class="comment">// 记录buf数组中未使用字节的数量</span></span><br><span class="line">    <span class="type">int</span> <span class="built_in">free</span>;</span><br><span class="line">    <span class="comment">// 字节数组，用于存储字符串;其中最后一位保存&#x27;\0&#x27;字符</span></span><br><span class="line">    <span class="type">char</span> buf[];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为什么要自己实现，而不是复用c中对于字符串的定义？</p>
+<ul>
+<li>获取字符串长度，在O(1)复杂度获取</li>
+<li>杜绝缓冲区溢出。SDS在进行修改时，会检查SDS空间是否满足要求。若不满足，则会进行扩容。</li>
+<li>二进制安全，c中的字符串必须符合某种编码格式(比如ASCII)，并且除了字符串的末尾之外，字符串中不能包含空字符。而sds使用len记录字符串长度，所以是二进制安全的。</li>
+</ul>
+<p>SDS的扩容机制：</p>
+<ul>
+<li>空间预分配（若对sds进行修改，先将len设置为需要的空间大小）<ul>
+<li>若sds中len小于1MB，则将free设置为跟len一样的大小</li>
+<li>若sds中len大于1MB，则将free设置为1MB</li>
+</ul>
+</li>
+<li>惰性空间释放<ul>
+<li>若释放sds中内容，则free中进行增加。实际占用的空间不释放；当然也提供了相应的api，在需要时，真正释放sds未使用空间。</li>
+</ul>
+</li>
+</ul>
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><p>redis中链表结构<br>链表中节点定义<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">listNode</span> &#123;</span></span><br><span class="line">    <span class="comment">// 前置节点</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">listNode</span> *<span class="title">prev</span>;</span></span><br><span class="line">    <span class="comment">// 后置节点</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">listNode</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="comment">// 节点值</span></span><br><span class="line">    <span class="type">void</span> *value;</span><br><span class="line">&#125; listNode;</span><br></pre></td></tr></table></figure><br>链表定义<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span> &#123;</span></span><br><span class="line">    <span class="comment">// 表头节点</span></span><br><span class="line">    listNode *head;</span><br><span class="line">    <span class="comment">// 表尾节点</span></span><br><span class="line">    listNode *tail;</span><br><span class="line">    <span class="comment">// 链表包含的节点数量</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> len;</span><br><span class="line">    <span class="comment">// 节点值复制函数</span></span><br><span class="line">    <span class="type">void</span> *(*dup) (<span class="type">void</span> *ptr);</span><br><span class="line">    <span class="comment">// 节点值释放函数</span></span><br><span class="line">    <span class="type">void</span> (*<span class="built_in">free</span>) (<span class="type">void</span> *ptr);</span><br><span class="line">    <span class="comment">// 节点值对比函数</span></span><br><span class="line">    <span class="type">int</span> (*match) (<span class="type">void</span> *ptr, <span class="type">void</span> *key);</span><br><span class="line">&#125; <span class="built_in">list</span>;</span><br></pre></td></tr></table></figure><br>注：链表节点使用 void*指针保存节点值，并且通过list中的dup、free、match三个属性为节点值设置类型特定函数，所以链表可以保存各种不同类型的值。</p>
+<h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><h3 id="跳跃表"><a href="#跳跃表" class="headerlink" title="跳跃表"></a>跳跃表</h3><h3 id="整数集合"><a href="#整数集合" class="headerlink" title="整数集合"></a>整数集合</h3><h3 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h3><h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/Top-5-things-every-apache-kafka-developer-should-know.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1711,321 +2143,6 @@ public final native void wait(long timeout) throws InterruptedException;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E5%B7%A6%E8%80%B3%E6%9C%B5%E8%80%97%E5%AD%90-%E9%99%88%E7%9A%93%E7%BB%8F%E5%8E%86-%E8%BD%AC.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/%E5%B7%A6%E8%80%B3%E6%9C%B5%E8%80%97%E5%AD%90-%E9%99%88%E7%9A%93%E7%BB%8F%E5%8E%86-%E8%BD%AC.html" itemprop="url">左耳朵耗子-陈皓经历(转)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-30T22:35:12+08:00">
-                2019-03-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B%E4%BA%BA%E7%94%9F/" itemprop="url" rel="index">
-                    <span itemprop="name">编程人生</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="左耳朵耗子-陈皓"><a href="#左耳朵耗子-陈皓" class="headerlink" title="左耳朵耗子-陈皓"></a>左耳朵耗子-陈皓</h1><h2 id="一、个人简历"><a href="#一、个人简历" class="headerlink" title="一、个人简历"></a>一、个人简历</h2><p>陈皓，coolshell.cn博客博主。<br>14年以上软件开发相关工作经验，8年以上项目和团队管理经验。<br>擅长底层技术架构，软件工程。<br>对高性能，高可用，分布式，高并发，大规模数据处理系统有一定研究。<br>技术擅长C/C++/Java和Unix/Linux/Windows。</p>
-<h2 id="二、轶事和思考"><a href="#二、轶事和思考" class="headerlink" title="二、轶事和思考"></a>二、轶事和思考</h2><h3 id="2-1、毅然辞掉银行工作"><a href="#2-1、毅然辞掉银行工作" class="headerlink" title="2.1、毅然辞掉银行工作"></a>2.1、毅然辞掉银行工作</h3><p>我当时在银行做银行网络、银行的电子邮件系统和办公自动化系统。当时正处在银行信息化的阶段，加上当时互联网和IT业刚刚火起来，得到这份工作其实是很幸运的。银行正值扩张电子信息化业务的时候，其实应该有很多事可做，但是当时的主要工作都是由厂商来干。比如说IBM或Cisco拿下单子来，会把工作外包给系统集成商。作为一位技术人员，其实可以发挥的空间并不大，多数时间我只是出了问题打电话的角色。没有人会教你任何事，出了问题，就是打电话，然后按照他们的指导来完成工作。但这个还不是促使我离职的最主要原因，我离开是因为互联网和IT业的兴起让我有些心向往之，有想去看一看的冲动。我还记得当时的辞职书是这么写的：“本人对现有工作毫无兴趣，申请辞职”。处长说，“你可以这么写，但是要加上‘经调解无效’，另外，分给你的房就不能要了”。我说好啊。就这样就辞去了工作，去了上海。老实说，这个决定真不好做，因为几乎所有的朋友和亲人都很反对。</p>
-<h3 id="2-2、选择上海闯荡的原因"><a href="#2-2、选择上海闯荡的原因" class="headerlink" title="2.2、选择上海闯荡的原因"></a>2.2、选择上海闯荡的原因</h3><p>当时选择上海是有原因的，我觉得在当时的环境（2000年）下，上海的发展比较不错。没有选择深圳的原因是个人感觉那是因为政治原因凭空冒出来的一座城市，我不是很喜欢。北京我有很多同学，而我想去一个陌生的地方。但是后来发现上海也不是做技术的地方，过得有些压抑，初来到上海的时候经常会被人瞧不起，毕竟是刚刚来到大城市。<br>我当时感觉银行束缚了我，想看看自己可以跑多远，能发挥出多大的价值。于是决定出来闯一闯，主要就是要去经历一些应该去经历的事情，不希望老了以后会后悔年轻的时候没有去。当时IT产业的发展是一个大趋势，我感觉我必须要去一座大城市，去经历一些东西。在小地方基本没有这些机会。要学会游泳就必须要跳到水里去呛两口水，所以我就义无反顾地出来了。</p>
-<h3 id="2-3、工作挫折和自省"><a href="#2-3、工作挫折和自省" class="headerlink" title="2.3、工作挫折和自省"></a>2.3、工作挫折和自省</h3><p>我仍然记得自己拎着皮箱站在上海火车站的样子，举目无亲。原来在老家的时候觉得自己还挺厉害的，自以为不愁找不到好工作。不过事实却不是这样的。<br>我还记得第一次去面试时，（面试官）问了很多和C相关的问题，问了我半个小时，我一个问题都答不上来。我一直低着头，好像被审问的犯罪分子一样。我从大学毕业出来就没经历过什么面试，再加上自己内向的性格，所以，整个过程我都在低着头，不敢看别人一眼。最后，面试官问了我一个问题是“有不懂的问题你会怎么办”，这样的问题我都不敢回答，其实这道题的答案不过就是“问别人”或是“自己看书”或是“上网查资料”什么的。很显然，这场面试我肯定是被灭掉了。但这还没完，最后面试官对我说：“你出来干什么，像你这种性格根本不适合到大城市来”。<br>我当时被严重地打击了，感觉到自己确实有一些东西很差。第一个是性格差，不知道怎么与人交往；第二个是技术差，很多问题不知道；第三个就是视野狭窄，没见过世面。后面的几家公司的面试都大同小异。一个人在异地他乡，经历了这些事情，心里会非常地恐慌，“我这条路是不是走错了？”，我经常这样问自己。<br>面对这样的情况，我被逼迫着一定要改变自己。因为，离开银行时，我的家人、同学和朋友都很反对我出来，如果这样灰溜溜地回去，我面对不了他们。而前面的人还看不起我。我当时的处境真的很难堪，就像爬在悬崖中间，上不去也下不来。所以，当时只有一个想法，就是要证明自己不是那么差的人。人被逼到那个份上，活得就比较简单，哪有什么职业发展规划，只想拼命地多学技术，提高自己的能力。这个经历有点像是一剂兴奋剂，同时也相当阵痛。但是回头想想，第一个面试官应该是我最感谢的人。</p>
-<h3 id="2-4、疯狂成长"><a href="#2-4、疯狂成长" class="headerlink" title="2.4、疯狂成长"></a>2.4、疯狂成长</h3><p>在同学的帮助下我找到了在上海的第一份工作。南天公司，这是一家给银行做系统集成软件的公司，大学毕业时本来也可以进去，现在绕了一圈而且还是靠同学帮助进去的，所以那时的心态还很不平稳；另一方面因为以前是做银行的，是甲方，现在成了乙方了，两边的人都用异样的眼光看我，心态非常不好。<br>不过，这是个技术不错的企业，国内早期很多搞Unix/C的高手都是从这个公司培养出来的。我当时的技术还是不行，比如说到了用户站点以后，不知道怎么做，我曾经误操作把用户的数据删掉了。经常犯低级错误，不但没做好自己的工作，反而还给别人添了麻烦。这些经历都让我有一种“技术焦虑感”，或者叫“技术忧郁症”。我觉得自己这也不行，那也不行。这也是我今天仍然在拼命学习的原因。这就好像我们经常在参加工作多年后还会梦见自己的英语四级没过，或者是期末考试没过一样。我经常会梦见的是项目又做砸了，又把用户的系统搞乱了，一大堆人要审我、要训斥我。<br>因为技术差，沟通差，不会面试，所以，我决定经常出去面试，基本上每周都要去，不管懂不懂，也不管是什么公司，也不管别人鄙不鄙视我，反正一有机会就去面试，多见见人这样可以让我的性格有所改善，同时，也可以知道社会上需要一些什么样的技能，把别人面我回答不上来的东西都记下来，然后回头找答案。那个时候我会经常去上海书城看书，看很多很多的书。我学的东西很杂，什么做网页，Windows，Unix，Java，.NET，flash，连3DMax/Photoshop我也学，还去考CCNA的认证等等。这样散乱地学习两年后，我才慢慢确定了要走C/C++/Unix/Windows系统底层的路子。而这样扑天盖地学习的结果有一个好处就是，我成长的速度相当之快。我自己摸索到了适合我的学习方法（从基础和原理上学习），从而不再害怕各种新的技术。那时，所有人都在休黄金周出去玩的时候，我还呆在办公室或住处看书学习。<br>等到一年半之后，用句赵本山的台词说，我在面试中学会抢答了。面试官的问题没问完，我就能说出答案了。其实，基本上是面一个公司过一个（当然都是一些小公司），此时，我就开始挑公司了。<br>感到技术能力不行就去学技术，交往能力不行我就去面试，这两个问题都可以通过大量地实践和努力来弥补，但是眼界这个东西没有办法通过努力来弥补。所以，当时非常想去一些更大的公司看看，如果能去外企更好。</p>
-<h3 id="2-5、变得不一样"><a href="#2-5、变得不一样" class="headerlink" title="2.5、变得不一样"></a>2.5、变得不一样</h3><p>我还记得，有一天，有一个和网络相关的技术问题，同事们搞了三四个通宵，也没弄明白，后来想起我好像在看这方面的书，他们就让我去看看、试试，结果我只用了20分钟就搞定了。基础真的很重要，这受益于我看了《TCP/IP详解》这套书。<br>后来，我去了一家做电信软件的公司，他们让我做PowerBuilder，尽管我当时想做的是C++，但是因为当时各种原因很需要这份工作，就去了。进了那里的第一天发现公司里有一个论坛，上面都是一些技术上悬而未决的问题，都是关于Windows/C++的。我一看，都是些很简单的问题，一下午的时间就被我全部解决掉了，我的基础知识发挥了作用。于是，当天下午我一下子就被调到了核心组。不过，我只在那里呆了两个多月，因为那时我已经不愁找工作了，这期间有两家北京的公司录用了我，于是，02年我就来到了北京，去到一家做分布式计算平台软件的公司。<br>在上海的这两年的时间，从什么都不是，到得到工作上的全面肯定。那段时间感觉自己牛得不得了，有些狂妄和骄傲了，经常上网和不认识的人争论一些很傻的问题，后来发展到对当时的领导以及银行客户的领导不敬，总觉得这些人太二。现在回头看过去，我觉得那是我人生特定时期的记号，人生的痕迹。</p>
-<h3 id="2-6、建立coolshell-cn的原因"><a href="#2-6、建立coolshell-cn的原因" class="headerlink" title="2.6、建立coolshell.cn的原因"></a>2.6、建立coolshell.cn的原因</h3><p>我2002年在CSDN开了一个blog，当时叫专家专栏。开个专栏很简单，只要发6个帖子。我也不是什么专家，只是喜欢看书、喜欢学习而已，也喜欢做一些学习笔记。那时候没有笔记本也没有台式机，市面上好像也没有U盘和移动硬盘。正好有CSDN这么一个地方，就去CSDN的站点上把自己的一些学习笔记放在了上面。后来03年的时候技术专栏转到了博客，因为CSDN对其博客经营得不好，我09年就离开了csdn，创建了酷壳。花了4500块钱，租了一个server。我离开那里主要有两个原因，一个是因为当时CSDN博客有一些性能上的问题，.NET架构嘛，大家都懂的。另外一个原因就是当时出现了很多博客营销的站点，有点像今天的36氪。好像那时候出现最早的叫煎蛋，那上面会有一些报纸上不会出现的国外的趣闻，是以博客的方式形成的媒体。这和常规的以日记形式出现的博客大不一样。煎蛋、有意思吧等这些博客让我看到了博客还能这样写，我觉得很好玩儿。而我当时也经常会去国外社区看一些文章，也能看到一些有意思的东西（因为我当时有了学习瓶颈，国内的网站已经满足不了我了）。心想，既然这些东西这么有意思，我为什么不自己开一个博客呢？<br>我老婆是学新闻编辑的，她鄙视我说，你的博客虽然有很多人读，但是只能算是个书呆子的博客，全是一些书呆子式的文章。我有些不服，我觉得技术人员不全是书呆子，我们这个圈子里也有很多有趣的东西，只不过是你不知道而已。于是我想弄一个有意思的、有娱乐性质的东西，里面都是技术圈里面有意思的事儿，但是很多技术圈以外的人也能看懂。一开始酷壳和CSDN博客的风格完全迥然，如果有技术性的文章我还会在CSDN上贴，但是后来我就完全抛弃了原来CSDN上的博客。酷壳的初衷是希望很多人都可以来上面发表一些东西，但是可能是我写得太多了，别人就被压制住了。<br>现在博客更新频率是一周一篇，一开始的时候一周三篇。磨刀不误砍柴工，总是有时间来做这些事的。我经常看书，需要把学到的东西整理成学习笔记。自从在CSDN上写博客的时候，就有这样的习惯了，而且又有“技术焦虑症”，害怕跟不上，所以维护博客的事对我来说是很自然的。<br>现在我已经不用自己再租服务器了，由于酷壳的访问量比较有保证，我提供了广告位，就免费得到服务器了。</p>
-<h3 id="2-7、对于新技术的态度"><a href="#2-7、对于新技术的态度" class="headerlink" title="2.7、对于新技术的态度"></a>2.7、对于新技术的态度</h3><p>遇到新技术我会去了解，但不会把很大的精力放在这。这些技术尚不成熟，我只需要跟得住就可以了。我的团队自己想学什么我都不干涉，但是用到项目里的技术，必须是很成熟的，（技术应用）十年以上可能是一个门槛。有人说技术更新换代很快，我一点儿都不这样想。虽然有不成熟的技术不断地涌出，但是成熟的技术，比如Unix，40多年，C，40多年，C++，30多年，Java也有将近20年了……，所以，技术并不多啊。还有很多技术比如Ruby，Lisp这样的，它们没有进入主流的原因主要是缺少企业级的应用背景。<br>如果要捋一个脉络下来，70年代Unix的出现，是软件发展方面的一个里程碑，那个时期的C语言，也是语言方面的里程碑。当时所有的项目都在Unix/C上，全世界人都在用这两样东西写软件。Linux跟随的是Unix，Windows下的开发也是C。这时候出现的C++很自然就被大家接受了，企业级的系统很自然就会迁移到这上面，C++虽然接过了C的接力棒，但是它的问题是它没有一个企业方面的架构，否则也不会有今天的Java。C++和C非常接近，它只不过是C的一个扩展，长年没有一个企业架构的框架。而Java出现之后，IBM把企业架构这部分的需求接了过来，J2EE的出现让C/C++捉襟见肘了，后面还有了.NET，但可惜的是这只局限在Windows平台上。这些就是企业级软件方面语言层面这条线上的技术主干。</p>
-<p>另外一条脉络就是互联网方面的（HTML/CSS/JS/LAMP…）。这条脉络和上述的那条C/C++/Java的我都没有放，作为一个有技术忧虑症的人，这两条软件开发的主线一定不能放弃。无论是应用还是学术，我都会看，知识不愁多。何必搞应用的和搞学术的分开阵营，互相看不起呢？都是知识，学就好了。<br>技术的发展要根植于历史，而不是未来。不要和我描述这个技术的未来会多么美好，用这个技术可以实现什么花哨的东西。很多常青的技术都是承前的。所以说“某某（技术）要火”这样的话是没有意义的，等它火了、应用多了咱们再说嘛。有些人说不学C/C++也是没有问题的，我对此的回应是：如果连主干都可以不学的话，还有什么其他的好学呢？极端一点，我要这么说：这些是计算机发展的根、脉络、祖师爷，这样的东西怎么可以不学呢？大部分学校虽然都会教授C，但是教得都不好。学校喜欢教微软的东西，老师好教学生好学。我不是说Windows不好，但那不是计算机文化的主干，那只是微软的主干、PC的主干。整个计算机文化的主干肯定是源起于Unix/C这条线上（注意，我说的是文化不是技术）。我也写过很多与Unix文化相关的文章，大家可以看看我写的“Unix传奇”。</p>
-<h3 id="2-8、对于学校计算机科学教育的看法"><a href="#2-8、对于学校计算机科学教育的看法" class="headerlink" title="2.8、对于学校计算机科学教育的看法"></a>2.8、对于学校计算机科学教育的看法</h3><p>学校教的大部分都是知识密集型的技术，但是社会上的企业大部分都是劳动密集型的。什么是劳动密集型的企业呢？麦当劳炸薯条就是劳动密集型的工作，用不到学校教授的那些知识。如果有一天你不炸薯条了，而要去做更大更专业的东西，学校里的知识就会派上用场。有人说一个语言、一个技术，能解决问题能用就行了，我不这样认为。我觉得你应该至少要知道这些演变和进化的过程。而如果你要解决一些业务和技术难题，就需要抓住某种技术很深入地学习，当成艺术一样来学习。</p>
-<p>我在“软件开发‘三重门’”里说过，第一重门是业务功能，在这重门里，的确是会编程就可以了；第二重门是业务性能，在这一重门里，技术的基础就很管用了，比如：操作系统的文件管理，进程调度，内存管理，网络的七层模型，TCP/UDP的协议，语言用法、编译和类库的实现，数据结构，算法等等就非常关键了；第三重门是业务智能，在这一重门里，你会发现很多东西都很学院派了，比如，搜索算法，推荐算法，预测，统计，机器学习，图像识别，分布式架构和算法等等，你需要读很多计算机学院派的论文。<br>总之，这主要看你职业生涯的背景了，如果你整天被当作劳动力来使用，你用到的技术就比较浅，比较实用，但是如果你做一些知识密集型的工作，你就需要用心来搞搞研究，就会发现你需要理论上的知识。比如说，我之前做过的跨国库存调配，需要知道最短路径的算法，而我现在在亚马逊做的库存预测系统，数据挖掘的那些东西都需要很强的数学建模、算法、数据挖掘的功底。<br>我觉得真正的高手都来自知识密集型的学院派。他们更强的是，可以把那些理论的基础知识应用到现在的业务上来。但很可惜，我们国内今天的教育并没有很好地把那些学院派的理论知识和现实的业务问题很好地结合起来。比如说一些哈希表或二叉树的数据结构，如果我们的学校在讲述这些知识的时候能够结合实际的业务问题，效果会非常不错，比如：设计一个IP地址和地理位置的查询系统，设计一个分布式的NoSQL的数据库，或是设计一个地理位置的检索应用等等。在学习操作系统的时候，如果老师可以带学生做一个手机或嵌入式操作系统，或是研究一下Unix System V或是Linux的源码的话，会更有意思。在学习网络知识的时候，能带学生重点学一下以太网和TCP/IP的特性，并调优，或是能做一个网络上的Pub/Sub消息系统或是做一个像Nginx一样的web server，那会更好。如果在学图形学的过程中能带领学生实践开发一个作图工具或是一个游戏引擎，那会更有意思。<br>总之，我们的教育和现实脱节太严重了，教的东西无论是在技术还是在实践上都严重落后和脱节，没有通过实际的业务或技术问题来教学生那些理论知识，这是一个失败。</p>
-<h3 id="2-9、如何在压力下，享受技术带来的快乐"><a href="#2-9、如何在压力下，享受技术带来的快乐" class="headerlink" title="2.9、如何在压力下，享受技术带来的快乐"></a>2.9、如何在压力下，享受技术带来的快乐</h3><p>中国人中庸的思想，入世和出世，每天的工作就是入世。举个例子，在上海的时候，给交通银行做项目的时候，每周休息一天，早九点到晚十点，每天工作12个小时，这样的工作持续了一整年，没有节假日，项目上的技术也没什么意思。当时我晚上十点回到住处，还想学一些C++/Java和Unix/Windows的技术，于是就看书到晚上11:30，每天如此，一年下来学到很多东西，时间没有荒废，心里就很开心。我觉得当时是快乐的，因为有成长的感觉是快乐的。</p>
-<p>现在的我，工作、写博客、养孩子，事情其实更多。我早上7:30起床，会浏览一下国外的新闻，hacker news，tech church，reddit，highavailability之类的站点，9点上班。晚上6、7点钟下班，开始带孩子。十点钟孩子睡了觉，我会开始重新细读一下这一天都发生了些什么事情。这个时间也有可能会用来看书。学习的过程我是不喜欢被打断的，所以从十点到十二点，家人都睡了，这正是我连续学习的好时间。可能从晚上11:30开始，我会做点笔记或者写博客。我现在对酷壳文章的质量要求比较高一些，所以大概积累一个星期的时间才可以生成一篇文章。每天我大概都在一两点钟才会睡觉。没办法，我有技术焦虑症。但是觉得这样的生活很充实，也很踏实。<br>另外，任何一门技术玩深了，都是很有意思的。有些人形成了一个价值取向，“我只做什么，绝不做什么”。前段时间有一个刚来亚马逊的工程师，他原来做的是数据挖掘推荐系统，后来公司重组要他做前端，他不肯。我觉得，前端后端都是编程，Javascript是编程，C++也是编程。编程不在于你用什么语言去coding，而是你组织程序、设计软件的能力，只要你上升到脑力劳动上来，用什么都一样，技术无贵贱就是这个意思。<br>回到问题，怎么才能享受到快乐呢？第一，入世和出世要分开，不要让世俗的东西打扰到你的内心世界，你的情绪不应该为别人所控，也不应该被世俗所污染，活得真实，你才会快乐。第二点就是要有热情，有了热情，你的心情就会很好，加班都可以是快乐的，想一想我们整个通宵用来打游戏的时光，虽然很累，但是你也很开心，这都是因为有了热情的缘故。</p>
-<h3 id="2-10、做自己是最难的"><a href="#2-10、做自己是最难的" class="headerlink" title="2.10、做自己是最难的"></a>2.10、做自己是最难的</h3><p>我承认我活在我的精神家园里面。我推荐大家看一下王小波的《我的精神家园》，这篇文章对我的影响非常大。看了这篇文章，你就会明白我为什么要躺在自己的池子里，如果不想被这个社会所污染，就必须要躺在自己的池子里。做大众是很容易的，做自己是最难的。当你老了的时候，回想过去，如果你是为自己而活的，你总会觉得很踏实。可能有人会觉得我偏激，没关系，为什么要所有人看法都一致呢？世界因为不同而美丽，多元化的价值观并不冲突。</p>
-<p>转载自：<a href="http://www.ituring.com.cn/article/9174">http://www.ituring.com.cn/article/9174</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/pip%E4%BB%A5%E5%8F%8Aconda%E9%95%9C%E5%83%8F%E6%BA%90%E4%BF%AE%E6%94%B9%E5%8F%8A%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/pip%E4%BB%A5%E5%8F%8Aconda%E9%95%9C%E5%83%8F%E6%BA%90%E4%BF%AE%E6%94%B9%E5%8F%8A%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8.html" itemprop="url">pip以及conda镜像源修改及命令使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-25T16:57:15+08:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Python包的安装"><a href="#Python包的安装" class="headerlink" title="Python包的安装"></a>Python包的安装</h1><p>在国内环境下，因为网络原因，所以Python下很多包安装不了或者安装的速度很慢。这里主要介绍下如何修改conda以及pip对应的镜像源。</p>
-<h2 id="pip"><a href="#pip" class="headerlink" title="pip"></a>pip</h2><p>pip主要是用来管理python包的工具，类似于Maven工具。</p>
-<h3 id="临时修改pip安装源"><a href="#临时修改pip安装源" class="headerlink" title="临时修改pip安装源"></a>临时修改pip安装源</h3><p>比如我们要安装gevent包，我们可以输入一下命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple gevent</span><br></pre></td></tr></table></figure>
-<p>这样就会从清华这边的镜像去安装gevent库.其中<code>-i</code>参数指定了使用清华的pip源</p>
-<p>有时候可能需要添加受信源，命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install packagename -i http://pypi.douban.com/simple --trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure>
-<p>其中<code>--trusted-host</code> 参数是指设置为受信源，否则在安全性较高的连接下是连接不上的</p>
-<h3 id="永久修改"><a href="#永久修改" class="headerlink" title="永久修改"></a>永久修改</h3><p>在用户根目录(~，而非系统根目录 / )下添加配置~/.pip/pip.conf目录添加可信源，如果目录文件不存在，可直接创建。写入如下内容：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">global</span>]</span><br><span class="line"><span class="string">index-url=http://pypi.douban.com/simple</span></span><br><span class="line"><span class="string">trusted-host</span> <span class="string">=</span> <span class="string">pypi.douban.com</span> </span><br></pre></td></tr></table></figure>
-<p>这里添加的是豆瓣源，也可以添加清华源</p>
-<h2 id="conda使用及源修改"><a href="#conda使用及源修改" class="headerlink" title="conda使用及源修改"></a>conda使用及源修改</h2><p>conda是Anaconda中用来安装python包的工具。在Anaconda中将镜像分为两类，一类是官方的python包，放在anaconda中；另一类是第三方的python包，放在conda-forge中。</p>
-<p>采用conda 安装python包时，可以使用以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/linux-64 joblib</span><br></pre></td></tr></table></figure>
-<p>其中参数<code>-c</code>指定了镜像源的通道，这里实在anaconda官方中安装joblib</p>
-<p>或者</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/linux-64 jieba</span><br></pre></td></tr></table></figure>
-<p>这里是在conda-forge中安装jieba第三方的Python包</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2076,7 +2193,7 @@ public final native void wait(long timeout) throws InterruptedException;
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2087,7 +2204,7 @@ public final native void wait(long timeout) throws InterruptedException;
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2098,7 +2215,7 @@ public final native void wait(long timeout) throws InterruptedException;
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2142,7 +2259,7 @@ public final native void wait(long timeout) throws InterruptedException;
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
