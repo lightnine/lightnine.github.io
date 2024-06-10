@@ -89,7 +89,7 @@
 <meta property="og:description" content="最近读了《the art of readable code》这本书，书的内容是叫你如何写出可读性高的代码。觉得里面的很多例子和观点有很大的参考价值，所以在这篇博客中记录下来。  书中有个很强的观点，代码是给人看的，不是给机器看的。所以写代码要将可读性放到第一位。写代码时要时刻考虑这段代码别人是不是容易阅读。全书分为四部分，分别为：  代码外观上的改进 简化循环和代码逻辑 重新组织代码 单元测试可">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-06-10T05:29:50.000Z">
-<meta property="article:modified_time" content="2024-06-10T07:03:34.350Z">
+<meta property="article:modified_time" content="2024-06-10T07:12:40.937Z">
 <meta property="article:author" content="liang">
 <meta name="twitter:card" content="summary">
 
@@ -344,14 +344,66 @@
 <h2 id="代码外观上的改进"><a href="#代码外观上的改进" class="headerlink" title="代码外观上的改进"></a>代码外观上的改进</h2><p>这一部分主要是从变量命名、函数命名、注释等方面介绍如何提升代码可读性。</p>
 <h3 id="命名和注释"><a href="#命名和注释" class="headerlink" title="命名和注释"></a>命名和注释</h3><p>“代码中最困难的两件事情，是命名和缓存失效”。可见命名的困难性。在选择名称时，我们遵循如下原则：</p>
 <ul>
-<li><p><strong>选择能够准确表达代码意图的名称</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// GetPage函数不能表示page从哪里获取。推荐使用FetchPage和DownloadPage进行替换。</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">GetPage</span>(<span class="params">url</span>):</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-<p>下面展示了英文中单词对应的同义词<br>| 单词     | 同义词                                         |<br>| ———— | ——————————————————————— |<br>| 1. send  | deliver，dispatch，announce，distribute，route |<br>| 2. find  | search，extract，locate，recover               |<br>| 3. start | launch，create，begin，open                    |<br>| 4. make  | add, push, enqueue                             |</p>
-</li>
-<li><p>避免使用泛化的名称，比如tmp、retval之类的东西。<br>但在一些特殊情况下可以使用，比如循环、交换两个数时的临时变量中</p>
-</li>
-<li><p>名称中附带额外信息<br>下面展示了一些具体的例子<br>| 函数参数                      | 推荐重构后的内容    |<br>| ——————————————- | —————————- |<br>| Start(int delay)              | delay -&gt; delay_secs |<br>| CreateCache(int size)         | size -&gt; size_mb     |<br>| ThrottleDownload(float limit) | limit -M max_kbps   |</p>
-</li>
+<li><strong>选择能够准确表达代码意图的名称</strong><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// GetPage函数不能表示page从哪里获取。推荐使用FetchPage和DownloadPage进行替换。</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">GetPage</span>(<span class="params">url</span>):</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+下面展示了英文中单词对应的同义词</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>单词</th>
+<th>同义词</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>send</td>
+<td>deliver，dispatch，announce，distribute，route</td>
+</tr>
+<tr>
+<td>find</td>
+<td>search，extract，locate，recover</td>
+</tr>
+<tr>
+<td>start</td>
+<td>launch，create，begin，open</td>
+</tr>
+<tr>
+<td>make</td>
+<td>add, push, enqueue</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>避免使用泛化的名称，比如tmp、retval之类的东西。<br>但在一些特殊情况下可以使用，比如循环、交换两个数时的临时变量中</li>
+<li>名称中附带额外信息<br>下面展示了一些具体的例子</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>函数参数</th>
+<th>推荐重构后的内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start(int delay)</td>
+<td>delay -&gt; delay_secs</td>
+</tr>
+<tr>
+<td>CreateCache(int size)</td>
+<td>size -&gt; size_mb</td>
+</tr>
+<tr>
+<td>ThrottleDownload(float limit)</td>
+<td>limit -M max_kbps</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
 <li><p>根据变量的作用域选择合适的名称<br><strong>变量的作用域如果比较长，则变量名称尽量多携带信息；变量作用域如果比较短，则变量名称推荐用简单的、简短的。</strong></p>
 </li>
 <li><p>英文中一些推荐变量命名做法</p>
