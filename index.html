@@ -263,6 +263,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E7%BC%96%E5%86%99%E5%8F%AF%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%9A%84%E8%89%BA%E6%9C%AF-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/%E7%BC%96%E5%86%99%E5%8F%AF%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%9A%84%E8%89%BA%E6%9C%AF-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html" itemprop="url">'编写可读代码的艺术'读书笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-06-10T13:29:50+08:00">
+                2024-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>最近读了《the art of readable code》这本书，书的内容是叫你如何写出可读性高的代码。觉得里面的很多例子和观点有很大的参考价值，所以在这篇博客中记录下来。</p>
+</blockquote>
+<p>书中有个很强的观点，代码是给人看的，不是给机器看的。所以写代码要将可读性放到第一位。写代码时要时刻考虑这段代码别人是不是容易阅读。<br>全书分为四部分，分别为：</p>
+<ul>
+<li>代码外观上的改进</li>
+<li>简化循环和代码逻辑</li>
+<li>重新组织代码</li>
+<li>单元测试可读性</li>
+</ul>
+<h2 id="代码外观上的改进"><a href="#代码外观上的改进" class="headerlink" title="代码外观上的改进"></a>代码外观上的改进</h2><p>这一部分主要是从变量命名、函数命名、注释等方面介绍如何提升代码可读性。</p>
+<h3 id="命名和注释"><a href="#命名和注释" class="headerlink" title="命名和注释"></a>命名和注释</h3><p>“代码中最困难的两件事情，是命名和缓存失效”。可见命名的困难性。在选择名称时，我们遵循如下原则：</p>
+<ul>
+<li><p><strong>选择能够准确表达代码意图的名称</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// GetPage函数不能表示page从哪里获取。推荐使用FetchPage和DownloadPage进行替换。</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">GetPage</span>(<span class="params">url</span>):</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>下面展示了英文中单词对应的同义词<br>| 单词     | 同义词                                         |<br>| ———— | ——————————————————————— |<br>| 1. send  | deliver，dispatch，announce，distribute，route |<br>| 2. find  | search，extract，locate，recover               |<br>| 3. start | launch，create，begin，open                    |<br>| 4. make  | add, push, enqueue                             |</p>
+</li>
+<li><p>避免使用泛化的名称，比如tmp、retval之类的东西。<br>但在一些特殊情况下可以使用，比如循环、交换两个数时的临时变量中</p>
+</li>
+<li><p>名称中附带额外信息<br>下面展示了一些具体的例子<br>| 函数参数                      | 推荐重构后的内容    |<br>| ——————————————- | —————————- |<br>| Start(int delay)              | delay -&gt; delay_secs |<br>| CreateCache(int size)         | size -&gt; size_mb     |<br>| ThrottleDownload(float limit) | limit -M max_kbps   |</p>
+</li>
+<li><p>根据变量的作用域选择合适的名称<br><strong>变量的作用域如果比较长，则变量名称尽量多携带信息；变量作用域如果比较短，则变量名称推荐用简单的、简短的。</strong></p>
+</li>
+<li><p>英文中一些推荐变量命名做法</p>
+<ul>
+<li>使用min和max表示下限和上限(包含)</li>
+<li>使用first和last表示范围，其中last包含最后一个数</li>
+<li>使用begin和end表示范围，其中end是最后一个数的下一个数</li>
+</ul>
+</li>
+<li>布尔命名中避免携带否定词<br>disable_ssl就没有use_ssl 好</li>
+<li>代码需要有段落</li>
+<li>如果代码表达的意思已经很明确了，那么没有必要添加注释</li>
+</ul>
+<h2 id="简化循环和代码逻辑"><a href="#简化循环和代码逻辑" class="headerlink" title="简化循环和代码逻辑"></a>简化循环和代码逻辑</h2><ul>
+<li>尽早从函数返回(卫语句使用)</li>
+<li>避免使用do-while循环语句</li>
+<li>减少代码中的嵌套(比如可以使用提前返回)</li>
+<li>代码中的巨大表达式要进行简化</li>
+<li>代码中使用的变量越多，程序阅读起来就越困难<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">下面的now完全没有必要，直接用后面的内容替换now就行</span><br><span class="line">now = datetime.datetime.now()</span><br><span class="line">root_message.last_view_time = now</span><br></pre></td></tr></table></figure></li>
+<li>尽量降低变量的作用域。(全局变量越少越好，其实就是降低耦合度)</li>
+<li>变量应该在需要的时候进行定义，而不是在函数的开头就定义当前函数中需要的所有变量</li>
+<li>变量改变的越多，追踪变量的当前值就越困难(尽量使用只写一次的变量，比如java中的final，go中的const等)</li>
+</ul>
+<h2 id="重新组织代码"><a href="#重新组织代码" class="headerlink" title="重新组织代码"></a>重新组织代码</h2><ul>
+<li>首先用自然语言描述代码需要完成的功能，然后在进行实现；这个方法在重构代码时也非常有用。</li>
+<li>尽量创建通用的代码，与项目无关的代码尽量放到独立的模块中，比如util模块中。</li>
+<li>代码应该只做一件事情(do only one task at a time)；借鉴：unix哲学中，一个函数只做一件事。</li>
+<li>对于用到的语言，第三方库要尽量掌握，并熟悉常用的函数。</li>
+</ul>
+<h2 id="单元测试可读性"><a href="#单元测试可读性" class="headerlink" title="单元测试可读性"></a>单元测试可读性</h2><ul>
+<li>测试代码提高可读性要遵循一个原则是：对用户隐藏不重要的细节，将重要的细节进行展示。</li>
+<li>测试的输入内容应该是完全覆盖被测代码，并且在满足这一前提下是最简单的</li>
+<li>好的代码是更加容易测试的</li>
+<li>在测试代码中，可以使用帮助函数来简化测试代码。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E8%BF%90%E8%A1%8Ckubectl-run%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88-what-happens-when-i-type-kubectl-run.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2023,126 +2198,6 @@ public final native void wait(long timeout) throws InterruptedException;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/effective-java-third-edition-notes.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/effective-java-third-edition-notes.html" itemprop="url">effective java third edition notes</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-10T16:42:41+08:00">
-                2019-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="effective-java-third-edition-notes"><a href="#effective-java-third-edition-notes" class="headerlink" title="effective java third edition notes"></a>effective java third edition notes</h1><p>记录阅读《effective java》得一些收获</p>
-<h2 id="第二章-创建和销毁对象"><a href="#第二章-创建和销毁对象" class="headerlink" title="第二章 创建和销毁对象"></a>第二章 创建和销毁对象</h2>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2193,7 +2248,7 @@ public final native void wait(long timeout) throws InterruptedException;
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
