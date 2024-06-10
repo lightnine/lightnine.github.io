@@ -6,7 +6,7 @@
   <link href="https://lightnine/github.io/atom.xml" rel="self"/>
   
   <link href="https://lightnine/github.io/"/>
-  <updated>2024-05-13T14:52:45.203Z</updated>
+  <updated>2024-06-10T06:54:51.869Z</updated>
   <id>https://lightnine/github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>&#39;编写可读代码的艺术&#39;读书笔记</title>
+    <link href="https://lightnine/github.io/%E7%BC%96%E5%86%99%E5%8F%AF%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%9A%84%E8%89%BA%E6%9C%AF-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html"/>
+    <id>https://lightnine/github.io/%E7%BC%96%E5%86%99%E5%8F%AF%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%9A%84%E8%89%BA%E6%9C%AF-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html</id>
+    <published>2024-06-10T05:29:50.000Z</published>
+    <updated>2024-06-10T06:54:51.869Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>最近读了《the art of readable code》这本书，书的内容是叫你如何写出可读性高的代码。觉得里面的很多例子和观点有很大的参考价值，所以在这篇博客中记录下来。</p></blockquote><p>书中有个很强的观点，代码是给人看的，不是给机器看的。所以写代码要将可读性放到第一位。写代码时要时刻考虑这段代码别人是不是容易阅读。<br>全书分为四部分，分别为：</p><ul><li>代码外观上的改进</li><li>简化循环和代码逻辑</li><li>重新组织代码</li><li>单元测试可读性</li></ul><h2 id="代码外观上的改进"><a href="#代码外观上的改进" class="headerlink" title="代码外观上的改进"></a>代码外观上的改进</h2><p>这一部分主要是从变量命名、函数命名、注释等方面介绍如何提升代码可读性。</p><h3 id="命名和注释"><a href="#命名和注释" class="headerlink" title="命名和注释"></a>命名和注释</h3><p>“代码中最困难的两件事情，是命名和缓存失效”。可见命名的困难性。在选择名称时，我们遵循如下原则：</p><ul><li><p><strong>选择能够准确表达代码意图的名称</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// GetPage函数不能表示page从哪里获取。推荐使用FetchPage和DownloadPage进行替换。</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">GetPage</span>(<span class="params">url</span>):</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure><p>下面展示了英文中单词对应的同义词<br>| 单词 | 同义词 |<br>| —- | —- |<br>| 1. send | deliver，dispatch，announce，distribute，route |<br>| 2. find | search，extract，locate，recover |<br>| 3. start | launch，create，begin，open |<br>| 4. make | add, push, enqueue |</p></li><li><p>避免使用泛化的名称，比如tmp、retval之类的东西。<br>但在一些特殊情况下可以使用，比如循环、交换两个数时的临时变量中</p></li><li><p>名称中附带额外信息<br>下面展示了一些具体的例子<br>| 函数参数 | 推荐重构后的内容 |<br>| —- | —- |<br>| Start(int delay) | delay -&gt; delay_secs |<br>| CreateCache(int size) | size -&gt; size_mb |<br>| ThrottleDownload(float limit) | limit -M max_kbps |</p></li><li><p>根据变量的作用域选择合适的名称<br><strong>变量的作用域如果比较长，则变量名称尽量多携带信息；变量作用域如果比较短，则变量名称推荐用简单的、简短的。</strong></p></li><li><p>英文中一些推荐变量命名做法</p><ul><li>使用min和max表示下限和上限(包含)</li><li>使用first和last表示范围，其中last包含最后一个数</li><li>使用begin和end表示范围，其中end是最后一个数的下一个数</li></ul></li><li>布尔命名中避免携带否定词<br>disable_ssl就没有use_ssl 好</li><li>代码需要有段落</li><li>如果代码表达的意思已经很明确了，那么没有必要添加注释</li></ul><h2 id="简化循环和代码逻辑"><a href="#简化循环和代码逻辑" class="headerlink" title="简化循环和代码逻辑"></a>简化循环和代码逻辑</h2><ul><li>尽早从函数返回(卫语句使用)</li><li>避免使用do-while循环语句</li><li>减少代码中的嵌套(比如可以使用提前返回)</li><li>代码中的巨大表达式要进行简化</li><li>代码中使用的变量越多，程序阅读起来就越困难<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">下面的now完全没有必要，直接用后面的内容替换now就行</span><br><span class="line">now = datetime.datetime.now()</span><br><span class="line">root_message.last_view_time = now</span><br></pre></td></tr></table></figure></li><li>尽量降低变量的作用域。(全局变量越少越好，其实就是降低耦合度)</li><li>变量应该在需要的时候进行定义，而不是在函数的开头就定义当前函数中需要的所有变量</li><li>变量改变的越多，追踪变量的当前值就越困难(尽量使用只写一次的变量，比如java中的final，go中的const等)</li></ul><h2 id="重新组织代码"><a href="#重新组织代码" class="headerlink" title="重新组织代码"></a>重新组织代码</h2><ul><li>首先用自然语言描述代码需要完成的功能，然后在进行实现；这个方法在重构代码时也非常有用。</li><li>尽量创建通用的代码，与项目无关的代码尽量放到独立的模块中，比如util模块中。</li><li>代码应该只做一件事情(do only one task at a time)；借鉴：unix哲学中，一个函数只做一件事。</li><li>对于用到的语言，第三方库要尽量掌握，并熟悉常用的函数。</li></ul><h2 id="单元测试可读性"><a href="#单元测试可读性" class="headerlink" title="单元测试可读性"></a>单元测试可读性</h2><ul><li>测试代码提高可读性要遵循一个原则是：对用户隐藏不重要的细节，将重要的细节进行展示。</li><li>测试的输入内容应该是完全覆盖被测代码，并且在满足这一前提下是最简单的</li><li>好的代码是更加容易测试的</li><li>在测试代码中，可以使用帮助函数来简化测试代码。</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;最近读了《the art of readable code》这本书，书的内容是叫你如何写出可读性高的代码。觉得里面的很多例子和观点有很大的参考价值，所以在这篇博客中记录下来。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;书中有个很强的观点，代码是给人</summary>
+      
+    
+    
+    
+    <category term="编程" scheme="https://lightnine/github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>运行kubectl run会发生什么(what happens when i type kubectl run)</title>
@@ -475,30 +500,6 @@
     
     <category term="书" scheme="https://lightnine/github.io/categories/%E4%B9%A6/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>读过的技术书籍</title>
-    <link href="https://lightnine/github.io/%E8%AF%BB%E8%BF%87%E7%9A%84%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D.html"/>
-    <id>https://lightnine/github.io/%E8%AF%BB%E8%BF%87%E7%9A%84%E6%8A%80%E6%9C%AF%E4%B9%A6%E7%B1%8D.html</id>
-    <published>2018-11-16T11:10:07.000Z</published>
-    <updated>2023-12-05T02:34:21.874Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h1><p>都说书籍是人类进步的阶梯,现在这篇博客就是记录下我个人梯子的组成,主要是技术相关的.隔一段时间会更新一次,因为梯子一直在增长,哈哈.</p><h2 id="Hands-On-Machine-Learning-with-Scikit-Learn-and-TensorFlow"><a href="#Hands-On-Machine-Learning-with-Scikit-Learn-and-TensorFlow" class="headerlink" title="Hands-On Machine Learning with Scikit-Learn and TensorFlow"></a>Hands-On Machine Learning with Scikit-Learn and TensorFlow</h2><p>这本书主要是通过scikit-learn工具包来讲解如何使用常用的机器学习算法以及机器学习算法在平常的工作中的应用流程.深度学习主要是通过tensorflow来进行讲解.</p><h2 id="Andrew-Ng-斯坦福-cs229机器学习讲义"><a href="#Andrew-Ng-斯坦福-cs229机器学习讲义" class="headerlink" title="Andrew Ng 斯坦福 cs229机器学习讲义"></a>Andrew Ng 斯坦福 cs229机器学习讲义</h2><p>想要入门机器学习的同学,强烈建议学一学Andrew Ng的这么课,最好把里面的数学公式都自己推一遍,我自己推完这些数学公式之后,对于机器学习算法中原理有了很清晰的认识.</p><h2 id="《mysql必知必会》"><a href="#《mysql必知必会》" class="headerlink" title="《mysql必知必会》"></a>《mysql必知必会》</h2><p>阅读时间：2019-4-7~2019-4-9<br>感想：这几天看完了mysql必知必会，其实基本上mysql的语法都会，只是为了能够看看还有什么地方自己不太知道的。总体来说，这本书对于初学者比较适合，按着里面的内容手敲一遍例子。掌握mysql的使用是没有问题的。</p><h2 id="《图解tcp-ip-第五版》"><a href="#《图解tcp-ip-第五版》" class="headerlink" title="《图解tcp-ip 第五版》"></a>《图解tcp-ip 第五版》</h2><p>阅读时间：2019-4-9<br>感想：</p><h2 id="《effective-java-第三版》-英文"><a href="#《effective-java-第三版》-英文" class="headerlink" title="《effective java 第三版》 英文"></a>《effective java 第三版》 英文</h2><p>阅读时间：2019-4-10<br>感想：</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;书籍&quot;&gt;&lt;a href=&quot;#书籍&quot; class=&quot;headerlink&quot; title=&quot;书籍&quot;&gt;&lt;/a&gt;书籍&lt;/h1&gt;&lt;p&gt;都说书籍是人类进步的阶梯,现在这篇博客就是记录下我个人梯子的组成,主要是技术相关的.隔一段时间会更新一次,因为梯子一直在增长,哈哈.&lt;/p&gt;</summary>
-      
-    
-    
-    
-    <category term="书" scheme="https://lightnine/github.io/categories/%E4%B9%A6/"/>
-    
-    
-    <category term="技术" scheme="https://lightnine/github.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
