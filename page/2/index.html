@@ -263,6 +263,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E7%94%A8%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%9B%BF%E6%8D%A2%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/%E7%94%A8%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%9B%BF%E6%8D%A2%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0.html" itemprop="url">用静态工厂方法替换构造函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-10T17:01:33+08:00">
+                2019-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/effective-java/" itemprop="url" rel="index">
+                    <span itemprop="name">effective java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这是根据effective java中的Item1条目来写的。在写java程序时，我们构造一个实例用的最多的就是调用类的构造函数.如<code>A a = new A()</code>.但是还存在一种方法可以获取类的实例。而且相对于调用类的构造函数有很多好处，那就类的静态工厂函数。比如，在Java中的<code>Boolean.valueOf(boolean b)</code>方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Boolean <span class="title function_">valueOf</span><span class="params">(<span class="type">boolean</span> b)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> b ? Boolean.TRUE:Boolean.FALSE;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>静态工厂函数相对于构造函数有优点也有缺点，下面会依次进行说明</p>
+<h1 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h1><h2 id="静态工厂函数相对于构造函数有具体的名字"><a href="#静态工厂函数相对于构造函数有具体的名字" class="headerlink" title="静态工厂函数相对于构造函数有具体的名字"></a>静态工厂函数相对于构造函数有具体的名字</h2><p>首先，有具体的名字有什么好处呢？如果有名字，可以让调用者更加清楚此函数的作用。因为构造函数的名字要相同，那如果构造函数做的事情不一样，则只能通过增加或删除构造函数的入参才能表达不同的构造函数。这样子对于调用者会造成负担，调用者必须了解构造函数代码做的事情，才能知道此构造函数的真正目的。而使用静态工厂函数，可以通过合理取函数名称，来表达不同的目的以及区别。</p>
+<h2 id="静态工厂函数每次被调用时可以不需要创建新的对象"><a href="#静态工厂函数每次被调用时可以不需要创建新的对象" class="headerlink" title="静态工厂函数每次被调用时可以不需要创建新的对象"></a>静态工厂函数每次被调用时可以不需要创建新的对象</h2><p>一般我们调用构造函数时，都是会返回一个新的对象。但是有时候我们不需要返回新的对象，比如单例模式。</p>
+<h2 id="静态工厂函数可以返回静态工厂函数返回类型的子类型"><a href="#静态工厂函数可以返回静态工厂函数返回类型的子类型" class="headerlink" title="静态工厂函数可以返回静态工厂函数返回类型的子类型"></a>静态工厂函数可以返回静态工厂函数返回类型的子类型</h2><p>这个是什么意思呢？比如我们拿java中的Collections的静态工厂方法<code>synchronizedMap</code>为例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K,V&gt; Map&lt;K,V&gt; <span class="title function_">synchronizedMap</span><span class="params">(Map&lt;K,V&gt; m)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SynchronizedMap</span>&lt;&gt;(m);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>可以看到函数定义的返回类型是<code>Map</code>，但是实际返回的类型是<code>SynchronizedMap</code>.但是这样做有什么好处呢？<br>这种方式可以隐藏实现类，从而形成一个非常紧凑的API。我们还是以Collections类为例。Collections框架中有45个接口实现工具实现，提供了不可修改集合、同步集合等。这些都是通过Collections提供静态工厂函数来实现，而且返回的子类型都是非公共的。所以Collections框架API比它导出45个独立的公共类要小的多，这样不仅减少了API的数量，同时也减少了框架使用者需要了解的概念。框架使用者不需要了解这45个实现类。同时因为返回的是接口类型，这也是很好的做法。</p>
+<h2 id="第四个优点，静态工厂函数返回的类可以根据输入参数来改变"><a href="#第四个优点，静态工厂函数返回的类可以根据输入参数来改变" class="headerlink" title="第四个优点，静态工厂函数返回的类可以根据输入参数来改变"></a>第四个优点，静态工厂函数返回的类可以根据输入参数来改变</h2><p>静态工厂方法返回的类可以根据版本而改变。Java中的<code>EnumSet</code>类没有公共构造函数，只有静态工厂方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;E <span class="keyword">extends</span> <span class="title class_">Enum</span>&lt;E&gt;&gt; EnumSet&lt;E&gt; <span class="title function_">noneOf</span><span class="params">(Class&lt;E&gt; elementType)</span> &#123;</span><br><span class="line">        Enum&lt;?&gt;[] universe = getUniverse(elementType);</span><br><span class="line">        <span class="keyword">if</span> (universe == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ClassCastException</span>(elementType + <span class="string">&quot; not an enum&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (universe.length &lt;= <span class="number">64</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RegularEnumSet</span>&lt;&gt;(elementType, universe);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JumboEnumSet</span>&lt;&gt;(elementType, universe);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br>通过代码我们可以看出，noneOf返回两个子类中的一个实例，这取决于底层enum类型的大小。如果有64个或更少的元素，那么返回一个long类型的RegularEnumSet实例；如果enum类型有65或更多的元素，方法将返回一个long[]类型的JumboEnumSet实例。<br>客户端感知不到这两个实现类的存在。如果 RegularEnumSet 不再为小型 enum 类型提供性能优势，它可能会在未来的版本中被消除，而不会产生不良影响。类似地，如果事实证明 EnumSet 有益于性能，未来的版本可以添加第三或第四个 EnumSet 实现。客户端既不知道也不关心从工厂返回的对象的类；它们只关心它是 EnumSet 的某个子类。</p>
+<h2 id="第五个优点，编写包含静态工厂函数的类时，此静态工厂函数返回对象所属的类可以不存在"><a href="#第五个优点，编写包含静态工厂函数的类时，此静态工厂函数返回对象所属的类可以不存在" class="headerlink" title="第五个优点，编写包含静态工厂函数的类时，此静态工厂函数返回对象所属的类可以不存在"></a>第五个优点，编写包含静态工厂函数的类时，此静态工厂函数返回对象所属的类可以不存在</h2><p>上面这句话，听起来有点难以理解。这里做个例子进行说明，比如我们正在编写类A，其中包含factory1 静态工厂函数，factory1函数的定义返回类型是接口 Interface1，而实际</p>
+<p><strong>这一点暂时没有理解</strong></p>
+<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><h2 id="第一个缺点，类如果没有公有或者受保护的构造器，那么此类就不能被继承。"><a href="#第一个缺点，类如果没有公有或者受保护的构造器，那么此类就不能被继承。" class="headerlink" title="第一个缺点，类如果没有公有或者受保护的构造器，那么此类就不能被继承。"></a>第一个缺点，类如果没有公有或者受保护的构造器，那么此类就不能被继承。</h2><p>例如，我们不能继承Collection框架中的任何类</p>
+<h2 id="第二个缺点，我们不太容易在类文档中找到静态工厂函数"><a href="#第二个缺点，我们不太容易在类文档中找到静态工厂函数" class="headerlink" title="第二个缺点，我们不太容易在类文档中找到静态工厂函数"></a>第二个缺点，我们不太容易在类文档中找到静态工厂函数</h2><p>因为Javadoc 工具不能明确的标注静态工厂函数，所以在文档中静态工厂函数就不会突出显示。而构造函数在文档中会突出显示。我们也可以遵守一些给静态工厂函数起名的规范，下面是一些建议：</p>
+<ol>
+<li>from: 将输入转为与之对应的相关类,接受一个参数，然后返回对应的类实例<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Date</span> <span class="variable">d</span> <span class="operator">=</span> Date.from(instant);</span><br></pre></td></tr></table></figure></li>
+<li>of：接受多个参数，返回包含多个参数的类实例<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;Rank&gt; faceCards = EnumSet.of(JACK, QUEEN, KING);</span><br></pre></td></tr></table></figure></li>
+<li>valueOf: 介于from和of之间<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BigInteger</span> <span class="variable">prime</span> <span class="operator">=</span> BigInteger.valueOf(Integer.MAX_VALUE);</span><br></pre></td></tr></table></figure></li>
+<li>instance 或者getInstance：返回参数对应的类实例，但是值有可能会改变<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">StackWalker</span> <span class="variable">luke</span> <span class="operator">=</span> StackWalker.getInstance(options);</span><br></pre></td></tr></table></figure></li>
+<li>create 或者 newInstance: 类似于instance或getInstance，但是每次调用都会返回一个新的实例<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">newArray</span> <span class="operator">=</span> Array.newIntance(classObject, arrayLen);</span><br></pre></td></tr></table></figure></li>
+<li>getType: 类似getInstance,获取实例，但是静态工厂函数在另一个类中。Type表面返回实例的类型<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">FileStore</span> <span class="variable">fs</span> <span class="operator">=</span> Files.getFileStore(path);</span><br></pre></td></tr></table></figure></li>
+<li>newType: 类似newInstance，但是静态工厂函数在另一个类中<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BufferedReader</span> <span class="variable">br</span> <span class="operator">=</span> Files.newBufferedReader(path);</span><br></pre></td></tr></table></figure></li>
+<li>type: 一种精确的转换<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Complaint&gt; litany = Collections.list(legacyLitany);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>构造器和静态工厂函数有各自的优点和缺点，但是一般来说，静态工厂函数要比构造器好。在平常的编程过程中，我们不要一上来就直接写构造函数，可以先考虑一下，用静态工厂函数是不是更好。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/effective-java-third-edition-notes.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1703,152 +1865,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/%E8%AF%BB%E8%BF%87%E7%9A%84%E4%B9%A6.html" itemprop="url">读过的书</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-26T19:28:20+08:00">
-                2018-11-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B9%A6/" itemprop="url" rel="index">
-                    <span itemprop="name">书</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>本篇主要记录自己看过的书,督促自己平时多多的读书啊!</p>
-<h2 id="《假如我有时光机》-村上春树"><a href="#《假如我有时光机》-村上春树" class="headerlink" title="《假如我有时光机》-村上春树"></a>《假如我有时光机》-村上春树</h2><p><strong>2018-11-26</strong><br>这本书是村上春树写的,主要描写了作者在全球旅游去过的国家和城市。这是我第一次读村上春树的书，整本书看起来还是比较吸人眼球的，同时本书篇幅也不是很长。从作者的文笔中，可以感受到作者是一个待人应该很和善，同时也非常有礼貌的一个作者。通过阅读此书，不单单能够感受到作者去过的地方，也能够感受到别人在旅行中收到的感受。对于自己也是一种心理上面的成长。书中第一章写到了美国波士顿，特别是里面的查尔斯河，读完之后，有很强烈的冲动去美国玩了。应该是最近两三年的计划中。</p>
-<h2 id="《局外人》-加缪"><a href="#《局外人》-加缪" class="headerlink" title="《局外人》 -加缪"></a>《局外人》 -加缪</h2><p><strong>2018-11-27~2018-12-4</strong><br>这本书主要讲述了一个杀了人的罪犯，最后被判处死刑的故事。判处死刑的原因并不是因为他杀了一个人，而是因为他在母亲的葬礼上面没有哭，还有在服丧期间干了一些在社会上认为不应该做的事情。比如看滑稽电影，跟女友做爱以及主人公不信上帝等。这些与社会上不同的事情竟然导致法官判处主角死刑。我们跳脱出来来看整个事情，会发现整个法律在执行的过程中，会强烈的加上社会倾向，即社会上认为你这个人格格不入，会导致你在法律上处于一个非常不利的地步。这本书最震撼我的事书的最后，主角主动放弃了上诉的机会，面对自己的死亡。如果人人都说你做错了，那么到底是你真的做错了，还是这个世界错了呢？</p>
-<h2 id="《逻辑学导论》-欧文·M·柯丕-卡尔·科恩"><a href="#《逻辑学导论》-欧文·M·柯丕-卡尔·科恩" class="headerlink" title="《逻辑学导论》 -欧文·M·柯丕, 卡尔·科恩"></a>《逻辑学导论》 -欧文·M·柯丕, 卡尔·科恩</h2><p><strong>2018-12-5~</strong></p>
-<h2 id="《高效人士的七个习惯》"><a href="#《高效人士的七个习惯》" class="headerlink" title="《高效人士的七个习惯》"></a>《高效人士的七个习惯》</h2><p><strong>2018-12-29~</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1899,7 +1915,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -263,6 +263,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/linux%E6%9C%89%E5%85%B3%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C%E7%9A%8411%E4%B8%AA%E5%91%BD%E4%BB%A4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/linux%E6%9C%89%E5%85%B3%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C%E7%9A%8411%E4%B8%AA%E5%91%BD%E4%BB%A4.html" itemprop="url">linux有关网络操作的11个命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-06-25T14:18:12+08:00">
+                2024-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>下面的11个命令在进行linux网络操作很有用，特意记录下.</p>
+<blockquote>
+<p>原文链接：<a href="https://github.com/oldratlee/translations/blob/master/how-to-work-with-network-from-linux-terminal/README.md">https://github.com/oldratlee/translations/blob/master/how-to-work-with-network-from-linux-terminal/README.md</a></p>
+</blockquote>
+<h2 id="curl-amp-wget"><a href="#curl-amp-wget" class="headerlink" title="curl &amp; wget"></a>curl &amp; wget</h2><p>curl和wget都可以下载文件</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E7%BC%96%E5%86%99%E5%8F%AF%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%9A%84%E8%89%BA%E6%9C%AF-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1223,7 +1369,7 @@ json也为pod提供了特定的额外的元数据，比如通过<code>CNI_ARGS</
             <blockquote>
 <p>本篇内容主要翻译自<a href="https://developer.ibm.com/articles/j-zerocopy/">Efficient data transfer through zero copy</a>，包括有些自己的思考</p>
 </blockquote>
-<h1 id="java-zero-copy"><a href="#java-zero-copy" class="headerlink" title="java zero copy"></a>java zero copy</h1><p>很多网页应用有大量的静态内容，针对这些静态内容主要的处理逻辑就是从磁盘读取数据，然后将数据写入到响应的socket中。这项工作应该需要较少的CPU资源。但是有时候并不是。内核从磁盘读取数据，然后将数据拷贝到应用中。之后应用将数据写入到内核，然后推送到socket中。实际上，应用程序在这里扮演了一个无效率的中间层，既将数据从磁盘写入到socket。<br>每一次当数据扩容user-kernel边界时，数据都会被拷贝，而这会消耗cpu cycles以及内存带宽。幸运的是，我们可以采用zero copy技术来避免内核和应用程序之间的数据拷贝。应用程序使用zero copy技术来请求内核直接将数据从磁盘文件拷贝到socket中，而不需要经过应用程序。zero copy技术能够极大的提升应用程序性能并且减少内核空间和用户空间之间的切换。<br>Java中使用<code>java.nio.channels.FileChannel</code>中的<code>transferTo()</code>方法在linux和Unix系统重实现zero copy。使用<code>transferTo()</code>方法能够直接将字节数据从一个channel写入到另一个channel中，而数据不需要经过应用程序。本篇文章首先展示使用传统的拷贝方法消耗的资源，然后展示使用zero copy获得的性能提升。</p>
+<h1 id="java-zero-copy"><a href="#java-zero-copy" class="headerlink" title="java zero copy"></a>java zero copy</h1><p>很多网页应用有大量的静态内容，针对这些静态内容主要的处理逻辑就是从磁盘读取数据，然后将数据写入到响应的socket中。这项工作应该需要较少的CPU资源。但是有时候并不是。内核从磁盘读取数据，然后将数据拷贝到应用中。之后应用将数据写入到内核，然后推送到socket中。实际上，应用程序在这里扮演了一个无效率的中间层，既将数据从磁盘写入到socket。<br>每一次当数据在用户空间和内核空间转换时，数据都会被拷贝，而这会消耗cpu cycles以及内存带宽。幸运的是，我们可以采用zero copy技术来避免内核和应用程序之间的数据拷贝。应用程序使用zero copy技术来请求内核直接将数据从磁盘文件拷贝到socket中，而不需要经过应用程序。zero copy技术能够极大的提升应用程序性能并且减少内核空间和用户空间之间的切换。<br>Java中使用<code>java.nio.channels.FileChannel</code>中的<code>transferTo()</code>方法在linux和Unix系统重实现zero copy。使用<code>transferTo()</code>方法能够直接将字节数据从一个channel写入到另一个channel中，而数据不需要经过应用程序。本篇文章首先展示使用传统的拷贝方法消耗的资源，然后展示使用zero copy获得的性能提升。</p>
 <h2 id="数据传输-传统方法"><a href="#数据传输-传统方法" class="headerlink" title="数据传输:传统方法"></a>数据传输:传统方法</h2><p>想想一个简单的场景，从一个文件读取数据，然后将数据通过网络写入到另一个程序中。核心操作如下所示。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">File.read(fileDesc, buf, len);</span><br><span class="line">Socket.send(socket, buf, len);</span><br></pre></td></tr></table></figure><br>虽然看起来很简单，但是这个操作需要再内核空间和用户空间4次上下文切换，以及4次数据拷贝。下图展示了具体过程<br><img src="/java-zero-copy/figure1.gif" class="" title="传统的数据拷贝过程"><br>下图展示了上下文切换过程<br><img src="/java-zero-copy/figure2.gif" class="" title="上下文切换"></p>
 <p>主要的步骤如下：</p>
 <ol>
@@ -1232,7 +1378,7 @@ json也为pod提供了特定的额外的元数据，比如通过<code>CNI_ARGS</
 <li><code>send()</code>方法调用引起用户空间到内核空间的切换。这次会将数据从用户空间拷贝到内核缓冲区。这一次数据是放置到另外一个内核缓冲区中，与目的socket相关联。</li>
 <li><code>send()</code>方法返回，又引起了一次上下文切换。DMA将数据从内核缓冲区拷贝到网卡缓冲区中，这是第四次数据拷贝。</li>
 </ol>
-<p>我们为什么不直接讲数据拷贝到用户空间，而要经过内核空间呢？这是因为操作系统引入内核缓冲区是为了提升性能。操作系统读取数据都会预读取一些数据，这样在应用程序读取额外的数据时，可以不用发起系统调用，直接从内核缓冲区获取即可。而写入过程，可以完全实现为异步过程。既应用程序只需要将数据写入到内核缓冲区中，而不是写入到磁盘中。<br>但是，设想当前应用程序需要处理的数据要远远大于内核空间缓冲区的大小。而此时，数据需要在磁盘，内核缓冲区，用户空间中来回拷贝。这会严重影响性能。<br>Zero copy技术是解决这个问题的方法。</p>
+<p>我们为什么不直接将数据拷贝到用户空间，而要经过内核空间呢？首先因为用户进程没有办法直接读取硬盘，这是基于保护的目的，都要经过操作系统的处理，才能读取到硬盘内容；其次这是因为操作系统引入内核缓冲区是为了提升性能。操作系统读取数据都会预读取一些数据，这样在应用程序读取额外的数据时，可以不用发起系统调用从硬盘中读取，而是直接从内核缓冲区获取即可。而写入过程，可以完全实现为异步过程。既应用程序只需要将数据写入到内核缓冲区中，而不是写入到磁盘中。<br>但是，设想当前应用程序需要处理的数据要远远大于内核空间缓冲区的大小。而此时，数据需要在磁盘，内核缓冲区，用户空间中来回拷贝。这会严重影响性能。<br>Zero copy技术是解决这个问题的方法。</p>
 <h2 id="数据传输：zero-copy方法"><a href="#数据传输：zero-copy方法" class="headerlink" title="数据传输：zero copy方法"></a>数据传输：zero copy方法</h2><p>如果你仔细检查上面的过程，你会发现第二次和第三次数据拷贝可以省略。应用程序针对这些数据什么也不做。因此数据可以被直接从内核缓冲区拷贝到socket buffer中。<code>transferTo()</code>方法可以完成这个操作。下面展示了此方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transferTo</span><span class="params">(<span class="type">long</span> position, <span class="type">long</span> count, WritableByteChannel target)</span>;</span><br></pre></td></tr></table></figure><br><code>transferTo()</code>方法将数据从文件channel拷贝到target channel中。这个方法依赖底层操作系统对于zero copy的支持。在UNIX或linux中，使用的是<code>sendfile()</code>系统调用。如下所示：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">sendfile</span><span class="params">(<span class="type">int</span> out_fd, <span class="type">int</span> in_fd, <span class="type">off_t</span> *offset, <span class="type">size_t</span> count)</span>;</span><br></pre></td></tr></table></figure><br>下图展示了<code>transferTo()</code>方法执行过程<br><img src="/java-zero-copy/figure3.gif" class="" title="transferTo过程"></p>
 <p>下图展示了具体的上下文切换<br><img src="/java-zero-copy/figure4.gif" class="" title="上下文切换"></p>
 <p><code>transferTo()</code>方法执行过程如下：</p>
@@ -2088,168 +2234,6 @@ public final native void wait(long timeout) throws InterruptedException;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/%E7%94%A8%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%9B%BF%E6%8D%A2%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/%E7%94%A8%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%9B%BF%E6%8D%A2%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0.html" itemprop="url">用静态工厂方法替换构造函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-10T17:01:33+08:00">
-                2019-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/effective-java/" itemprop="url" rel="index">
-                    <span itemprop="name">effective java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这是根据effective java中的Item1条目来写的。在写java程序时，我们构造一个实例用的最多的就是调用类的构造函数.如<code>A a = new A()</code>.但是还存在一种方法可以获取类的实例。而且相对于调用类的构造函数有很多好处，那就类的静态工厂函数。比如，在Java中的<code>Boolean.valueOf(boolean b)</code>方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Boolean <span class="title function_">valueOf</span><span class="params">(<span class="type">boolean</span> b)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> b ? Boolean.TRUE:Boolean.FALSE;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>静态工厂函数相对于构造函数有优点也有缺点，下面会依次进行说明</p>
-<h1 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h1><h2 id="静态工厂函数相对于构造函数有具体的名字"><a href="#静态工厂函数相对于构造函数有具体的名字" class="headerlink" title="静态工厂函数相对于构造函数有具体的名字"></a>静态工厂函数相对于构造函数有具体的名字</h2><p>首先，有具体的名字有什么好处呢？如果有名字，可以让调用者更加清楚此函数的作用。因为构造函数的名字要相同，那如果构造函数做的事情不一样，则只能通过增加或删除构造函数的入参才能表达不同的构造函数。这样子对于调用者会造成负担，调用者必须了解构造函数代码做的事情，才能知道此构造函数的真正目的。而使用静态工厂函数，可以通过合理取函数名称，来表达不同的目的以及区别。</p>
-<h2 id="静态工厂函数每次被调用时可以不需要创建新的对象"><a href="#静态工厂函数每次被调用时可以不需要创建新的对象" class="headerlink" title="静态工厂函数每次被调用时可以不需要创建新的对象"></a>静态工厂函数每次被调用时可以不需要创建新的对象</h2><p>一般我们调用构造函数时，都是会返回一个新的对象。但是有时候我们不需要返回新的对象，比如单例模式。</p>
-<h2 id="静态工厂函数可以返回静态工厂函数返回类型的子类型"><a href="#静态工厂函数可以返回静态工厂函数返回类型的子类型" class="headerlink" title="静态工厂函数可以返回静态工厂函数返回类型的子类型"></a>静态工厂函数可以返回静态工厂函数返回类型的子类型</h2><p>这个是什么意思呢？比如我们拿java中的Collections的静态工厂方法<code>synchronizedMap</code>为例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K,V&gt; Map&lt;K,V&gt; <span class="title function_">synchronizedMap</span><span class="params">(Map&lt;K,V&gt; m)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SynchronizedMap</span>&lt;&gt;(m);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>可以看到函数定义的返回类型是<code>Map</code>，但是实际返回的类型是<code>SynchronizedMap</code>.但是这样做有什么好处呢？<br>这种方式可以隐藏实现类，从而形成一个非常紧凑的API。我们还是以Collections类为例。Collections框架中有45个接口实现工具实现，提供了不可修改集合、同步集合等。这些都是通过Collections提供静态工厂函数来实现，而且返回的子类型都是非公共的。所以Collections框架API比它导出45个独立的公共类要小的多，这样不仅减少了API的数量，同时也减少了框架使用者需要了解的概念。框架使用者不需要了解这45个实现类。同时因为返回的是接口类型，这也是很好的做法。</p>
-<h2 id="第四个优点，静态工厂函数返回的类可以根据输入参数来改变"><a href="#第四个优点，静态工厂函数返回的类可以根据输入参数来改变" class="headerlink" title="第四个优点，静态工厂函数返回的类可以根据输入参数来改变"></a>第四个优点，静态工厂函数返回的类可以根据输入参数来改变</h2><p>静态工厂方法返回的类可以根据版本而改变。Java中的<code>EnumSet</code>类没有公共构造函数，只有静态工厂方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;E <span class="keyword">extends</span> <span class="title class_">Enum</span>&lt;E&gt;&gt; EnumSet&lt;E&gt; <span class="title function_">noneOf</span><span class="params">(Class&lt;E&gt; elementType)</span> &#123;</span><br><span class="line">        Enum&lt;?&gt;[] universe = getUniverse(elementType);</span><br><span class="line">        <span class="keyword">if</span> (universe == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ClassCastException</span>(elementType + <span class="string">&quot; not an enum&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (universe.length &lt;= <span class="number">64</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RegularEnumSet</span>&lt;&gt;(elementType, universe);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JumboEnumSet</span>&lt;&gt;(elementType, universe);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br>通过代码我们可以看出，noneOf返回两个子类中的一个实例，这取决于底层enum类型的大小。如果有64个或更少的元素，那么返回一个long类型的RegularEnumSet实例；如果enum类型有65或更多的元素，方法将返回一个long[]类型的JumboEnumSet实例。<br>客户端感知不到这两个实现类的存在。如果 RegularEnumSet 不再为小型 enum 类型提供性能优势，它可能会在未来的版本中被消除，而不会产生不良影响。类似地，如果事实证明 EnumSet 有益于性能，未来的版本可以添加第三或第四个 EnumSet 实现。客户端既不知道也不关心从工厂返回的对象的类；它们只关心它是 EnumSet 的某个子类。</p>
-<h2 id="第五个优点，编写包含静态工厂函数的类时，此静态工厂函数返回对象所属的类可以不存在"><a href="#第五个优点，编写包含静态工厂函数的类时，此静态工厂函数返回对象所属的类可以不存在" class="headerlink" title="第五个优点，编写包含静态工厂函数的类时，此静态工厂函数返回对象所属的类可以不存在"></a>第五个优点，编写包含静态工厂函数的类时，此静态工厂函数返回对象所属的类可以不存在</h2><p>上面这句话，听起来有点难以理解。这里做个例子进行说明，比如我们正在编写类A，其中包含factory1 静态工厂函数，factory1函数的定义返回类型是接口 Interface1，而实际</p>
-<p><strong>这一点暂时没有理解</strong></p>
-<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><h2 id="第一个缺点，类如果没有公有或者受保护的构造器，那么此类就不能被继承。"><a href="#第一个缺点，类如果没有公有或者受保护的构造器，那么此类就不能被继承。" class="headerlink" title="第一个缺点，类如果没有公有或者受保护的构造器，那么此类就不能被继承。"></a>第一个缺点，类如果没有公有或者受保护的构造器，那么此类就不能被继承。</h2><p>例如，我们不能继承Collection框架中的任何类</p>
-<h2 id="第二个缺点，我们不太容易在类文档中找到静态工厂函数"><a href="#第二个缺点，我们不太容易在类文档中找到静态工厂函数" class="headerlink" title="第二个缺点，我们不太容易在类文档中找到静态工厂函数"></a>第二个缺点，我们不太容易在类文档中找到静态工厂函数</h2><p>因为Javadoc 工具不能明确的标注静态工厂函数，所以在文档中静态工厂函数就不会突出显示。而构造函数在文档中会突出显示。我们也可以遵守一些给静态工厂函数起名的规范，下面是一些建议：</p>
-<ol>
-<li>from: 将输入转为与之对应的相关类,接受一个参数，然后返回对应的类实例<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Date</span> <span class="variable">d</span> <span class="operator">=</span> Date.from(instant);</span><br></pre></td></tr></table></figure></li>
-<li>of：接受多个参数，返回包含多个参数的类实例<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;Rank&gt; faceCards = EnumSet.of(JACK, QUEEN, KING);</span><br></pre></td></tr></table></figure></li>
-<li>valueOf: 介于from和of之间<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BigInteger</span> <span class="variable">prime</span> <span class="operator">=</span> BigInteger.valueOf(Integer.MAX_VALUE);</span><br></pre></td></tr></table></figure></li>
-<li>instance 或者getInstance：返回参数对应的类实例，但是值有可能会改变<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">StackWalker</span> <span class="variable">luke</span> <span class="operator">=</span> StackWalker.getInstance(options);</span><br></pre></td></tr></table></figure></li>
-<li>create 或者 newInstance: 类似于instance或getInstance，但是每次调用都会返回一个新的实例<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">newArray</span> <span class="operator">=</span> Array.newIntance(classObject, arrayLen);</span><br></pre></td></tr></table></figure></li>
-<li>getType: 类似getInstance,获取实例，但是静态工厂函数在另一个类中。Type表面返回实例的类型<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">FileStore</span> <span class="variable">fs</span> <span class="operator">=</span> Files.getFileStore(path);</span><br></pre></td></tr></table></figure></li>
-<li>newType: 类似newInstance，但是静态工厂函数在另一个类中<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BufferedReader</span> <span class="variable">br</span> <span class="operator">=</span> Files.newBufferedReader(path);</span><br></pre></td></tr></table></figure></li>
-<li>type: 一种精确的转换<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Complaint&gt; litany = Collections.list(legacyLitany);</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>构造器和静态工厂函数有各自的优点和缺点，但是一般来说，静态工厂函数要比构造器好。在平常的编程过程中，我们不要一上来就直接写构造函数，可以先考虑一下，用静态工厂函数是不是更好。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2300,7 +2284,7 @@ public final native void wait(long timeout) throws InterruptedException;
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

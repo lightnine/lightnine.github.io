@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="tensorboard," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -81,17 +81,16 @@
 
 
 
-<meta name="description" content="最近因为工作需要，看了下tensorboard的使用方式，这里做了简单的学习记录。使用的tensorflow版本是1.10.0,tensorboard的版本也是一样。 tensorboard介绍tensorboard主要是为了查看tensorflow程序，将程序进行图示化，可以用来查看程序的运行情况，也可以用来debug程序。 tensorflow写tensorboard日志在程序中主要使用tf.">
+<meta name="description" content="下面的11个命令在进行linux网络操作很有用，特意记录下.  原文链接：https:&#x2F;&#x2F;github.com&#x2F;oldratlee&#x2F;translations&#x2F;blob&#x2F;master&#x2F;how-to-work-with-network-from-linux-terminal&#x2F;README.md  curl &amp; wgetcurl和wget都可以下载文件">
 <meta property="og:type" content="article">
-<meta property="og:title" content="tensorboard介绍">
-<meta property="og:url" content="https://lightnine/github.io/tensorboard%E4%BB%8B%E7%BB%8D.html">
+<meta property="og:title" content="linux有关网络操作的11个命令">
+<meta property="og:url" content="https://lightnine/github.io/linux%E6%9C%89%E5%85%B3%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C%E7%9A%8411%E4%B8%AA%E5%91%BD%E4%BB%A4.html">
 <meta property="og:site_name" content="个人博客">
-<meta property="og:description" content="最近因为工作需要，看了下tensorboard的使用方式，这里做了简单的学习记录。使用的tensorflow版本是1.10.0,tensorboard的版本也是一样。 tensorboard介绍tensorboard主要是为了查看tensorflow程序，将程序进行图示化，可以用来查看程序的运行情况，也可以用来debug程序。 tensorflow写tensorboard日志在程序中主要使用tf.">
+<meta property="og:description" content="下面的11个命令在进行linux网络操作很有用，特意记录下.  原文链接：https:&#x2F;&#x2F;github.com&#x2F;oldratlee&#x2F;translations&#x2F;blob&#x2F;master&#x2F;how-to-work-with-network-from-linux-terminal&#x2F;README.md  curl &amp; wgetcurl和wget都可以下载文件">
 <meta property="og:locale">
-<meta property="article:published_time" content="2018-12-26T03:23:15.000Z">
-<meta property="article:modified_time" content="2024-06-10T07:00:19.060Z">
+<meta property="article:published_time" content="2024-06-25T06:18:12.000Z">
+<meta property="article:modified_time" content="2024-06-25T06:19:49.663Z">
 <meta property="article:author" content="liang">
-<meta property="article:tag" content="tensorboard">
 <meta name="twitter:card" content="summary">
 
 
@@ -122,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="https://lightnine/github.io/tensorboard介绍.html"/>
+  <link rel="canonical" href="https://lightnine/github.io/linux有关网络操作的11个命令.html"/>
 
 
 
 
 
-  <title>tensorboard介绍 | 个人博客</title>
+  <title>linux有关网络操作的11个命令 | 个人博客</title>
   
 
 
@@ -265,7 +264,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/tensorboard%E4%BB%8B%E7%BB%8D.html">
+    <link itemprop="mainEntityOfPage" href="https://lightnine/github.io/linux%E6%9C%89%E5%85%B3%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C%E7%9A%8411%E4%B8%AA%E5%91%BD%E4%BB%A4.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -282,7 +281,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">tensorboard介绍</h1>
+          <h1 class="post-title" itemprop="name headline">linux有关网络操作的11个命令</h1>
         
 
         <div class="post-meta">
@@ -294,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-26T11:23:15+08:00">
-                2018-12-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-06-25T14:18:12+08:00">
+                2024-06-25
               </time>
             
 
@@ -317,8 +316,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tensorflow/" itemprop="url" rel="index">
-                    <span itemprop="name">tensorflow</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -354,13 +353,11 @@
       
 
       
-        <p>最近因为工作需要，看了下tensorboard的使用方式，这里做了简单的学习记录。使用的tensorflow版本是<strong>1.10.0</strong>,tensorboard的版本也是一样。</p>
-<h1 id="tensorboard介绍"><a href="#tensorboard介绍" class="headerlink" title="tensorboard介绍"></a>tensorboard介绍</h1><p>tensorboard主要是为了查看tensorflow程序，将程序进行图示化，可以用来查看程序的运行情况，也可以用来debug程序。</p>
-<h2 id="tensorflow写tensorboard日志"><a href="#tensorflow写tensorboard日志" class="headerlink" title="tensorflow写tensorboard日志"></a>tensorflow写tensorboard日志</h2><p>在程序中主要使用<code>tf.summary.FileWriter</code>来将需要记录的事件日志记录到硬盘中。这个函数主要由三个参数需要注意的，如果想要查看详细的内容，可以去源码中查找具体的使用方式。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">logdir:指定日志写入的具体目录</span></span><br><span class="line"><span class="string">graph:指定记录的tensorflow图</span></span><br><span class="line"><span class="string">filename_suffix:事件日志文件的后缀</span></span><br></pre></td></tr></table></figure>
-<h2 id="tensorboard启动"><a href="#tensorboard启动" class="headerlink" title="tensorboard启动"></a>tensorboard启动</h2><p>tensorboard的启动是在命令行中，输入<code>tensorboard --logdir=/path/to/log</code>命令启动，然后打开ip+port在浏览器中进行查看。查看tensorboard的参数信息，可以运行<code>tensorboard --help</code>来进行查看。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">--inspect:</span> <span class="string">用来查看事件日志信息，并不启动tensorboard</span></span><br><span class="line"><span class="string">--logdir：用来指定事件日志的存储目录</span></span><br></pre></td></tr></table></figure>
-<p>tensorboard主要是扫描logdir指定目录下的内容，扫描文件名带有<em>.tfevents.</em>的文件进行展示。如果logdir下有多个目录，则在浏览器中可以分别进行浏览。如果有多个相同的文件，则会显示时间戳距离最近的文件。文件名中带有时间戳。例如：<strong>events.out.tfevents.1545795299.DESKTOP-123</strong></p>
+        <p>下面的11个命令在进行linux网络操作很有用，特意记录下.</p>
+<blockquote>
+<p>原文链接：<a href="https://github.com/oldratlee/translations/blob/master/how-to-work-with-network-from-linux-terminal/README.md">https://github.com/oldratlee/translations/blob/master/how-to-work-with-network-from-linux-terminal/README.md</a></p>
+</blockquote>
+<h2 id="curl-amp-wget"><a href="#curl-amp-wget" class="headerlink" title="curl &amp; wget"></a>curl &amp; wget</h2><p>curl和wget都可以下载文件</p>
 
       
     </div>
@@ -376,12 +373,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/tensorboard/" rel="tag"># tensorboard</a>
-          
-        </div>
-      
 
       
       
@@ -391,8 +382,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/%E6%AC%A7%E6%B4%B2%E5%9B%9B%E5%9B%BD%E8%A1%8C.html" rel="next" title="欧洲四国行">
-                <i class="fa fa-chevron-left"></i> 欧洲四国行
+              <a href="/%E7%BC%96%E5%86%99%E5%8F%AF%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%9A%84%E8%89%BA%E6%9C%AF-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html" rel="next" title="'编写可读代码的艺术'读书笔记">
+                <i class="fa fa-chevron-left"></i> '编写可读代码的艺术'读书笔记
               </a>
             
           </div>
@@ -400,10 +391,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019-plan-and-learn.html" rel="prev" title="2019-plan-and-learn">
-                2019-plan-and-learn <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -542,7 +529,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tensorboard%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">tensorboard介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tensorflow%E5%86%99tensorboard%E6%97%A5%E5%BF%97"><span class="nav-number">1.1.</span> <span class="nav-text">tensorflow写tensorboard日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tensorboard%E5%90%AF%E5%8A%A8"><span class="nav-number">1.2.</span> <span class="nav-text">tensorboard启动</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#curl-amp-wget"><span class="nav-number">1.</span> <span class="nav-text">curl &amp; wget</span></a></li></ol></div>
             
 
           </div>
